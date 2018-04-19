@@ -44,8 +44,14 @@ module fan_hole(side, height, depth) {
       cylinder(h = depth*2, d = FAN_DIA, center = true);
 }
 
+module vent_hole(d, l, offset) {
+  translate([offset, 0, 0])
+      rotate([0, 0, 90])
+      long_cylinder(h = 2, d = d, l=l, center=true);
+}
+
 module body(side) {
-  limit = side * 0.95;
+  limit = side * 0.85;
 
   intersection() {
     union() {
@@ -62,11 +68,14 @@ module body(side) {
   }
 }
 
-module cooler() {
-  margin = 15;
+module effector() {
+  margin = 10;
   side = 2 * FAN_DIA + 2 * margin;
-  fan_hole_depth = 4;
-  fan_hole_height = 0;
+  fan_hole_depth = 1;
+  fan_hole_height = 5;
+  vent_hole_dia = 5;
+  vent_hole_length = 15;
+  vent_hole_offset = -25;
 
   difference() {
     difference() {
@@ -81,12 +90,18 @@ module cooler() {
     }
 
     rotate([0, 0, 120])
-        fan_hole(side, fan_hole_height, fan_hole_depth);
+        hull() {
+      fan_hole(side, fan_hole_height, fan_hole_depth);
+      vent_hole(vent_hole_dia, vent_hole_length, vent_hole_offset);
+    }
 
     rotate([0, 0, 240])
-        fan_hole(side, fan_hole_height, fan_hole_depth);
+        hull() {
+      fan_hole(side, fan_hole_height, fan_hole_depth);
+      vent_hole(vent_hole_dia, vent_hole_length, vent_hole_offset);
+    }
 
   }
 }
 
-cooler();
+effector();
