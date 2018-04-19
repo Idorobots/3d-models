@@ -35,11 +35,11 @@ module long_cylinder(h, d, l, center) {
 }
 
 module fan_hole(side, height, depth) {
-  // FIXME Distance drifts a bit when given non-zero height.
   side_delta = sqrt(2) * (height + FAN_DIA/2);
-  dist = (side - side_delta)*sqrt(6)/6;
+  dist = (side - side_delta) * sqrt(6)/6;
+  h = (height + FAN_DIA/2) * sqrt(6)/3;
 
-  translate([-dist, 0, height + FAN_DIA/2])
+  translate([-dist, 0, h])
       rotate([45, atan(1/sqrt(2)), -120])
       cylinder(h = depth*2, d = FAN_DIA, center = true);
 }
