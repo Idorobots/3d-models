@@ -7,9 +7,11 @@ HOTEND_TOP_DIA = 15;
 HOTEND_TOP_HEIGHT = 13;
 HOTEND_BOT_DIA = 25;
 HOTEND_BOT_HEIGHT = 30;
+HOTEND_BOT_LIP = 2;
 
 module hotend_radiator() {
-  cylinder(h = HOTEND_BOT_HEIGHT, d = HOTEND_BOT_DIA);
+  translate([0, 0, HOTEND_BOT_LIP])
+      cylinder(h = HOTEND_BOT_HEIGHT - HOTEND_BOT_LIP, d = HOTEND_BOT_DIA);
 }
 
 module hotend() {
