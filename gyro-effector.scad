@@ -88,21 +88,59 @@ module part_vent(side, height) {
   }
 }
 
-module body(side) {
-  limit = side * 0.85;
+module body(side, limit) {
+  l = side * limit;
 
-  intersection() {
-    union() {
+  union() {
+    intersection() {
       translate([0, 0, -side * sqrt(3)/6])
           rotate([45, atan(1/sqrt(2)), 0])
           cube([side, side, side], center=true);
+      sphere(d = l);
+      cylinder(h = HEIGHT, d = l);
+    }
 
-      cylinder(h = side*sqrt(3)/3, d = HOTEND_TOP_DIA * 2);
+    cylinder(h = side*sqrt(3)/3, d = HOTEND_TOP_DIA * 2);
+  }
+}
+
+module magnetic_mount(diameter, depth, length, lip) {
+  d = diameter + lip;
+
+  difference() {
+    hull() {
+      cylinder(d = d, h = length-d/2);
+      difference() {
+        sphere(d = d, center=true);
+        cylinder(d=d, h = d/2);
+      }
     }
-    intersection() {
-      sphere(d = limit);
-      cylinder(h = HEIGHT, d = limit);
-    }
+
+    translate([0, 0, length-depth-d/2])
+        cylinder(d = diameter, h = depth + 1);
+  }
+}
+
+module magnetic_mounts(side, distance, angle, height, length) {
+  diameter = 10;
+  depth = 3;
+  lip = 3;
+  off = (diameter + lip)/2;
+  l = length + off;
+
+  side_delta = sqrt(2) * (height + off);
+  dist = (side - side_delta) * sqrt(6)/6;
+  h = (height + off) * sqrt(6)/3;
+
+  translate([-dist, 0, h])
+  rotate([0, -angle, 0])
+  union() {
+    translate([0, -distance/2, 0])
+        magnetic_mount(diameter, depth, l, lip);
+
+    translate([0, distance/2, 0])
+        magnetic_mount(diameter, depth, l, lip);
+
   }
 }
 
@@ -112,17 +150,32 @@ module effector() {
 
   fan_hole_height = 5;
 
-  difference() {
-    body(side);
+  mount_distance = 56.5;
+  mount_angle = 40;
+  mount_length = 7;
+  mount_height = 2;
 
-    hotend();
-    hotend_vent(side, fan_hole_height);
+  union() {
+    difference() {
+      body(side, 0.90);
+
+      hotend();
+      hotend_vent(side, fan_hole_height);
+
+      rotate([0, 0, 120])
+          part_vent(side, fan_hole_height);
+
+      rotate([0, 0, 240])
+          part_vent(side, fan_hole_height);
+    }
+
+    magnetic_mounts(side, mount_distance, mount_angle, mount_height, mount_length);
 
     rotate([0, 0, 120])
-        part_vent(side, fan_hole_height);
+        magnetic_mounts(side, mount_distance, mount_angle, mount_height, mount_length);
 
     rotate([0, 0, 240])
-        part_vent(side, fan_hole_height);
+        magnetic_mounts(side, mount_distance, mount_angle, mount_height, mount_length);
   }
 }
 
