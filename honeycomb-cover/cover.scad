@@ -24,15 +24,14 @@ module honeycomb(dia, hole_dia, bar_thickness, height) {
     cylinder(d = dia, h = HEIGHT, center = true);
 
     translate([-(X_HOLES*DELTA_X)/2, -(Y_HOLES*DELTA_Y)/2, 0])
-      for(i = [0:X_HOLES]) {
-        for(j = [0:Y_HOLES]) {
-          translate([-DELTA_X/2, 0, 0])
-            translate([(j % 2) * DELTA_X/2, 0, 0])
-              translate([i * DELTA_X, j * DELTA_Y, 0])
-                hexagon(hole_dia, height + 2);
+      for(j = [0:Y_HOLES]) {
+        for(i = [0:X_HOLES + (j % 2)]) {
+          translate([-(j % 2) * DELTA_X/2, 0, 0])
+            translate([i * DELTA_X, j * DELTA_Y, 0])
+              hexagon(hole_dia, height + 2);
         }
       }
   }
 }
 
-honeycomb(DIAMETER, HOLE_DIA, BAR_THICKNESS, HEIGHT);
+honeycomb(DIAMETER-BAR_THICKNESS, HOLE_DIA, BAR_THICKNESS, HEIGHT);
