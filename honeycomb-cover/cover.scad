@@ -1,7 +1,11 @@
-DIAMETER = 60;
+DIAMETER = 84;
+RING_THICKNESS = 5;
 HEIGHT = 2;
+LIP_HEIGHT = 5;
 HOLE_DIA = 5;
 BAR_THICKNESS = 2;
+
+$fn = 100;
 
 module hexagon(d, h) {
   r = d/2;
@@ -21,7 +25,7 @@ module honeycomb(dia, hole_dia, bar_thickness, height) {
   Y_HOLES = floor(dia / DELTA_Y);
 
   difference() {
-    cylinder(d = dia, h = HEIGHT, center = true);
+    cylinder(d = dia, h = height, center = true);
 
     translate([-(X_HOLES*DELTA_X)/2, -(Y_HOLES*DELTA_Y)/2, 0])
       for(j = [0:Y_HOLES]) {
@@ -34,4 +38,17 @@ module honeycomb(dia, hole_dia, bar_thickness, height) {
   }
 }
 
-honeycomb(DIAMETER-BAR_THICKNESS, HOLE_DIA, BAR_THICKNESS, HEIGHT);
+module ring(dia, bar_thickness, height, center) {
+  difference() {
+    cylinder(d = dia, h = height, center = center);
+    translate([0, 0, -1])
+      cylinder(d = dia - 2 * bar_thickness, h = height + 3, center = center);
+  }
+}
+
+union() {
+  honeycomb(DIAMETER-RING_THICKNESS, HOLE_DIA, BAR_THICKNESS, HEIGHT);
+  ring(DIAMETER, RING_THICKNESS, HEIGHT, true);
+  translate([0, 0, HEIGHT/2])
+    ring(DIAMETER - RING_THICKNESS + BAR_THICKNESS, BAR_THICKNESS, LIP_HEIGHT, false);
+}
