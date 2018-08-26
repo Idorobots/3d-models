@@ -7,7 +7,7 @@ LIP_HEIGHT = 3;
 LIP_THICKNESS = 2;
 
 HOLE_DIA = 5;
-BAR_THICKNESS = 3;
+BAR_THICKNESS = 2;
 
 $fn = 100;
 
@@ -16,9 +16,9 @@ module hexagon(d, h) {
 }
 
 module honeycomb(dia, hole_dia, bar_thickness, height) {
-  DELTA_X = sqrt(pow(hole_dia + bar_thickness/2, 2) - pow(hole_dia/2, 2));
+  DELTA_X = sqrt(pow(hole_dia + bar_thickness, 2) - pow(hole_dia/2, 2));
   X_HOLES = floor((dia / DELTA_X));
-  DELTA_Y = (hole_dia + bar_thickness/2);
+  DELTA_Y = (hole_dia + bar_thickness);
   Y_HOLES = floor(dia / DELTA_Y);
 
   difference() {
