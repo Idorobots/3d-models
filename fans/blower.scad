@@ -71,7 +71,7 @@ module blades_pos() {
 module blades_neg() {
     union() {
         for(i = [0:N_BLADES]) {
-            rotate([0, 0, i*(360/N_BLADES) + 10])
+            rotate([0, 0, i*(360/N_BLADES) + (360/N_BLADES/3)])
             blade_neg();
         }
         difference() {
