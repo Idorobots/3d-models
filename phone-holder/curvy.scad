@@ -1,9 +1,10 @@
 WALL_THICKNESS = 2;
-
 OUTER_CORNER_DIAMETER = 10;
 INNER_CORNER_DIAMETER = 15;
+
 MOUNTING_HOLE_DIAMETER = 4;
 MOUNTING_HOLE_OFFSET = 15;
+MOUNTING_HOLES = false;
 
 WIDTH = 58 + 2 * WALL_THICKNESS;
 HEIGHT = 60 + WALL_THICKNESS;
@@ -12,6 +13,12 @@ THICKNESS = 15 + 2 * WALL_THICKNESS;
 BAR_WIDTH = OUTER_CORNER_DIAMETER;
 SLOT_WIDTH = WIDTH - 2 * BAR_WIDTH;
 SLOT_HEIGHT = HEIGHT - BAR_WIDTH;
+
+STAND_ANGLE = 30;
+STAND_WIDTH = WIDTH * 0.66;
+STAND_LENGTH = 30;
+STAND_HOLE_DIAMETER = 20;
+STAND = true;
 
 $fn = 30;
 
@@ -50,7 +57,7 @@ module rounded_rect(diameter, width, height, thickness) {
 module top() {
     d = OUTER_CORNER_DIAMETER;
     id = INNER_CORNER_DIAMETER;
-    t = THICKNESS - WALL_THICKNESS - WALL_THICKNESS/2;
+    t = THICKNESS;
     difference() {
         union() {
             translate([-(WIDTH-d)/2, d, 0])
@@ -71,7 +78,7 @@ module top() {
         translate([0, WALL_THICKNESS, WALL_THICKNESS])
         rounded_rect(d, WIDTH-2*WALL_THICKNESS, HEIGHT, t);
         
-        translate([0, WALL_THICKNESS/2, t-WALL_THICKNESS/2])
+        translate([0, WALL_THICKNESS/2, t-WALL_THICKNESS])
         rounded_rect(d, WIDTH-WALL_THICKNESS, HEIGHT, WALL_THICKNESS);
     }
 }
@@ -79,20 +86,37 @@ module top() {
 module bottom() {
     d = OUTER_CORNER_DIAMETER;
     id = INNER_CORNER_DIAMETER;
-    t = WALL_THICKNESS/2;
+    t = WALL_THICKNESS;
+    w = WIDTH-WALL_THICKNESS;
     difference() {
-        union() {
-            rounded_rect(d, WIDTH, HEIGHT, t);
-            translate([0, t/2, t])
-            rounded_rect(d, WIDTH-WALL_THICKNESS, HEIGHT-t, t);
+        hull() {
+            rounded_rect(d, w, HEIGHT, t);
+            if(STAND) {
+                translate([0, -HEIGHT/2, 0])
+                rotate([STAND_ANGLE, 0, 0])
+                translate([0, t, -STAND_LENGTH/2-t])
+                rotate([90, 0, 0])
+                rounded_rect(d, STAND_WIDTH, STAND_LENGTH, t);
+            }
         }
+        if(MOUNTING_HOLES) {
+            translate([0, MOUNTING_HOLE_OFFSET, 0])
+            cylinder(d = MOUNTING_HOLE_DIAMETER, h = WALL_THICKNESS);
 
-        translate([0, MOUNTING_HOLE_OFFSET, 0])
-        cylinder(d = MOUNTING_HOLE_DIAMETER, h = WALL_THICKNESS);
-
-        translate([0, -MOUNTING_HOLE_OFFSET, 0])
-        cylinder(d = MOUNTING_HOLE_DIAMETER, h = WALL_THICKNESS);
-
+            translate([0, -MOUNTING_HOLE_OFFSET, 0])
+            cylinder(d = MOUNTING_HOLE_DIAMETER, h = WALL_THICKNESS);
+        }
+        if(STAND) {
+            difference() {
+                translate([0, -HEIGHT/2, 0])
+                rotate([STAND_ANGLE, 0, 0])
+                translate([0, 0, -STAND_LENGTH/2])
+                rotate([-90, 0, 0])
+                cylinder(d = STAND_HOLE_DIAMETER, h = 10000, center = true);
+                translate([-w/2, -HEIGHT/2, 0])
+                cube(size = [w, HEIGHT, 10000]);
+            }
+        }
     }
 }
 
