@@ -15,12 +15,12 @@ HOLE_DIAMETER = 7;
 HOLE_SPACING_DIAMETER = 50;
 
 FAN_DIAMETER = 110;
-LIP_HEIGHT = 2.5;
+LIP_HEIGHT = 0;
 PLATE_THICKNESS = 3.5;
 
 MIRRORED = true;
 
-$fn = 50;
+$fn = 100;
 
 module hub_pos() {
     cylinder(d1 = HUB_BOTTOM_DIAMETER, d2 = HUB_TOP_DIAMETER, h = HUB_HEIGHT);
