@@ -4,7 +4,7 @@ INNER_CORNER_DIAMETER = 15;
 
 MOUNTING_HOLE_DIAMETER = 4;
 MOUNTING_HOLE_OFFSET = 10;
-MOUNTING_HOLES = false;
+MOUNTING_HOLES = true;
 
 WIDTH = 58 + 2 * WALL_THICKNESS;
 HEIGHT = 60 + WALL_THICKNESS;
@@ -99,8 +99,18 @@ module stand() {
         }
         translate([0, -cos(STAND_ANGLE)*STAND_HEIGHT, STAND_HEIGHT-STAND_BASE_HEIGHT])
         rotate([STAND_ANGLE, 0, 0])
-        translate([-WIDTH/2, -HEIGHT/2, -THICKNESS])
-        cube(size = [WIDTH, HEIGHT, 10000]);
+        translate([0, 0, -THICKNESS])
+        union() {
+            translate([-WIDTH/2, -HEIGHT/2, 0])
+            cube(size = [WIDTH, HEIGHT, 10000]);
+            if(MOUNTING_HOLES) {
+                translate([0, MOUNTING_HOLE_OFFSET, 0])
+                cylinder(d = MOUNTING_HOLE_DIAMETER, h = STAND_COLUMN_DIAMETER, center = true);
+
+                translate([0, -MOUNTING_HOLE_OFFSET, 0])
+                cylinder(d = MOUNTING_HOLE_DIAMETER, h = STAND_COLUMN_DIAMETER, center = true);
+            }
+        }
         cylinder(d = MOUNTING_HOLE_DIAMETER, h = STAND_HEIGHT/2);
     }
 }
@@ -110,7 +120,7 @@ module bottom() {
     rotate([STAND_ANGLE, 0, 0])
     translate([0, 0, -THICKNESS])
     difference() {
-        rounded_rect(OUTER_CORNER_DIAMETER, WIDTH-WALL_THICKNESS, HEIGHT, WALL_THICKNESS);
+        rounded_rect(OUTER_CORNER_DIAMETER, WIDTH-WALL_THICKNESS, HEIGHT-WALL_THICKNESS/2, WALL_THICKNESS);
         if(MOUNTING_HOLES) {
             translate([0, MOUNTING_HOLE_OFFSET, 0])
             cylinder(d = MOUNTING_HOLE_DIAMETER, h = WALL_THICKNESS);
