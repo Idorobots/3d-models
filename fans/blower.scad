@@ -1,8 +1,9 @@
-HUB_BOTTOM_DIAMETER = 40;
+HUB_BOTTOM_DIAMETER = 50;
 HUB_TOP_DIAMETER = 18;
 SHAFT_BOTTOM_DIAMETER = 10;
 SHAFT_TOP_DIAMETER = 9.5;
 SHAFT_KEY_WIDTH = 8;
+SHAFT_Z_OFFSET = 3;
 HUB_HEIGHT = 25;
 
 BLADE_CURVE_DIAMETER = 80;
@@ -18,12 +19,20 @@ FAN_DIAMETER = 110;
 LIP_HEIGHT = 0;
 PLATE_THICKNESS = 3.5;
 
+BEARING_INLET_HEIGHT = 8;
+BEARING_INNER_DIA = 19;
+BEARING_OUTER_DIA = 40.5;
+
 MIRRORED = true;
 
 $fn = 100;
 
 module hub_pos() {
-    cylinder(d1 = HUB_BOTTOM_DIAMETER, d2 = HUB_TOP_DIAMETER, h = HUB_HEIGHT);
+    union() {
+        translate([0, 0, BEARING_INLET_HEIGHT])
+        cylinder(d1 = HUB_BOTTOM_DIAMETER, d2 = HUB_TOP_DIAMETER, h = HUB_HEIGHT - BEARING_INLET_HEIGHT);
+        cylinder(d = HUB_BOTTOM_DIAMETER, h = BEARING_INLET_HEIGHT);
+    }
 }
 
 module hub_neg() {
@@ -34,6 +43,11 @@ module hub_neg() {
             cube(size = [SHAFT_KEY_WIDTH, SHAFT_TOP_DIAMETER, HUB_HEIGHT]);
         }
         cylinder(d = SHAFT_BOTTOM_DIAMETER, h = HUB_HEIGHT/2);
+        difference() {
+            cylinder(d = BEARING_OUTER_DIA, h = BEARING_INLET_HEIGHT);
+            translate([0, 0, SHAFT_Z_OFFSET])
+            cylinder(d = BEARING_INNER_DIA, h = BEARING_INLET_HEIGHT-SHAFT_Z_OFFSET);
+        }
     }
 }
 
