@@ -1,4 +1,4 @@
-TOOL_SIZES = [2, 2.5, 3, 3.8, 4.8, 6, 9, 12.6];
+TOOL_SIZES = [2.5, 3, 3.5, 4, 5, 6, 9, 13];
 SPACING = 5;
 WALL_THICKNESS = 1.2;
 CORNER_DIA = 10;
