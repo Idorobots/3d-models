@@ -17,6 +17,8 @@ HEX_HEIGHT = 2;
 
 $fn = 50;
 
+use <tube-adapter.scad>
+
 // Adapted from a library by Trevor Moseley.
 module thread_segment(i, diameter, pitch, segments_per_turn, segment_height) {
     a = 360/segments_per_turn; // segment angular length
@@ -68,44 +70,8 @@ module thread(diameter, height, pitch, thread_height) {
     }
 }
 
-module barbs(barbs, inner_dia, outer_dia, length, barb_height) {
-    for(i = [0:barbs-1]) {
-        translate([0, 0, i * length/barbs])
-        cylinder(d1 = outer_dia, d2 = outer_dia - 2 * barb_height, h = length/barbs);
-    }
-}
-
-module angled_barbed_hose_adapter_pos(inner_dia, outer_dia, height, length, angle, barb_height, barbs) {
-
-    h = height - outer_dia/2;
-    union() {
-        translate([0, 0, h])
-        sphere(d = outer_dia);
-        
-        cylinder(d = outer_dia, h = h);
-        
-        translate([0, 0, h])
-        rotate([angle, 0, 0])
-        barbs(barbs, inner_dia, outer_dia, length, barb_height);
-    }
-}
-
-module angled_barbed_hose_adapter_neg(inner_dia, outer_dia, height, length, angle, barb_height, barbs) {
-    
-    h = height - outer_dia/2;
-    translate([0, 0, h])
-    sphere(d = inner_dia);
-
-    cylinder(d = inner_dia, h = h);
-
-    translate([0, 0, h])
-    rotate([angle, 0, 0])
-    cylinder(d = inner_dia, h = length);
-}
-
 difference() {
-    base_height = G14_HEIGHT + GASKET_HEIGHT + HEX_HEIGHT;
-    barb_height = BARB_DIA-(BARB_DIA-HOLE_DIA)/2;
+    base_height = G14_HEIGHT + GASKET_HEIGHT;
     union() {
         thread(THREAD_DIA, G14_HEIGHT, THREAD_PITCH, THREAD_HEIGHT);
         cylinder(d = INNER_DIA, h = G14_HEIGHT);
@@ -116,16 +82,15 @@ difference() {
         translate([0, 0, G14_HEIGHT + GASKET_HEIGHT])
         cylinder(d = OUTER_DIA, h = HEX_HEIGHT, $fn = 6);
         
-        translate([0, 0, base_height])
-        angled_barbed_hose_adapter_pos(HOLE_DIA, BARB_DIA, barb_height, BARB_LENGTH, ADAPTER_ANGLE, BARB_HEIGHT, BARBS);
+        translate([0, 0, base_height + BARB_DIA/2])
+        angled_barbed_hose_adapter_pos(HOLE_DIA, BARB_DIA, BARB_LENGTH, BARB_HEIGHT, HOLE_DIA, BARB_DIA, 0, 0, ADAPTER_ANGLE, BARBS);
         
         if(ADAPTER_ANGLE == 90) {
             translate([0, 0, base_height])
-            cylinder(d = OUTER_DIA, h = barb_height, $fn = 6);
+            cylinder(d = OUTER_DIA, h = BARB_DIA, $fn = 6);
         }
     }
     cylinder(d = HOLE_DIA, h = base_height);
-    translate([0, 0, base_height])
-    angled_barbed_hose_adapter_neg(HOLE_DIA, BARB_DIA, barb_height, BARB_LENGTH, ADAPTER_ANGLE, BARB_HEIGHT, BARBS);
-        
+    translate([0, 0, base_height + BARB_DIA/2])
+    angled_barbed_hose_adapter_neg(HOLE_DIA, BARB_DIA, BARB_LENGTH, BARB_HEIGHT, HOLE_DIA, BARB_DIA, 0, 0, ADAPTER_ANGLE, BARBS);
 }
