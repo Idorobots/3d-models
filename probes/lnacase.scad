@@ -1,30 +1,42 @@
 LNA_CONN_DIA = 7;
-LNA_CONN_BASE = 1.5;
+LNA_CONN_BASE = 2;
 LNA_CONN_OFFSET_X = -1;
 LNA_CONN_OFFSET_Y = 0;
 LNA_CONN_OFFSET_Z = 1;
 LNA_WIDTH = 26;
-LNA_LENGTH = 36;
+LNA_LENGTH = 34;
 LNA_THICKNESS = 5;
 LNA_HOLE_DIA = 3;
-LNA_HOLE_SPACING_WIDTH = 17;
+LNA_HOLE_SPACING_WIDTH = 18;
 LNA_HOLE_SPACING_LENGTH = 26;
 
-DC_DIA = 11;
+DC_DIA = 12;
 DC_JACK_DIA = 8;
 DC_LENGTH = 18;
 DC_OFFSET_X = -6;
 DC_OFFSET_Y = 0;
-DC_OFFSET_Z = 1;
+DC_OFFSET_Z = 1.2;
 
 THICKNESS = 2;
 LENGTH = LNA_LENGTH + 2 * LNA_CONN_BASE + 2 * THICKNESS;
 WIDTH = LNA_WIDTH + (DC_LENGTH + DC_OFFSET_X) + 2 * THICKNESS;
-HEIGHT = 20;
+HEIGHT = DC_DIA + 2 * THICKNESS;
+CORNER_DIA = 5;
 
 TOP = false;
 
 $fn = 50;
+
+module rounded_cube(width, length, height, corner_dia) {
+    hull() {
+        for(i = [-1, 1]) {
+            for(j = [-1, 1]) {
+                translate([i * (width-corner_dia)/2, j * (length - corner_dia)/2, 0])
+                cylinder(d = corner_dia, h = height, center = true);
+            }
+        }
+    }
+}
 
 module lna() {
     union() {
@@ -57,7 +69,7 @@ module dc_jack() {
 
 module case() {
     translate([WIDTH/2 - LNA_WIDTH/2 - THICKNESS, 0, 0])    
-    cube(size = [WIDTH, LENGTH, HEIGHT], center = true);
+    rounded_cube(WIDTH, LENGTH, HEIGHT, CORNER_DIA);
 }
 
 intersection() {
