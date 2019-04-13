@@ -16,12 +16,13 @@ mount_depth = clamp_depth;
 mount_width = clamp_depth;
 
 
-difference() {
-    cube([depth, width, height]);
-    translate([-1, thickness, -1])
-        cube([clamp_depth + 2, clamp_width, clamp_height + 1]);
-}
-translate([0, width, 0])
+union() {
+    difference() {
+        cube([depth, width, height]);
+        translate([-1, thickness, -1])
+            cube([clamp_depth + 2, clamp_width, clamp_height + 1]);
+    }
+    translate([0, width, 0])
     difference() {
         polyhedron(points = [[0, 0, 0],
                              [0, mount_width, 0],
@@ -41,3 +42,4 @@ translate([0, width, 0])
                 cylinder(d = screw_head_dia, h = mount_height +2);
         }
     }
+}
