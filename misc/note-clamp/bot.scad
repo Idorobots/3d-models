@@ -1,58 +1,46 @@
-HEIGHT = 2.5;
-WIDTH = 60;
-LENGTH = 75;
+HEIGHT = 3;
+WIDTH = 75;
+LENGTH = 100;
 
-BAR_CORNER_RADIUS = 3;
-BAR_WIDTH = 20;
+SLANT = 4;
+NOTE_BODY_DIA = 28;
+
+BAR_CORNER_DIA = 6;
+BAR_TOP_WIDTH = NOTE_BODY_DIA;
+BAR_TOP_LENGTH = WIDTH - NOTE_BODY_DIA/2;
+BAR_CONN_LENGTH = LENGTH - NOTE_BODY_DIA/2 - 2*SLANT;
+BAR_CONN_WIDTH = 12;
 
 HINGE_RADIUS = 3;
-HINGE_HOLE_RADIUS = 1.5;
-HINGE_HEIGHT = 7;
-HINGE_SPACING = 10;
+HINGE_HOLE_RADIUS = 1.6;
+HINGE_HEIGHT = 6;
+HINGE_SPACING = 12;
 HINGE_WIDTH = 3;
 
 $fn = 100;
 
-module corner(width, height) {
-    cube(size = [width, width, height], center = true);
-}
-
-module bar(from, to, width, height) {
+module rounded_rect(width, length, height, corner_dia, slant = 0) {
     hull() {
-        translate(from) corner(width, height);
-        translate(to) corner(width, height);
+        for(i = [-1, 1]) {
+            for(j = [-1, 1]) {
+                translate([j == -1 ? -slant : slant, 0, 0])
+                translate([i * (width-corner_dia)/2, j * (length-corner_dia)/2, 0])
+                cylinder(d = corner_dia, h = height, center = true);
+            }
+        }
     }
 }
 
 module outline() {
-    d = BAR_CORNER_RADIUS * 2;
-    h = HEIGHT;
-    w = BAR_WIDTH - d;
-    w2 = w/2;
-    delta = w2 + BAR_CORNER_RADIUS;
-    
-    minkowski() {
-        union() {
-            bar(
-                [LENGTH/2-delta, 0, 0], 
-                [-LENGTH/2+delta, 0, 0], 
-                w, 
-                h
-            );
-            bar(
-                [-LENGTH/2+delta, WIDTH/2-delta, 0], 
-                [-LENGTH/2+delta, -WIDTH/2+delta, 0], 
-                w, 
-                h
-            );
-            bar(
-                [LENGTH/2-delta, WIDTH/4-delta, 0], 
-                [LENGTH/2-delta, -WIDTH/4+delta, 0], 
-                w, 
-                h
-            );
-        }
-        cylinder(d = d, h = 0.1, center=true);
+    union() {
+        translate([-(BAR_CONN_LENGTH-BAR_TOP_WIDTH)/2, 0, 0])
+        rounded_rect(BAR_TOP_WIDTH, BAR_TOP_LENGTH, HEIGHT, BAR_CORNER_DIA, -SLANT);
+        
+        translate([+SLANT/2, 0, 0])
+        rounded_rect(BAR_CONN_LENGTH - SLANT - NOTE_BODY_DIA/2, BAR_CONN_WIDTH, HEIGHT, BAR_CORNER_DIA);
+        
+        translate([(BAR_CONN_LENGTH-NOTE_BODY_DIA)/2, 0, 0])
+        cylinder(d = NOTE_BODY_DIA, h = HEIGHT, center = true);
     }
 }
 
