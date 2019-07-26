@@ -17,7 +17,7 @@ HEX_HEIGHT = 2;
 
 $fn = 50;
 
-use <tube-adapter.scad>
+use <barbed-hose-adapter.scad>
 
 // Adapted from a library by Trevor Moseley.
 module thread_segment(i, diameter, pitch, segments_per_turn, segment_height) {
