@@ -1,0 +1,28 @@
+TOP_THREAD_DIA = 21;
+TOP_THREAD_PITCH = 1.75;
+TOP_THREAD_HEIGHT = 1.75;
+TOP_INNER_DIA = TOP_THREAD_DIA - 2 * TOP_THREAD_HEIGHT;
+TOP_HEIGHT = 8;
+
+BOT_THREAD_DIA = 26;
+BOT_THREAD_PITCH = 1.75;
+BOT_THREAD_HEIGHT = 1.75;
+BOT_INNER_DIA = BOT_THREAD_DIA - 2 * BOT_THREAD_HEIGHT;
+BOT_HEIGHT = 8;
+
+$fn = 50;
+
+use <threads.scad>
+
+difference() {
+    union() {
+        translate([0, 0, BOT_HEIGHT]) {
+            cylinder(d = TOP_INNER_DIA, h = TOP_HEIGHT);
+            thread(TOP_THREAD_DIA, TOP_HEIGHT, TOP_THREAD_PITCH, TOP_THREAD_HEIGHT);
+        }
+        cylinder(d = BOT_INNER_DIA, h = BOT_HEIGHT);
+        thread(BOT_THREAD_DIA, BOT_HEIGHT, BOT_THREAD_PITCH, BOT_THREAD_HEIGHT);
+    }
+
+    cylinder(d = 0.5 * min(TOP_INNER_DIA, BOT_INNER_DIA), h = BOT_HEIGHT + TOP_HEIGHT);
+}
