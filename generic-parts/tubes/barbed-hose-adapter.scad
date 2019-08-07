@@ -5,7 +5,7 @@ TOP_HOLE_DIA = 5;
 TOP_BARB_DIA = 7;
 TOP_BARB_HEIGHT = 0.5;
 
-BOT_HOLE_DIA = 10;
+BOT_HOLE_DIA = 9;
 BOT_BARB_DIA = 12;
 BOT_BARB_HEIGHT = 0.7;
 
@@ -36,15 +36,14 @@ module angled_barbed_hose_adapter_pos(top_inner_dia, top_outer_dia, top_length, 
 
 module angled_barbed_hose_adapter_neg(top_inner_dia, top_outer_dia, top_length, top_height, bot_inner_dia, bot_outer_dia, bot_length, bot_height, angle, barbs) {
     
-    d = min([top_inner_dia, bot_inner_dia]);
     union() {
-        sphere(d = d);
+        sphere(d = bot_inner_dia);
 
         translate([0, 0, -bot_length])
-        cylinder(d = d, h = bot_length);
+        cylinder(d = bot_inner_dia, h = bot_length);
 
         rotate([angle, 0, 0])
-        cylinder(d = d, h = top_length);
+        cylinder(d = top_inner_dia, h = top_length);
     }
 }
 
