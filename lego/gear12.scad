@@ -3,7 +3,7 @@
 // 2 - Full bottom.
 // 3 - No lip at all.
 
-BOTTOM_TYPE = 3;
+BOTTOM_TYPE = 1;
 
 THICKNESS = (BOTTOM_TYPE  == 0) ? 0.5 : 0.4;
 DIAMETER = 13;
