@@ -1,8 +1,16 @@
+// 0 - All parts.
+// 1 - Hob bearing mount.
+// 2 - Tuner mount.
+// 3 - Flex mount.
+
+PART = 0;
+
 WALL_THICKNESS = 1.5;
 
+TUNER_BASE_THICKNESS = 2.5;
+TUNER_GEAR_THICKNESS = 8;
 TUNER_WIDTH = 18;
 TUNER_LENGTH = 28;
-TUNER_THICKNESS = 10;
 TUNER_MOUNTING_HOLES_OFFSET = 9;
 TUNER_MOUNTING_HOLES_SPACING = 22;
 TUNER_MOUNTING_HOLES_DIA = 3;
@@ -10,14 +18,14 @@ TUNER_MOUNTING_HOLES_DIA = 3;
 WORM_AXLE_OFFSET_Z = 5;
 WORM_AXLE_OFFSET_Y = 8;
 WORM_AXLE_LENGTH = 35;
-WORM_AXLE_DIA = 4;
+WORM_AXLE_DIA = 8;
 
 HOB_GEAR_DIA = 15;
 HOB_GEAR_LENGTH = 15;
 HOB_AXLE_OFFSET = TUNER_LENGTH/2 - 10;
 HOB_AXLE_BEARING_DIA = 11.5;
 HOB_AXLE_BEARING_THICKNESS = 5;
-HOB_AXLE_LENGTH = HOB_AXLE_BEARING_THICKNESS + HOB_GEAR_LENGTH + TUNER_THICKNESS;
+HOB_AXLE_LENGTH = HOB_AXLE_BEARING_THICKNESS + HOB_GEAR_LENGTH + TUNER_GEAR_THICKNESS;
 HOB_OFFSET_Y = 5;
 HOB_OFFSET_X = 11.5;
 
@@ -38,33 +46,30 @@ IDLER_BEARING_THICKNESS = 6;
 IDLER_MOUNT_DIA = 6.5;
 IDLER_MOUNT_THICKNESS = 2 * IDLER_BEARING_THICKNESS;
 
-BODY_WIDTH = HOB_AXLE_LENGTH - TUNER_THICKNESS;
+BODY_WIDTH = HOB_AXLE_LENGTH + WALL_THICKNESS;
 BODY_LENGTH = TUNER_LENGTH;
 BODY_HEIGHT = TUNER_WIDTH;
-BODY_CONNECTORS_HEIGHT = TUBE_LENGTH + TUBE_MOUNT_LENGTH - BODY_HEIGHT;
-BODY_CONNECTORS_WIDTH = BODY_WIDTH + TUNER_THICKNESS;
-BODY_CONNECTORS_LENGTH = BODY_LENGTH;
 BODY_MOUNTING_HOLES_DIA = 6;
 
 $fn = 50;
 
 module tuner_neg() {
-    translate([0, 0, -TUNER_THICKNESS])
+    translate([0, 0, -TUNER_GEAR_THICKNESS])
     union() {
-        translate([0, HOB_AXLE_OFFSET/2, TUNER_THICKNESS/2])
-        cube(size = [TUNER_WIDTH, TUNER_LENGTH, TUNER_THICKNESS], center = true);
+        translate([0, HOB_AXLE_OFFSET/2, (TUNER_GEAR_THICKNESS-TUNER_BASE_THICKNESS) + TUNER_BASE_THICKNESS/2])
+        cube(size = [TUNER_WIDTH, TUNER_LENGTH, TUNER_BASE_THICKNESS], center = true);
         
         cylinder(d = HOB_AXLE_BEARING_DIA, h = HOB_AXLE_LENGTH);
 
-        cylinder(d = HOB_GEAR_DIA, h = TUNER_THICKNESS + HOB_GEAR_LENGTH);
+        cylinder(d = HOB_GEAR_DIA, h = TUNER_GEAR_THICKNESS + HOB_GEAR_LENGTH);
         
-        translate([0, -TUNER_MOUNTING_HOLES_OFFSET, 0])
-        cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH);
+        translate([0, -TUNER_MOUNTING_HOLES_OFFSET, -HOB_AXLE_LENGTH/2])
+        cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH*2);
 
-        translate([0, -TUNER_MOUNTING_HOLES_OFFSET + TUNER_MOUNTING_HOLES_SPACING, 0])
-        cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH);
+        translate([0, -TUNER_MOUNTING_HOLES_OFFSET + TUNER_MOUNTING_HOLES_SPACING, -HOB_AXLE_LENGTH/2])
+        cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH*2);
         
-        translate([TUNER_WIDTH/2, WORM_AXLE_OFFSET_Y, TUNER_THICKNESS-WORM_AXLE_OFFSET_Z])
+        translate([TUNER_WIDTH/2, WORM_AXLE_OFFSET_Y, TUNER_GEAR_THICKNESS-WORM_AXLE_OFFSET_Z])
         rotate([0, -90, 0])
         cylinder(d = WORM_AXLE_DIA, h = WORM_AXLE_LENGTH);
     }
@@ -104,10 +109,6 @@ module flex_neg() {
 
         translate([0, 0, -FLEX_LENGTH])
         cylinder(d = FLEX_DIA, h = FLEX_LENGTH);
-
-        translate([HOB_OFFSET_X + WORM_AXLE_OFFSET_Z, -WORM_AXLE_OFFSET_Y + HOB_OFFSET_Y, -FLEX_LENGTH + TUBE_MOUNT_LENGTH + TUNER_WIDTH])
-        cylinder(d = TUBE_MOUNT_DIA + 3 * WALL_THICKNESS, h = 2 * TUBE_MOUNT_LENGTH);
-
     }
 }
 
@@ -148,23 +149,23 @@ module flex_pos() {
         cylinder(d = FLEX_MOUNT_DIA + 2 * WALL_THICKNESS, h = FLEX_MOUNT_LENGTH);
 
         cylinder(d2 = FLEX_MOUNT_DIA + 2 * WALL_THICKNESS, d1 = FLEX_DIA + 2 * WALL_THICKNESS, h = l);
-
-        hull() {
-            translate([HOB_OFFSET_X + WORM_AXLE_OFFSET_Z, -WORM_AXLE_OFFSET_Y + HOB_OFFSET_Y, 0])
-            cylinder(d = TUBE_MOUNT_DIA + 2 * WALL_THICKNESS, h = TUBE_MOUNT_LENGTH);
-
-            cylinder(d2 = FLEX_MOUNT_DIA + 2 * WALL_THICKNESS, d1 = FLEX_DIA + 2 * WALL_THICKNESS, h = l);
-        }
     }
+}
+
+module part_three_mask() {
+    translate([-25-HOB_OFFSET_X-TUNER_BASE_THICKNESS/2, 0, 0])
+    cube(size = [50, 50, BODY_HEIGHT], center = true);
+    translate([-HOB_OFFSET_X - WORM_AXLE_OFFSET_Z, WORM_AXLE_OFFSET_Y - HOB_OFFSET_Y, WORM_AXLE_LENGTH-TUNER_WIDTH/2])
+    flex_pos();
 }
 
 intersection() {
     difference() {
         union() {
-            translate([-1.5, -3, 0])
+            translate([-TUNER_GEAR_THICKNESS+WALL_THICKNESS, -2*WALL_THICKNESS, 0])
             body_pos();
             tube_pos();
-            translate([-HOB_OFFSET_X - WORM_AXLE_OFFSET_Z, WORM_AXLE_OFFSET_Y - HOB_OFFSET_Y, WORM_AXLE_LENGTH-TUNER_WIDTH/2 - 1])
+            translate([-HOB_OFFSET_X - WORM_AXLE_OFFSET_Z, WORM_AXLE_OFFSET_Y - HOB_OFFSET_Y, WORM_AXLE_LENGTH-TUNER_WIDTH/2])
             flex_pos();
         }
 
@@ -177,12 +178,25 @@ intersection() {
             translate([0, IDLER_BEARING_DIA, 0])
             rotate([90, 90, 90])
             idler_neg();
-            translate([-HOB_OFFSET_X - WORM_AXLE_OFFSET_Z, WORM_AXLE_OFFSET_Y - HOB_OFFSET_Y, WORM_AXLE_LENGTH - TUNER_WIDTH/2 - 1])
+            translate([-HOB_OFFSET_X - WORM_AXLE_OFFSET_Z, WORM_AXLE_OFFSET_Y - HOB_OFFSET_Y, WORM_AXLE_LENGTH - TUNER_WIDTH/2])
             flex_neg();
         }
     }
     
-    translate([-40, 0, 0])
-    translate([40, 0, 0])
-    cube(size = [80, 80, 80], center = true);
+    if(PART == 1) {
+        translate([25, 0, 0])
+        cube(size = [50, 50, 50], center = true);
+    }
+
+    if(PART == 2) {
+        difference() {
+            translate([-25, 0, 0])
+            cube(size = [50, 50, 50], center = true);
+            part_three_mask();
+        }
+    }
+
+    if(PART == 3) {
+       part_three_mask();
+    }
 }
