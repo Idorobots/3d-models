@@ -7,8 +7,9 @@ FAN_DIA = 36;
 FAN_THICKNESS = 10;
 
 FAN_OUTLET_SIZE = 30;
+FAN_OUTLET_OFFSET = (FAN_SIZE - FAN_OUTLET_SIZE)/2;
 FAN_OUTLET_WALL_THICKNESS = 1;
-FAN_OUTLET_ORING_SIZE = 1.5;
+FAN_OUTLET_ORING_SIZE = 2;
 FAN_OUTLET_ORING_OFFSET = 1;
 
 FAN_MOUNT_SPACING = 35;
@@ -78,7 +79,7 @@ module fan_outlet_pos() {
 
 module fan_outlet_neg() {
     hull() {
-        translate([0, FAN_OUTLET_WALL_THICKNESS/2, BACKPLATE_THICKNESS])
+        translate([FAN_OUTLET_OFFSET - (FAN_SIZE-FAN_OUTLET_SIZE)/2, FAN_OUTLET_WALL_THICKNESS/2, BACKPLATE_THICKNESS])
         rounded_rect(FAN_OUTLET_SIZE - FAN_OUTLET_WALL_THICKNESS * 2, FAN_SIZE - FAN_OUTLET_WALL_THICKNESS, FAN_THICKNESS, BACKPLATE_CORNER_DIA);    
         
         intersection() {
@@ -112,7 +113,7 @@ difference() {
     }
     
     outlet_neg();
-    #fan_outlet_neg();
+    fan_outlet_neg();
     fan_neg();
     mounting_holes();
 }
