@@ -46,8 +46,8 @@ module spikes() {
     }
 }
 
-module mound() {
-    seeds = rands(0, 12375764435432, 4, RANDOM_SEED_MOUND);
+module mound(base_seed = RANDOM_SEED_MOUND) {
+    seeds = rands(0, 12375764435432, 4, base_seed);
     r = rands(0, MOUND_DIA/2, MOUND_CHUNKS, seeds[0]);
     theta = rands(0, 360, MOUND_CHUNKS, seeds[1]);
     z = rands(0, HEIGHT, MOUND_CHUNKS, seeds[2]);
