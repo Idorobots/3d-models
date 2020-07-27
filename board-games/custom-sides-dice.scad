@@ -4,16 +4,91 @@ DEPTH = 0.7;
 IMAGE_SCALE = 100;
 
 SPHERE_ROUNDING = true;
-SPHERE_DIA = 16.5;
+SPHERE_DIA = SIDE_WIDTH * 1.375;
 
-SIDES = [
+GENERIC = [
     ["dice/strength.svg", 0.9, [0, 0, 0]],
     ["dice/endurance.svg", 0.35, [90, 0, 0]],
-    ["dice/agility2.svg", 0.55, [-90, 0, 0]],
+    ["dice/agility.svg", 0.55, [-90, 0, 0]],
     ["dice/wisdom.svg", 0.6, [0, -90, 0]],
     ["dice/focus.svg", 0.6, [0, 90, 0]],
     ["dice/charisma.svg", 0.35, [180, 0, 0]]
 ];
+
+WARRIOR = [
+    ["dice/agility.svg", 0.55, [0, 0, 0]],
+    ["dice/strength.svg", 0.9, [-90, 0, 0]],
+    ["dice/strength.svg", 0.9, [90, 0, 0]],
+    ["dice/endurance.svg", 0.35, [0, -90, 0]],
+    ["dice/endurance.svg", 0.35, [0, 90, 0]],
+    ["dice/blank.svg", 0.6, [180, 0, 0]]
+];
+
+ROGUE = [
+    ["dice/strength.svg", 0.9, [0, 0, 0]],
+    ["dice/agility.svg", 0.55, [90, 0, 0]],
+    ["dice/agility.svg", 0.55, [-90, 0, 0]],
+    ["dice/charisma.svg", 0.35, [0, -90, 0]],
+    ["dice/charisma.svg", 0.35, [0, 90, 0]],
+    ["dice/blank.svg", 0.6, [180, 0, 0]]
+];
+
+CLERIC = [
+    ["dice/strength.svg", 0.9, [0, 0, 0]],
+    ["dice/endurance.svg", 0.35, [90, 0, 0]],
+    ["dice/endurance.svg", 0.35, [-90, 0, 0]],
+    ["dice/wisdom.svg", 0.6, [0, -90, 0]],
+    ["dice/focus.svg", 0.6, [0, 90, 0]],
+    ["dice/blank.svg", 0.6, [180, 0, 0]]
+];
+
+MAGE = [
+    ["dice/charisma.svg", 0.35, [0, 0, 0]],
+    ["dice/wisdom.svg", 0.6, [90, 0, 0]],
+    ["dice/wisdom.svg", 0.6, [-90, 0, 0]],
+    ["dice/focus.svg", 0.6, [0, -90, 0]],
+    ["dice/focus.svg", 0.6, [0, 90, 0]],
+    ["dice/blank.svg", 0.6, [180, 0, 0]]
+];
+
+RANGER = [
+    ["dice/endurance.svg", 0.35, [0, 0, 0]],
+    ["dice/agility.svg", 0.55, [90, 0, 0]],
+    ["dice/agility.svg", 0.55, [-90, 0, 0]],
+    ["dice/focus.svg", 0.6, [0, -90, 0]],
+    ["dice/focus.svg", 0.6, [0, 90, 0]],
+    ["dice/blank.svg", 0.6, [180, 0, 0]]
+];
+
+BARD = [
+    ["dice/strength.svg", 0.9, [0, 0, 0]],
+    ["dice/wisdom.svg", 0.6, [90, 0, 0]],
+    ["dice/wisdom.svg", 0.6, [-90, 0, 0]],
+    ["dice/charisma.svg", 0.35, [0, -90, 0]],
+    ["dice/charisma.svg", 0.35, [0, 90, 0]],
+    ["dice/blank.svg", 0.6, [180, 0, 0]]
+];
+
+DEFENCE = [
+    ["dice/endurance.svg", 0.35, [0, 0, 0]],
+    ["dice/blank.svg", 0.6, [90, 0, 0]],
+    ["dice/blank.svg", 0.6, [-90, 0, 0]],
+    ["dice/blank.svg", 0.6, [0, -90, 0]],
+    ["dice/blank.svg", 0.6, [0, 90, 0]],
+    ["dice/endurance.svg", 0.35, [180, 0, 0]]
+];
+
+ATTACK = [
+    ["dice/hit.svg", 0.35, [0, 0, 0]],
+    ["dice/blank.svg", 0.6, [90, 0, 0]],
+    ["dice/blank.svg", 0.6, [-90, 0, 0]],
+    ["dice/blank.svg", 0.6, [0, -90, 0]],
+    ["dice/blank.svg", 0.6, [0, 90, 0]],
+    ["dice/hit.svg", 0.35, [180, 0, 0]]
+];
+
+SIDES = MAGE;
+COLOR = "blue";
 
 $fn = 30;
 
@@ -44,6 +119,7 @@ module side(filename, scale_factor, rotation) {
     import(filename, center = true);
 }
 
+color(COLOR)
 difference() {
     rounded_cube(SIDE_WIDTH, SIDE_WIDTH, SIDE_WIDTH, CORNER_DIA);
     for(side = SIDES) {
