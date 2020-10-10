@@ -37,7 +37,7 @@ FILAMENT_PORT_LENGTH = 5;
 
 MOUNTING_HOLE_DIA = 3;
 MOUNTING_HOLE_HEAD_DIA = 6;
-MOUNTING_HOLE_FACE_DIA = 6;
+MOUNTING_HOLE_FACE_DIA = MOUNTING_HOLE_HEAD_DIA-0.1;
 MOUNTING_HOLE_HEAD_LENGTH = 3;
 MOUNTING_HOLE_LENGTH = BEARING_MOUNT_DIA;
 
@@ -196,18 +196,12 @@ module mask() {
     union() {
       translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA/2])
       cube(size = [50, 50, BEARING_MOUNT_DIA]);
-      rotate([0, 90, 0])
-      translate([0, DD_TEETH_DIA - DD_MESH - DD_OUTER_DIA/2, - DD_FILAMENT_OFFSET - BEARING_WIDTH])
-      cylinder(d = DD_INNER_DIA, h = DD_SHAFT_LENGTH);
     }
     for(t = MOUNTING_HOLE_OFFSETS) {
       translate(t)
       cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
     }
   }
-  
-  //translate([-25, 0, -25])
-  //cube(size = [50, 50, 50]);
 }
 
 // Overview
