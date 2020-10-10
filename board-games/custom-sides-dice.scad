@@ -25,11 +25,11 @@ WARRIOR = [
 ];
 
 ROGUE = [
-    ["dice/strength.svg", 0.9, [0, 0, 0]],
+    ["dice/charisma.svg", 0.35, [0, 0, 0]],
     ["dice/agility.svg", 0.55, [90, 0, 0]],
     ["dice/agility.svg", 0.55, [-90, 0, 0]],
-    ["dice/charisma.svg", 0.35, [0, -90, 0]],
-    ["dice/charisma.svg", 0.35, [0, 90, 0]],
+    ["dice/strength.svg", 0.9, [0, -90, 0]],
+    ["dice/strength.svg", 0.9, [0, 90, 0]],
     ["dice/blank.svg", 0.6, [180, 0, 0]]
 ];
 
@@ -37,7 +37,7 @@ CLERIC = [
     ["dice/strength.svg", 0.9, [0, 0, 0]],
     ["dice/endurance.svg", 0.35, [90, 0, 0]],
     ["dice/endurance.svg", 0.35, [-90, 0, 0]],
-    ["dice/wisdom.svg", 0.6, [0, -90, 0]],
+    ["dice/focus.svg", 0.6, [0, -90, 0]],
     ["dice/focus.svg", 0.6, [0, 90, 0]],
     ["dice/blank.svg", 0.6, [180, 0, 0]]
 ];
@@ -61,7 +61,7 @@ RANGER = [
 ];
 
 BARD = [
-    ["dice/strength.svg", 0.9, [0, 0, 0]],
+    ["dice/blank.svg", 0.6, [0, 0, 0]],
     ["dice/wisdom.svg", 0.6, [90, 0, 0]],
     ["dice/wisdom.svg", 0.6, [-90, 0, 0]],
     ["dice/charisma.svg", 0.35, [0, -90, 0]],
@@ -87,8 +87,8 @@ ATTACK = [
     ["dice/hit.svg", 0.35, [180, 0, 0]]
 ];
 
-SIDES = MAGE;
-COLOR = "blue";
+SIDES = CLERIC;
+COLOR = "white";
 
 $fn = 30;
 
