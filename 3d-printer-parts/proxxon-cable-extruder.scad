@@ -1,36 +1,38 @@
+BEARING_INNER_DIA = 4;
+BEARING_OUTER_DIA = 8;
+BEARING_WIDTH = 4;
+BEARING_MOUNT_DIA = 20;
+
 DD_INNER_DIA = 5;
-DD_OUTER_DIA = 8;
-DD_TEETH_DIA = 10;
+DD_OUTER_DIA = 10;
+DD_TEETH_DIA = 12;
 DD_LENGTH = 15;
 DD_TEETH_LENGTH = 3;
-DD_MESH = 2;
-DD_SHAFT_LENGTH = 26;
+DD_MESH = 3;
+DD_SHAFT_LENGTH = DD_LENGTH + 2 * BEARING_WIDTH;
 DD_FILAMENT_OFFSET = 4;
 
 COG_INNER_DIA = 4;
-COG_OUTER_DIA = 10;
+COG_OUTER_DIA = 12;
 COG_TEETH_DIA = 12;
 COG_LENGTH = 10;
 COG_TEETH_LENGTH = 5;
-COG_SHAFT_LENGTH = 40;
+COG_SHAFT_LENGTH = DD_LENGTH + COG_LENGTH + 2 * BEARING_WIDTH;
 
-WORM_INNER_DIA = 3;
+WORM_INNER_DIA = 4;
 WORM_OUTER_DIA = 10;
 WORM_LENGTH = 20;
-WORM_MESH = 1.5;
+WORM_MESH = 2;
 WORM_SHAFT_LENGTH = 50;
 
-CABLE_MOUNT_OUTER_DIA = 15;
+CABLE_MOUNT_OUTER_DIA = 18;
 CABLE_MOUNT_INNER_DIA = 12;
 CABLE_MOUNT_LENGTH = 10;
 
-BEARING_INNER_DIA = 4;
-BEARING_OUTER_DIA = 10;
-BEARING_WIDTH = 4;
-
 FILAMENT_DIA = 2;
-FILAMENT_GUIDE_LENGTH = 2 * (BEARING_WIDTH + WORM_LENGTH/2);
+FILAMENT_GUIDE_LENGTH = 2 * BEARING_WIDTH + WORM_LENGTH;
 FILAMENT_PORT_DIA = 6;
+FILAMENT_PORT_FACE_DIA = 20;
 FILAMENT_PORT_LENGTH = 5;
 
 $fn = 30;
@@ -74,6 +76,7 @@ module extruder_drive_train() {
     cylinder(d = DD_INNER_DIA, h = COG_SHAFT_LENGTH);
 
     bearing(BEARING_WIDTH, BEARING_OUTER_DIA, BEARING_INNER_DIA);
+ 
     translate([0, 0, BEARING_WIDTH]) {
       color("blue")
       cog(COG_LENGTH, COG_OUTER_DIA, COG_INNER_DIA, COG_TEETH_LENGTH, COG_TEETH_DIA);
@@ -133,4 +136,62 @@ module negative() {
   extruder_drive_assembly();
 }
 
-negative();
+module positive() {
+  union() {
+    translate([-(DD_FILAMENT_OFFSET + COG_TEETH_LENGTH/2), -((COG_TEETH_DIA + WORM_OUTER_DIA)/2 - WORM_MESH) - DD_OUTER_DIA/2, -WORM_LENGTH/2 - BEARING_WIDTH])
+    cylinder(d = CABLE_MOUNT_OUTER_DIA, h = BEARING_WIDTH + WORM_LENGTH + CABLE_MOUNT_LENGTH);
+
+    translate([0, 0, -FILAMENT_GUIDE_LENGTH/2])
+    cylinder(d = FILAMENT_PORT_FACE_DIA, h = FILAMENT_GUIDE_LENGTH);
+
+    rotate([0, 90, 0])
+    translate([0, -DD_OUTER_DIA/2, -(BEARING_WIDTH + COG_LENGTH + DD_FILAMENT_OFFSET)])
+    hull() {
+      cylinder(d = BEARING_MOUNT_DIA, h = COG_SHAFT_LENGTH);
+
+      translate([0, DD_TEETH_DIA - DD_MESH, 0])
+      cylinder(d = BEARING_MOUNT_DIA, h = COG_SHAFT_LENGTH);
+    }
+  }
+}
+
+module body() {
+  difference() {
+    positive();
+    negative();
+  }
+}
+
+module mask() {
+  union() {
+    translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA/2])
+    cube(size = [50, 50, BEARING_MOUNT_DIA]);
+    rotate([0, 90, 0])
+    translate([0, DD_TEETH_DIA - DD_MESH - DD_OUTER_DIA/2, - DD_FILAMENT_OFFSET - BEARING_WIDTH])
+    cylinder(d = DD_INNER_DIA, h = DD_SHAFT_LENGTH);
+  }
+  
+  //translate([-25, 0, -25])
+  //cube(size = [50, 50, 50]);
+}
+
+// Overview
+!union() {
+  #positive();
+  negative();
+}
+
+// Full body
+body();
+
+// Idler
+intersection() {
+  body();
+  mask();
+}
+
+// Main
+!difference() {
+  body();
+  mask();
+}
