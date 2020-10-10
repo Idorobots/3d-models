@@ -13,7 +13,7 @@ DD_SHAFT_LENGTH = DD_LENGTH + 2 * BEARING_WIDTH;
 DD_FILAMENT_OFFSET = 4;
 
 COG_INNER_DIA = 4;
-COG_OUTER_DIA = 12;
+COG_OUTER_DIA = 10;
 COG_TEETH_DIA = 12;
 COG_LENGTH = 10;
 COG_TEETH_LENGTH = 5;
@@ -211,13 +211,10 @@ module mask() {
 }
 
 // Overview
-union() {
+!union() {
   #positive();
   negative();
 }
-
-// Full body
-body();
 
 // Idler
 intersection() {
@@ -225,8 +222,22 @@ intersection() {
   mask();
 }
 
-// Main
-!difference() {
-  body();
-  mask();
+// Main A
+intersection() {
+  difference() {
+    body();
+    mask();
+  }
+  translate([-25, -25, 0])
+  cube(size = [50, 50, 50]);
+}
+
+// Main B
+intersection() {
+  difference() {
+    body();
+    mask();
+  }
+  translate([-25, -25, -50])
+  cube(size = [50, 50, 50]);
 }
