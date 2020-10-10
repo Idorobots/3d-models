@@ -35,6 +35,17 @@ FILAMENT_PORT_DIA = 6;
 FILAMENT_PORT_FACE_DIA = 20;
 FILAMENT_PORT_LENGTH = 5;
 
+MOUNTING_HOLE_DIA = 3;
+MOUNTING_HOLE_HEAD_DIA = 6;
+MOUNTING_HOLE_FACE_DIA = 6;
+MOUNTING_HOLE_HEAD_LENGTH = 3;
+MOUNTING_HOLE_LENGTH = BEARING_MOUNT_DIA;
+
+MOUNTING_HOLE_OFFSETS = [
+  [-13, 5, 0],
+  [7, -15, 0]
+];
+
 $fn = 30;
 
 module cog(length, outer_dia, inner_dia, teeth_length, teeth_dia) {
@@ -120,20 +131,33 @@ module extruder_drive_assembly() {
   }
 }
 
+module mounting_hole(dia, length, head_dia, head_length) {
+    color("gray")
+    translate([0, 0, -length/2])
+    union() {
+        cylinder(d = head_dia, h = head_length);
+        cylinder(d = dia, h = length);
+        translate([0, 0, length - head_length])
+        cylinder(d = head_dia, h = head_length);
+    }
+}
+
 module filament_guide() {
   color("green")
-  translate([0, 0, -FILAMENT_GUIDE_LENGTH/2])
-  union() {
-    cylinder(d = FILAMENT_PORT_DIA, h = FILAMENT_PORT_LENGTH);
-    cylinder(d = FILAMENT_DIA, h = FILAMENT_GUIDE_LENGTH);
-    translate([0, 0, FILAMENT_GUIDE_LENGTH-FILAMENT_PORT_LENGTH])
-    cylinder(d = FILAMENT_PORT_DIA, h = FILAMENT_PORT_LENGTH);
-  }
+  mounting_hole(FILAMENT_DIA, FILAMENT_GUIDE_LENGTH, FILAMENT_PORT_DIA, FILAMENT_PORT_LENGTH);
+}
+
+module mounting_holes() {
+    for(t = MOUNTING_HOLE_OFFSETS) {
+      translate(t)
+      mounting_hole(MOUNTING_HOLE_DIA, MOUNTING_HOLE_LENGTH, MOUNTING_HOLE_HEAD_DIA, MOUNTING_HOLE_HEAD_LENGTH);
+    }
 }
 
 module negative() {
   filament_guide();
   extruder_drive_assembly();
+  mounting_holes();
 }
 
 module positive() {
@@ -152,6 +176,11 @@ module positive() {
       translate([0, DD_TEETH_DIA - DD_MESH, 0])
       cylinder(d = BEARING_MOUNT_DIA, h = COG_SHAFT_LENGTH);
     }
+    
+    for(t = MOUNTING_HOLE_OFFSETS) {
+      translate(t)
+      cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
+    }
   }
 }
 
@@ -163,12 +192,18 @@ module body() {
 }
 
 module mask() {
-  union() {
-    translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA/2])
-    cube(size = [50, 50, BEARING_MOUNT_DIA]);
-    rotate([0, 90, 0])
-    translate([0, DD_TEETH_DIA - DD_MESH - DD_OUTER_DIA/2, - DD_FILAMENT_OFFSET - BEARING_WIDTH])
-    cylinder(d = DD_INNER_DIA, h = DD_SHAFT_LENGTH);
+  difference() {
+    union() {
+      translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA/2])
+      cube(size = [50, 50, BEARING_MOUNT_DIA]);
+      rotate([0, 90, 0])
+      translate([0, DD_TEETH_DIA - DD_MESH - DD_OUTER_DIA/2, - DD_FILAMENT_OFFSET - BEARING_WIDTH])
+      cylinder(d = DD_INNER_DIA, h = DD_SHAFT_LENGTH);
+    }
+    for(t = MOUNTING_HOLE_OFFSETS) {
+      translate(t)
+      cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
+    }
   }
   
   //translate([-25, 0, -25])
@@ -176,7 +211,7 @@ module mask() {
 }
 
 // Overview
-!union() {
+union() {
   #positive();
   negative();
 }
