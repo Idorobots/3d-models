@@ -16,8 +16,12 @@ SUPPORT_CORNER_DIA = 2 * MOUNT_HOLE_DIA;
 RAIL_THICKNESS = 2;
 RAIL_CORNER_DIA = SUPPORT_CORNER_DIA;
 FRONT_RAIL_EXTENSION = 10;
-FRONT_RAIL_TAB_WIDTH = 20;
+FRONT_RAIL_TAB_WIDTH = 28;
 BACK_RAIL_EXTENSION = 15;
+
+INDEX = true;
+INDEX_DIA = 1.5;
+INDEX_SPACING = 140;
 
 $fn = 30;
 
@@ -71,6 +75,13 @@ module board_support() {
   }
 }
 
+module index() {
+  for(i = [-1, 1]) {
+    translate([i * INDEX_SPACING/2, 0, 0])
+    cylinder(d = INDEX_DIA, h = 10);
+  }
+}
+
 module front_rail() {
   difference() {
     union() {
@@ -89,10 +100,10 @@ module front_rail() {
           cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
         }
         hull() {
-          translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH + RAIL_CORNER_DIA, 0, 0])
+          translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH, 0, 0])
           cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
-          translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH - RAIL_CORNER_DIA, 0, 0])
+          translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH, 0, 0])
           cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
         }
@@ -102,13 +113,13 @@ module front_rail() {
         translate([MOUNT_HOLE_SPACING[1][0], RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
           
-        translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH, RAIL_CORNER_DIA, 0])
+        translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH - RAIL_CORNER_DIA, RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
         translate([MOUNT_HOLE_SPACING[1][0], -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
           
-        translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH, -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
+        translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH - RAIL_CORNER_DIA, -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
       }
 
@@ -116,18 +127,23 @@ module front_rail() {
         translate([MOUNT_HOLE_SPACING[2][0], RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
           
-        translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH, RAIL_CORNER_DIA, 0])
+        translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH + RAIL_CORNER_DIA, RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
         translate([MOUNT_HOLE_SPACING[2][0], -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
           
-        translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH, -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
+        translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH + RAIL_CORNER_DIA, -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
       }
     }
 
     mounting_holes();
+    
+    if(INDEX) {
+      translate([BOARD_WIDTH/2, - FRONT_RAIL_EXTENSION, 0])
+      index();
+    }
   }
 }
 
@@ -146,7 +162,13 @@ module back_rail() {
       translate([MOUNT_HOLE_SPACING[3][0], BOARD_LENGTH + BACK_RAIL_EXTENSION - RAIL_CORNER_DIA/2, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
     }
+
     mounting_holes();
+    
+    if(INDEX) {
+      translate([BOARD_WIDTH/2, BOARD_LENGTH + BACK_RAIL_EXTENSION, 0])
+      index();
+    }
   }
 }
 

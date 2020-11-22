@@ -1,10 +1,10 @@
 RAIL_TOP_WIDTH = 2;
 RAIL_BOT_WIDTH = 4;
 RAIL_SPACING = RAIL_BOT_WIDTH + 2;
-RAIL_DEPTH = 3;
+RAIL_DEPTH = 2;
 RAIL_CORNER_DIA = 8;
 
-HEIGHT = 5 * RAIL_SPACING;
+HEIGHT = 25 * RAIL_SPACING;
 WIDTH = 20;
 THICKNESS = 4;
 
@@ -16,6 +16,10 @@ FAN = WIDTH > 120 && HEIGHT > 120;
 FAN_MOUNT_SPACING = 105;
 FAN_MOUNT_DIA = 5;
 FAN_DIA = 120;
+
+LIMIT = true;
+LIMIT_DIA = 1;
+LIMIT_SPACING = 140;
 
 ///
 
@@ -62,11 +66,29 @@ module mount_holes() {
   }
 }
 
+module limit() {
+  if(WIDTH > LIMIT_SPACING) {
+    translate([WIDTH/2, 0, THICKNESS])
+    for(i = [-1, 1]) {
+      translate([i * LIMIT_SPACING/2, 0, 0])
+      rotate(-90, [1, 0, 0])
+      cylinder(d = LIMIT_DIA, h = HEIGHT);
+    }
+  } else {
+    translate([WIDTH/2, 0, THICKNESS])
+    rotate(-90, [1, 0, 0])
+    cylinder(d = LIMIT_DIA, h = HEIGHT);
+  }
+}
+
 
 difference() {
   union() {
     rails();
     base();
+    if(LIMIT) {
+      limit();
+    }
   }
 
   if(MOUNT_HOLES) {
