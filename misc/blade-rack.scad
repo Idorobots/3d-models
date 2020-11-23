@@ -18,7 +18,7 @@ FAN_MOUNT_DIA = 5;
 FAN_DIA = 120;
 
 LIMIT = true;
-LIMIT_DIA = 1;
+LIMIT_DIA = 1.5;
 LIMIT_SPACING = 140;
 
 ///

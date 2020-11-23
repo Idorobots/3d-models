@@ -20,8 +20,12 @@ FRONT_RAIL_TAB_WIDTH = 28;
 BACK_RAIL_EXTENSION = 15;
 
 INDEX = true;
-INDEX_DIA = 1.5;
+INDEX_DIA = 2;
 INDEX_SPACING = 140;
+
+LEVER = true;
+LEVER_MOUNT_DIA = 3;
+LEVER_MOUNT_OFFSET = 5;
 
 $fn = 30;
 
@@ -76,10 +80,14 @@ module board_support() {
 }
 
 module index() {
-  for(i = [-1, 1]) {
+  #for(i = [-1, 1]) {
     translate([i * INDEX_SPACING/2, 0, 0])
     cylinder(d = INDEX_DIA, h = 10);
   }
+}
+
+module lever() {
+  #cylinder(d = LEVER_MOUNT_DIA, h = 10);
 }
 
 module front_rail() {
@@ -144,6 +152,14 @@ module front_rail() {
       translate([BOARD_WIDTH/2, - FRONT_RAIL_EXTENSION, 0])
       index();
     }
+    
+    if(LEVER) {
+      translate([MOUNT_HOLE_SPACING[1][0], -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
+      lever();
+
+      translate([MOUNT_HOLE_SPACING[2][0], -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
+      lever();
+    }
   }
 }
 
@@ -168,6 +184,14 @@ module back_rail() {
     if(INDEX) {
       translate([BOARD_WIDTH/2, BOARD_LENGTH + BACK_RAIL_EXTENSION, 0])
       index();
+    }
+    
+    if(LEVER) {
+      translate([MOUNT_HOLE_SPACING[0][0], BOARD_LENGTH + BACK_RAIL_EXTENSION - RAIL_CORNER_DIA/2, 0])
+      lever();
+
+      translate([MOUNT_HOLE_SPACING[3][0], BOARD_LENGTH + BACK_RAIL_EXTENSION - RAIL_CORNER_DIA/2, 0])
+      lever();
     }
   }
 }
