@@ -1,5 +1,5 @@
 BOARD_WIDTH = 170;
-BOARD_LENGTH = 170;
+BOARD_LENGTH = 180; // Ought to be 170, but some ITX boards are non standard.
 BOARD_THICKNESS = 1.6;
 
 MOUNT_HOLE_DIA = 4;
@@ -15,17 +15,20 @@ SUPPORT_CORNER_DIA = 2 * MOUNT_HOLE_DIA;
 
 RAIL_THICKNESS = 2;
 RAIL_CORNER_DIA = SUPPORT_CORNER_DIA;
-FRONT_RAIL_EXTENSION = 10;
+FRONT_RAIL_EXTENSION = 10; // Extra 5 mm to facilitate connectors.
 FRONT_RAIL_TAB_WIDTH = 28;
-BACK_RAIL_EXTENSION = 15;
+BACK_RAIL_EXTENSION = 5;
+LEFT_RAIL_EXTENSION = 5;
+RIGHT_RAIL_EXTENSION = 5;
 
 INDEX = true;
 INDEX_DIA = 2;
 INDEX_SPACING = 140;
+INDEX_OFFSET_Y = (BOARD_LENGTH - 170)/2; // Ensures that non-standard boards fit the same way as standard ones.
+INDEX_OFFSET_X = (BOARD_WIDTH - 170)/2;
 
 LEVER = true;
-LEVER_MOUNT_DIA = 3;
-LEVER_MOUNT_OFFSET = 5;
+LEVER_MOUNT_DIA = 3.5;
 
 $fn = 30;
 
@@ -149,7 +152,7 @@ module front_rail() {
     mounting_holes();
     
     if(INDEX) {
-      translate([BOARD_WIDTH/2, - FRONT_RAIL_EXTENSION, 0])
+      translate([BOARD_WIDTH/2 - INDEX_OFFSET_X, - FRONT_RAIL_EXTENSION, 0])
       index();
     }
     
@@ -182,7 +185,7 @@ module back_rail() {
     mounting_holes();
     
     if(INDEX) {
-      translate([BOARD_WIDTH/2, BOARD_LENGTH + BACK_RAIL_EXTENSION, 0])
+      translate([BOARD_WIDTH/2 - INDEX_OFFSET_X, BOARD_LENGTH + BACK_RAIL_EXTENSION, 0])
       index();
     }
     
@@ -196,12 +199,86 @@ module back_rail() {
   }
 }
 
+module left_rail() {
+  difference() {
+    hull() {
+      translate([MOUNT_HOLE_SPACING[0][0], MOUNT_HOLE_SPACING[0][1], 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+        
+      translate([MOUNT_HOLE_SPACING[1][0], MOUNT_HOLE_SPACING[1][1], 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+
+      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+        
+      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+    }
+
+    mounting_holes();
+    
+    if(INDEX) {
+      translate([-LEFT_RAIL_EXTENSION, BOARD_LENGTH/2 + INDEX_OFFSET_Y, 0])
+      rotate(90, [0, 0, 1])
+      index();
+    }
+    
+    if(LEVER) {
+      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
+      lever();
+
+      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      lever();
+    }
+  }
+}
+
+module right_rail() {
+  difference() {
+    hull() {
+      translate([MOUNT_HOLE_SPACING[2][0], MOUNT_HOLE_SPACING[2][1], 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+        
+      translate([MOUNT_HOLE_SPACING[3][0], MOUNT_HOLE_SPACING[3][1], 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+        
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION-+ RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
+    }
+
+    mounting_holes();
+    
+    if(INDEX) {
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION, BOARD_LENGTH/2 + INDEX_OFFSET_Y, 0])
+      rotate(90, [0, 0, 1])
+      index();
+    }
+    
+    if(LEVER) {
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
+      lever();
+
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      lever();
+    }
+  }
+}
+
 !union() {
+  translate([0, 0, -RAIL_THICKNESS])
+  front_rail();
+
   translate([0, 0, -RAIL_THICKNESS])
   back_rail();
 
-  translate([0, 0, -RAIL_THICKNESS])
-  front_rail();
+  translate([0, 0, -2 * RAIL_THICKNESS])
+  left_rail();
+  
+  translate([0, 0, -2 * RAIL_THICKNESS])
+  right_rail();
 
   board_support();
   
@@ -212,3 +289,5 @@ module back_rail() {
 board_support();
 front_rail();
 back_rail();
+left_rail();
+right_rail();
