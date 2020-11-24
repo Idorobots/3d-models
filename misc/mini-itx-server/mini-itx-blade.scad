@@ -1,5 +1,9 @@
+MINI_ITX_BOARD_WIDTH = 170;
+MINI_ITX_BOARD_LENGTH = 170;
+
+// Actual board dimensions, as these tend to be nonstandard.
 BOARD_WIDTH = 170;
-BOARD_LENGTH = 180; // Ought to be 170, but some ITX boards are non standard.
+BOARD_LENGTH = 180;
 BOARD_THICKNESS = 1.6;
 
 MOUNT_HOLE_DIA = 4;
@@ -10,7 +14,7 @@ MOUNT_HOLE_SPACING = [
   [163.83, 165.1]
 ];
 
-SUPPORT_THICKNESS = 4;
+SUPPORT_THICKNESS = 3;
 SUPPORT_CORNER_DIA = 2 * MOUNT_HOLE_DIA;
 
 RAIL_THICKNESS = 2;
@@ -24,11 +28,13 @@ RIGHT_RAIL_EXTENSION = 5;
 INDEX = true;
 INDEX_DIA = 2;
 INDEX_SPACING = 140;
-INDEX_OFFSET_Y = (BOARD_LENGTH - 170)/2; // Ensures that non-standard boards fit the same way as standard ones.
-INDEX_OFFSET_X = (BOARD_WIDTH - 170)/2;
+INDEX_OFFSET_Y = BOARD_LENGTH - MINI_ITX_BOARD_WIDTH; // Ensures that non-standard boards fit the same way as standard ones.
+INDEX_OFFSET_X = BOARD_WIDTH - MINI_ITX_BOARD_LENGTH;
 
 LEVER = true;
 LEVER_MOUNT_DIA = 3.5;
+LEVER_OFFSET_X = INDEX_OFFSET_X;
+LEVER_OFFSET_Y = INDEX_OFFSET_Y;
 
 $fn = 30;
 
@@ -152,7 +158,7 @@ module front_rail() {
     mounting_holes();
     
     if(INDEX) {
-      translate([BOARD_WIDTH/2 - INDEX_OFFSET_X, - FRONT_RAIL_EXTENSION, 0])
+      translate([(BOARD_WIDTH - INDEX_OFFSET_X)/2, - FRONT_RAIL_EXTENSION, 0])
       index();
     }
     
@@ -185,7 +191,7 @@ module back_rail() {
     mounting_holes();
     
     if(INDEX) {
-      translate([BOARD_WIDTH/2 - INDEX_OFFSET_X, BOARD_LENGTH + BACK_RAIL_EXTENSION, 0])
+      translate([(BOARD_WIDTH - INDEX_OFFSET_X)/2, BOARD_LENGTH + BACK_RAIL_EXTENSION, 0])
       index();
     }
     
@@ -211,14 +217,14 @@ module left_rail() {
       translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
         
-      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2 + LEVER_OFFSET_Y, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
     }
 
     mounting_holes();
     
     if(INDEX) {
-      translate([-LEFT_RAIL_EXTENSION, BOARD_LENGTH/2 + INDEX_OFFSET_Y, 0])
+      translate([-LEFT_RAIL_EXTENSION, (BOARD_LENGTH + INDEX_OFFSET_Y)/2, 0])
       rotate(90, [0, 0, 1])
       index();
     }
@@ -227,7 +233,7 @@ module left_rail() {
       translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       lever();
 
-      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2 + LEVER_OFFSET_Y, 0])
       lever();
     }
   }
@@ -245,14 +251,14 @@ module right_rail() {
       translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
         
-      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION-+ RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2 + LEVER_OFFSET_Y, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
     }
 
     mounting_holes();
     
     if(INDEX) {
-      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION, BOARD_LENGTH/2 + INDEX_OFFSET_Y, 0])
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION, (BOARD_LENGTH + INDEX_OFFSET_Y)/2, 0])
       rotate(90, [0, 0, 1])
       index();
     }
@@ -261,7 +267,7 @@ module right_rail() {
       translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       lever();
 
-      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2, 0])
+      translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2 + LEVER_OFFSET_Y, 0])
       lever();
     }
   }
@@ -280,8 +286,10 @@ module right_rail() {
   translate([0, 0, -2 * RAIL_THICKNESS])
   right_rail();
 
+  color("green")
   board_support();
   
+  color("blue")
   translate([0, 0, SUPPORT_THICKNESS + 2])
   board();
 }
