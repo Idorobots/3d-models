@@ -6,7 +6,7 @@ CORNER_DIA = 1;
 RAIL_THICKNESS = 2.5;
 
 MOUNT_DIA = 2.8;
-MOUNT_OFFSET = 4.5;
+MOUNT_OFFSET = 5;
 MOUNT_PLACEMENT = 0.80 * LENGTH;
 
 $fn = 30;
@@ -24,7 +24,7 @@ module rounded_rect(width, length, height, corner_dia) {
 
 module mount() {
   hull() {
-    translate([0, 0, THICKNESS + MOUNT_OFFSET - MOUNT_DIA/2])
+    translate([0, 0, THICKNESS + MOUNT_OFFSET])
     rotate([0, 90, 0])
     cylinder(d = MOUNT_DIA + 2 * THICKNESS, h = WIDTH, center = true);
     rounded_rect(WIDTH, 2 * (LENGTH - MOUNT_PLACEMENT), THICKNESS, CORNER_DIA);
@@ -32,7 +32,7 @@ module mount() {
 }
 
 module mount_hole() {
-  #translate([0, 0, THICKNESS + MOUNT_OFFSET - MOUNT_DIA/2])
+  #translate([0, 0, THICKNESS + MOUNT_OFFSET])
   rotate([0, 90, 0])
   cylinder(d = MOUNT_DIA, h = WIDTH, center = true);
 }
