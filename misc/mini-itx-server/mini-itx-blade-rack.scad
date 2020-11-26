@@ -1,25 +1,27 @@
 RAIL_TOP_WIDTH = 2;
 RAIL_BOT_WIDTH = 4;
-RAIL_SPACING = RAIL_BOT_WIDTH + 2;
-RAIL_DEPTH = 2;
+RAIL_SPACING = RAIL_BOT_WIDTH + 2.1;
+RAIL_DEPTH = 4;
 RAIL_CORNER_DIA = 8;
 
-HEIGHT = 24 * RAIL_SPACING;
+HEIGHT = 25 * RAIL_SPACING;
 WIDTH = 162;
-THICKNESS = 4;
+THICKNESS = 5;
 
 MOUNT_HOLES = true;
 MOUNT_HOLE_DIA = 5;
 MOUNT_HOLE_OFFSET = 5;
 
-FAN = WIDTH > 120 && HEIGHT > 120;
 FAN_MOUNT_SPACING = 105;
+FAN_MOUNT_SECONDARY_SPACING = 124.5;
 FAN_MOUNT_DIA = 5;
-FAN_DIA = 130;
+FAN_DIA = 140;
+FAN = WIDTH > FAN_DIA && HEIGHT > FAN_DIA;
 
 LIMIT = true;
-LIMIT_DIA = 1.5;
-LIMIT_SPACING = 140;
+LIMIT_ON_THE_RIGHT = true;
+LIMIT_DIA = 1;
+LIMIT_SPACING = 145;
 
 ///
 
@@ -51,6 +53,9 @@ module fan() {
       for(j = [-1, 1]) {
         translate([i * FAN_MOUNT_SPACING/2, j * FAN_MOUNT_SPACING/2, 0])
         cylinder(d = FAN_MOUNT_DIA, h = THICKNESS);
+
+        translate([i * FAN_MOUNT_SECONDARY_SPACING/2, j * FAN_MOUNT_SECONDARY_SPACING/2, 0])
+        cylinder(d = FAN_MOUNT_DIA, h = THICKNESS);
       }
     }
   }
@@ -68,12 +73,10 @@ module mount_holes() {
 
 module limit() {
   if(WIDTH > LIMIT_SPACING) {
-    translate([WIDTH/2, 0, THICKNESS])
-    for(i = [-1, 1]) {
-      translate([i * LIMIT_SPACING/2, 0, 0])
-      rotate(-90, [1, 0, 0])
-      cylinder(d = LIMIT_DIA, h = HEIGHT);
-    }
+    i = LIMIT_ON_THE_RIGHT ? 1 : -1;
+    translate([i * LIMIT_SPACING/2 + WIDTH/2, 0, THICKNESS])
+    rotate(-90, [1, 0, 0])
+    cylinder(d = LIMIT_DIA, h = HEIGHT);
   } else {
     translate([WIDTH/2, 0, THICKNESS])
     rotate(-90, [1, 0, 0])

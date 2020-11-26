@@ -27,7 +27,7 @@ RIGHT_RAIL_EXTENSION = 5;
 
 INDEX = true;
 INDEX_DIA = 2;
-INDEX_SPACING = 140;
+INDEX_SPACING = 145;
 INDEX_OFFSET_Y = BOARD_LENGTH - MINI_ITX_BOARD_WIDTH; // Ensures that non-standard boards fit the same way as standard ones.
 INDEX_OFFSET_X = BOARD_WIDTH - MINI_ITX_BOARD_LENGTH;
 
