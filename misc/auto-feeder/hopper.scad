@@ -6,32 +6,31 @@ AUGER_LENGTH = 52;
 SHAFT_LENGTH = 20;
 SHAFT_DIA = 8.5;
 
-BEARING_DIA = 22;
+BEARING_DIA = 22.5;
 BEARING_THICKNESS = 8;
 
-OUT_PORT_DIA = 20;
+OUT_PORT_DIA = 25;
 OUT_PORT_LENGTH = 10;
 
 NEMA_MOUNT_OFFSET = 50;
-NEMA_SHAFT_DIA = 23;
-NEMA_MOUNT_DIA = 3.5;
+NEMA_SHAFT_DIA = 25;
+NEMA_MOUNT_DIA = 4;
 NEMA_MOUNT_SPACING = 31;
+NEMA_WIDTH = 42;
 
 MOUNT_HOLE_DIA = 4;
 MOUNT_HOLE_SPACING = 40;
 
-$fn = 30;
+$fn = 50;
 
 module auger() {
   #union() {
     cylinder(d = AUGER_DIA, h = AUGER_LENGTH);
     translate([0, 0, AUGER_LENGTH + WALL_THICKNESS])
     cylinder(d = BEARING_DIA, h = BEARING_THICKNESS);
-    translate([0, 0, -WALL_THICKNESS])
-    cylinder(d = SHAFT_DIA, h = AUGER_LENGTH + SHAFT_LENGTH);
     hull() {
       cylinder(d = SHAFT_DIA, h = AUGER_LENGTH + SHAFT_LENGTH);
-      translate([0, AUGER_DIA/2, 0])
+      translate([0, AUGER_DIA/1.5, 0])
       cylinder(d = SHAFT_DIA, h = AUGER_LENGTH + SHAFT_LENGTH);
     }
   }
@@ -90,16 +89,16 @@ module nema_plate() {
     hull() {
       for(i = [-1, 1]) {
         for(j = [-1, 1]) {
-          translate([i * NEMA_MOUNT_SPACING/2, j * NEMA_MOUNT_SPACING/2, 0])
-          cylinder(d = NEMA_MOUNT_DIA * 2, h = WALL_THICKNESS);
+          translate([i * (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, j * (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, 0])
+          cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS);
         }
       }
     }
     
     hull() {
       for(i = [-1, 1]) {
-        translate([i * NEMA_MOUNT_SPACING/2, NEMA_MOUNT_SPACING/2, 0])
-        cylinder(d = NEMA_MOUNT_DIA * 2, h = WALL_THICKNESS);
+        translate([i * (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, 0])
+        cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS);
       }
       
       translate([0, NEMA_MOUNT_OFFSET, 0])
