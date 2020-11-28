@@ -1,16 +1,16 @@
-WALL_THICKNESS = 1.5;
+WALL_THICKNESS = 1.2;
 
-AUGER_DIA = 52;
-AUGER_LENGTH = 52;
+AUGER_DIA = 54;
+AUGER_LENGTH = 30;
 
 SHAFT_LENGTH = 20;
-SHAFT_DIA = 8.5;
+SHAFT_DIA = 22.5;
 
 BEARING_DIA = 22.5;
-BEARING_THICKNESS = 8;
+BEARING_THICKNESS = 5;
 
-OUT_PORT_DIA = 25;
-OUT_PORT_LENGTH = 10;
+OUT_PORT_DIA = AUGER_DIA;
+OUT_PORT_LENGTH = 50 - AUGER_LENGTH;
 
 NEMA_MOUNT_OFFSET = 50;
 NEMA_SHAFT_DIA = 25;
@@ -19,7 +19,7 @@ NEMA_MOUNT_SPACING = 31;
 NEMA_WIDTH = 42;
 
 MOUNT_HOLE_DIA = 4;
-MOUNT_HOLE_SPACING = 40;
+MOUNT_HOLE_SPACING = AUGER_LENGTH - 10;
 
 $fn = 50;
 
@@ -28,22 +28,18 @@ module auger() {
     cylinder(d = AUGER_DIA, h = AUGER_LENGTH);
     translate([0, 0, AUGER_LENGTH + WALL_THICKNESS])
     cylinder(d = BEARING_DIA, h = BEARING_THICKNESS);
-    hull() {
-      cylinder(d = SHAFT_DIA, h = AUGER_LENGTH + SHAFT_LENGTH);
-      translate([0, AUGER_DIA/1.5, 0])
-      cylinder(d = SHAFT_DIA, h = AUGER_LENGTH + SHAFT_LENGTH);
-    }
+    cylinder(d = SHAFT_DIA, h = AUGER_LENGTH + SHAFT_LENGTH);
   }
 }
 
 module hopper_inside() {
   #union() {
-    translate([0, 0, AUGER_DIA/2])
-    cube(size = [AUGER_DIA, AUGER_LENGTH, AUGER_DIA], center = true);
+    translate([0, 0, AUGER_DIA/3])
+    cube(size = [AUGER_DIA, AUGER_LENGTH, AUGER_DIA/1.5], center = true);
     
     translate([0, 0, -(AUGER_DIA - OUT_PORT_DIA)/2])
     rotate([-90, 0, 0])
-    cylinder(d = OUT_PORT_DIA, h = AUGER_LENGTH);
+    cylinder(d = OUT_PORT_DIA, h = AUGER_LENGTH + OUT_PORT_LENGTH);
   
     translate([0, AUGER_LENGTH/2, 0])
     rotate([90, 0, 0])
@@ -55,12 +51,12 @@ module hopper_outside() {
   union() {
     wt = 2 * WALL_THICKNESS;
     
-    translate([0, 0, AUGER_DIA/2])
-    cube(size = [AUGER_DIA + wt, AUGER_LENGTH + wt, AUGER_DIA], center = true);
+    translate([0, -BEARING_THICKNESS/2, AUGER_DIA/3])
+    cube(size = [AUGER_DIA + wt, AUGER_LENGTH + BEARING_THICKNESS + wt, AUGER_DIA/1.5], center = true);
 
     translate([0, (AUGER_LENGTH + wt)/2, 0])
     rotate([90, 0, 0])
-    cylinder(d = AUGER_DIA + wt, h = AUGER_LENGTH + wt);
+    cylinder(d = AUGER_DIA + wt, h = AUGER_LENGTH + BEARING_THICKNESS + wt);
     
     translate([0, -(AUGER_LENGTH + wt)/2, 0])
     rotate([90, 0, 0])
@@ -74,11 +70,11 @@ module hopper_outside() {
 
 module nema_mount() {
   #union() {
-    cylinder(d = NEMA_SHAFT_DIA, h = WALL_THICKNESS);
+    cylinder(d = NEMA_SHAFT_DIA, h = WALL_THICKNESS + BEARING_THICKNESS);
     for(i = [-1, 1]) {
       for(j = [-1, 1]) {
         translate([i * NEMA_MOUNT_SPACING/2, j * NEMA_MOUNT_SPACING/2, 0])
-        cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS);
+        cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS + BEARING_THICKNESS);
       }
     }
   }
@@ -90,7 +86,7 @@ module nema_plate() {
       for(i = [-1, 1]) {
         for(j = [-1, 1]) {
           translate([i * (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, j * (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, 0])
-          cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS);
+          cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS + BEARING_THICKNESS);
         }
       }
     }
@@ -98,11 +94,11 @@ module nema_plate() {
     hull() {
       for(i = [-1, 1]) {
         translate([i * (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, (NEMA_WIDTH-NEMA_MOUNT_DIA)/2, 0])
-        cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS);
+        cylinder(d = NEMA_MOUNT_DIA, h = WALL_THICKNESS + BEARING_THICKNESS);
       }
       
       translate([0, NEMA_MOUNT_OFFSET, 0])
-      cylinder(d = AUGER_DIA + 2 * WALL_THICKNESS, h = WALL_THICKNESS);
+      cylinder(d = AUGER_DIA + 2 * WALL_THICKNESS, h = WALL_THICKNESS + BEARING_THICKNESS);
     }
   }
 }
@@ -134,7 +130,7 @@ difference() {
   rotate([90, 0, 0])
   nema_mount();
   
-  translate([0, 0, AUGER_LENGTH - 2 * MOUNT_HOLE_DIA])
+  translate([0, 0, AUGER_DIA/1.5 - 5])
   mount_holes();
   
   drain_hole();
