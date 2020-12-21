@@ -6,88 +6,15 @@ IMAGE_SCALE = 100;
 SPHERE_ROUNDING = true;
 SPHERE_DIA = SIDE_WIDTH * 1.375;
 
-GENERIC = [
-    ["dice/strength.svg", 0.9, [0, 0, 0]],
-    ["dice/endurance.svg", 0.35, [90, 0, 0]],
-    ["dice/agility.svg", 0.55, [-90, 0, 0]],
-    ["dice/wisdom.svg", 0.6, [0, -90, 0]],
-    ["dice/focus.svg", 0.6, [0, 90, 0]],
-    ["dice/charisma.svg", 0.35, [180, 0, 0]]
+SIDES = [
+    ["dice/1.svg", 1.0, [0, 0, 0]],
+    ["dice/2.svg", 1.0, [90, 0, 0]],
+    ["dice/3.svg", 1.0, [-90, 0, 0]],
+    ["dice/4.svg", 1.0, [0, -90, 0]],
+    ["dice/5.svg", 1.0, [0, 90, 0]],
+    ["dice/6.svg", 1.0, [180, 0, 0]]
 ];
 
-WARRIOR = [
-    ["dice/agility.svg", 0.55, [0, 0, 0]],
-    ["dice/strength.svg", 0.9, [-90, 0, 0]],
-    ["dice/strength.svg", 0.9, [90, 0, 0]],
-    ["dice/endurance.svg", 0.35, [0, -90, 0]],
-    ["dice/endurance.svg", 0.35, [0, 90, 0]],
-    ["dice/blank.svg", 0.6, [180, 0, 0]]
-];
-
-ROGUE = [
-    ["dice/charisma.svg", 0.35, [0, 0, 0]],
-    ["dice/agility.svg", 0.55, [90, 0, 0]],
-    ["dice/agility.svg", 0.55, [-90, 0, 0]],
-    ["dice/strength.svg", 0.9, [0, -90, 0]],
-    ["dice/strength.svg", 0.9, [0, 90, 0]],
-    ["dice/blank.svg", 0.6, [180, 0, 0]]
-];
-
-CLERIC = [
-    ["dice/strength.svg", 0.9, [0, 0, 0]],
-    ["dice/endurance.svg", 0.35, [90, 0, 0]],
-    ["dice/endurance.svg", 0.35, [-90, 0, 0]],
-    ["dice/focus.svg", 0.6, [0, -90, 0]],
-    ["dice/focus.svg", 0.6, [0, 90, 0]],
-    ["dice/blank.svg", 0.6, [180, 0, 0]]
-];
-
-MAGE = [
-    ["dice/charisma.svg", 0.35, [0, 0, 0]],
-    ["dice/wisdom.svg", 0.6, [90, 0, 0]],
-    ["dice/wisdom.svg", 0.6, [-90, 0, 0]],
-    ["dice/focus.svg", 0.6, [0, -90, 0]],
-    ["dice/focus.svg", 0.6, [0, 90, 0]],
-    ["dice/blank.svg", 0.6, [180, 0, 0]]
-];
-
-RANGER = [
-    ["dice/endurance.svg", 0.35, [0, 0, 0]],
-    ["dice/agility.svg", 0.55, [90, 0, 0]],
-    ["dice/agility.svg", 0.55, [-90, 0, 0]],
-    ["dice/focus.svg", 0.6, [0, -90, 0]],
-    ["dice/focus.svg", 0.6, [0, 90, 0]],
-    ["dice/blank.svg", 0.6, [180, 0, 0]]
-];
-
-BARD = [
-    ["dice/blank.svg", 0.6, [0, 0, 0]],
-    ["dice/wisdom.svg", 0.6, [90, 0, 0]],
-    ["dice/wisdom.svg", 0.6, [-90, 0, 0]],
-    ["dice/charisma.svg", 0.35, [0, -90, 0]],
-    ["dice/charisma.svg", 0.35, [0, 90, 0]],
-    ["dice/blank.svg", 0.6, [180, 0, 0]]
-];
-
-DEFENCE = [
-    ["dice/endurance.svg", 0.35, [0, 0, 0]],
-    ["dice/blank.svg", 0.6, [90, 0, 0]],
-    ["dice/blank.svg", 0.6, [-90, 0, 0]],
-    ["dice/blank.svg", 0.6, [0, -90, 0]],
-    ["dice/blank.svg", 0.6, [0, 90, 0]],
-    ["dice/endurance.svg", 0.35, [180, 0, 0]]
-];
-
-ATTACK = [
-    ["dice/hit.svg", 0.35, [0, 0, 0]],
-    ["dice/blank.svg", 0.6, [90, 0, 0]],
-    ["dice/blank.svg", 0.6, [-90, 0, 0]],
-    ["dice/blank.svg", 0.6, [0, -90, 0]],
-    ["dice/blank.svg", 0.6, [0, 90, 0]],
-    ["dice/hit.svg", 0.35, [180, 0, 0]]
-];
-
-SIDES = CLERIC;
 COLOR = "white";
 
 $fn = 30;
