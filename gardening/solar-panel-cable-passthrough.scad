@@ -1,0 +1,32 @@
+PASSTHROUGH_OUTER_DIA = 12;
+PASSTHROUGH_INNER_DIA = 5;
+PASSTHROUGH_TOP_DIA = 7;
+PASSTHROUGH_BASE_LENGTH = 15;
+PASSTHROUGH_TAPER_LENGTH = 10;
+PASSTHROUGH_ORING_HEIGHT = 5;
+
+LIP_DIA = 15;
+LIP_LENGTH = 2;
+
+ORING_WIDTH = 2;
+ORING_DIA = PASSTHROUGH_OUTER_DIA + 0.5;
+
+$fn = 50;
+
+module passthrough() {
+  difference() {
+    union() {
+      cylinder(d = LIP_DIA, h = LIP_LENGTH);
+      cylinder(d = PASSTHROUGH_OUTER_DIA, h = PASSTHROUGH_BASE_LENGTH);
+      translate([0, 0, PASSTHROUGH_BASE_LENGTH])
+      cylinder(d1 = PASSTHROUGH_OUTER_DIA, d2 = PASSTHROUGH_TOP_DIA, h = PASSTHROUGH_TAPER_LENGTH);
+    }
+    cylinder(d = PASSTHROUGH_INNER_DIA, h = PASSTHROUGH_BASE_LENGTH + PASSTHROUGH_TAPER_LENGTH);
+    translate([0, 0, PASSTHROUGH_ORING_HEIGHT])
+    rotate_extrude()
+    translate([-ORING_DIA/2, 0, 0])
+    circle(d = ORING_WIDTH);
+  }
+}
+
+passthrough();
