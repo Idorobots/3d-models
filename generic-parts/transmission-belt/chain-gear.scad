@@ -20,10 +20,10 @@ $fn = 100;
 module gear() {
   difference() {
       union() {
-      cylinder(d = GEAR_DIA - TOOTH_LENGTH/2, h = GEAR_THICKNESS);
+      cylinder(d = GEAR_DIA - TOOTH_LENGTH/2, h = GEAR_THICKNESS, $fn = TEETH);
       
       for(i = [0:TEETH-1]) {
-        rotate([0, 0, i * 360/TEETH])
+        rotate([0, 0, (i + 0.5) * 360/TEETH])
         translate([GEAR_DIA/2, 0, 0])
         scale([1.0, TOOTH_WIDTH/(TOOTH_LENGTH * 2), 1.0])
         cylinder(d = TOOTH_LENGTH * 2, h = GEAR_THICKNESS);
