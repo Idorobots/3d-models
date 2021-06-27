@@ -1,12 +1,13 @@
-RAIL_TOP_WIDTH = 2;
-RAIL_BOT_WIDTH = 4;
-RAIL_SPACING = RAIL_BOT_WIDTH + 2.1;
-RAIL_DEPTH = 4;
+RAIL_TOP_WIDTH = 1.5;
+RAIL_BOT_WIDTH = 2.5;
+RAIL_SLOT_WIDTH = 2.1;
+RAIL_SPACING = 15;
+RAIL_DEPTH = 3;
 RAIL_CORNER_DIA = 8;
 
-HEIGHT = 25 * RAIL_SPACING;
-WIDTH = 162;
-THICKNESS = 5;
+HEIGHT = 160;
+WIDTH = 160;
+THICKNESS = 4;
 
 MOUNT_HOLES = true;
 MOUNT_HOLE_DIA = 5;
@@ -16,6 +17,7 @@ FAN_MOUNT_SPACING = 105;
 FAN_MOUNT_SECONDARY_SPACING = 124.5;
 FAN_MOUNT_DIA = 5;
 FAN_DIA = 140;
+FAN_BRACE_WIDTH = RAIL_BOT_WIDTH;
 FAN = WIDTH > FAN_DIA && HEIGHT > FAN_DIA;
 
 LIMIT = true;
@@ -28,18 +30,31 @@ LIMIT_SPACING = 145;
 N_RAILS = floor(HEIGHT / RAIL_SPACING);
 
 
-$fn = 30;
+$fn = 50;
 
 module rails() {
   off = RAIL_SPACING/2 + ((HEIGHT / RAIL_SPACING) - N_RAILS) * RAIL_SPACING/2;
+  delta = RAIL_SLOT_WIDTH/2 + RAIL_BOT_WIDTH/2;
+  
   for(i = [0:HEIGHT/RAIL_SPACING-1]) {
-    translate([RAIL_BOT_WIDTH/2, i * RAIL_SPACING + off, THICKNESS])
-    hull() {
-      cylinder(d1 = RAIL_BOT_WIDTH, d2 = RAIL_TOP_WIDTH, h = RAIL_DEPTH);
-      translate([WIDTH - RAIL_BOT_WIDTH, 0, 0])
-      cylinder(d1 = RAIL_BOT_WIDTH, d2 = RAIL_TOP_WIDTH, h = RAIL_DEPTH);
-    }
+    translate([RAIL_BOT_WIDTH/2, i * RAIL_SPACING + off + delta, 0])
+    rail();
+    translate([RAIL_BOT_WIDTH/2, i * RAIL_SPACING + off - delta, 0])
+    rail();
   }
+}
+
+module rail() {
+  hull() {
+    translate([0, 0, THICKNESS])
+    cylinder(d1 = RAIL_BOT_WIDTH, d2 = RAIL_TOP_WIDTH, h = RAIL_DEPTH);
+    cylinder(d = RAIL_BOT_WIDTH, h = THICKNESS);
+
+    translate([WIDTH - RAIL_BOT_WIDTH, 0, THICKNESS])
+    cylinder(d1 = RAIL_BOT_WIDTH, d2 = RAIL_TOP_WIDTH, h = RAIL_DEPTH);
+    translate([WIDTH - RAIL_BOT_WIDTH, 0, 0])
+    cylinder(d = RAIL_BOT_WIDTH, h = THICKNESS);
+  }  
 }
 
 module base() {
@@ -47,8 +62,14 @@ module base() {
 }
 
 module fan() {
-  union() {
+  difference() {
     cylinder(d = FAN_DIA, h = THICKNESS + RAIL_DEPTH);
+    cube(size = [FAN_BRACE_WIDTH, FAN_DIA, (THICKNESS + RAIL_DEPTH)*2], center = true);
+  }
+}
+
+module fan_mount_holes() {
+  union() {
     for(i = [-1, 1]) {
       for(j = [-1, 1]) {
         translate([i * FAN_MOUNT_SPACING/2, j * FAN_MOUNT_SPACING/2, 0])
@@ -87,18 +108,28 @@ module limit() {
 
 difference() {
   union() {
-    rails();
-    base();
-    if(LIMIT) {
-      limit();
-    }
-  }
+    difference() {
+      union() {
+        base();
+        if(LIMIT) {
+          limit();
+        }
+      }
 
+      if(FAN) {
+        translate([WIDTH/2, HEIGHT/2, 0])
+        fan();
+      }
+    }
+    rails();
+  }
+ 
   if(MOUNT_HOLES) {
     mount_holes();
   }
+
   if(FAN) {
     translate([WIDTH/2, HEIGHT/2, 0])
-    fan();
+    fan_mount_holes();
   }
 }
