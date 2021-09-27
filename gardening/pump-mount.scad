@@ -46,6 +46,25 @@ module pump_mount() {
   }
 } 
 
+module upright_pump_mount() {
+  wall_thickness = 3;
+  union() {
+    translate([0, PUMP_MOUNT_LENGTH/2, 0])
+    difference() {
+      translate([0, 0, wall_thickness/2])
+      cube(size = [PUMP_MOUNT_WIDTH, PUMP_MOUNT_LENGTH, wall_thickness], center = true);
+      pump_mount();      
+    }
+    translate([0, 0, PUMP_MOUNT_LENGTH/2])
+    rotate([90, 0, 0])
+    union() {
+      translate([0, 0, wall_thickness/2])
+      pump_mount();
+      cube(size = [PUMP_MOUNT_WIDTH, PUMP_MOUNT_LENGTH, wall_thickness], center = true);
+    }
+  }
+}
+
 module mount_base() {
   difference() {
     cylinder(d = MOUNT_DIA, h = MOUNT_THICKNESS);
@@ -58,6 +77,8 @@ module mount_base() {
   }
 }
 
-mount_base();
-translate([PUMP_MOUNT_OFFSET_X, PUMP_MOUNT_OFFSET_Y, MOUNT_THICKNESS])
-pump_mount();
+//mount_base();
+//translate([PUMP_MOUNT_OFFSET_X, PUMP_MOUNT_OFFSET_Y, MOUNT_THICKNESS])
+//pump_mount();
+
+upright_pump_mount();
