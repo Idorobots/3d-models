@@ -4,9 +4,11 @@ PLATE_LENGTH = 34;
 
 SWIVEL_WIDTH = 30;
 SWIVEL_HEIGHT = 30;
-SWIVEL_THICKNESS = 4.75;
+SWIVEL_THICKNESS = 5;
 SWIVEL_HOLE = 4;
 
+MOUNT_HOLE_SPACING = 25;
+MOUNT_HOLE_DIA = 3;
 
 $fn = 50;
 
@@ -22,7 +24,16 @@ module rounded_rect(width, length, height, corner_dia) {
 }
 
 module plate() {
-  rounded_rect(PLATE_WIDTH, PLATE_LENGTH, PLATE_THICKNESS, 3);
+  difference() {
+    rounded_rect(PLATE_WIDTH, PLATE_LENGTH, PLATE_THICKNESS, 3);
+    for(i = [-1, 1]) {
+      for(j = [-1, 1]) {
+        translate([i * MOUNT_HOLE_SPACING/2, j * MOUNT_HOLE_SPACING/2, 0]) {
+          cylinder(d = MOUNT_HOLE_DIA, h = PLATE_THICKNESS);
+        }
+      }
+    }
+  }
 }
 
 module swivel() {
