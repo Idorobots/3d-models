@@ -1,8 +1,8 @@
 WIDTH = 50;
-HEIGHT = 40;
+HEIGHT = 50;
 THICKNESS = 5;
 
-PIPE_DIA = 22.2;
+PIPE_DIA = 20.2;
 
 MOUNT_HOLE_DIA = 4;
 MOUNT_HOLE_SPACING = 45;
@@ -28,7 +28,7 @@ module rounded_rect(width, length, height, corner_dia) {
 
 difference() {
   union() {
-    cylinder(d1 = WIDTH - THICKNESS, d2 = PIPE_DIA + THICKNESS, h = HEIGHT);
+    cylinder(d1 = WIDTH - THICKNESS, d2 = PIPE_DIA + 2*THICKNESS, h = HEIGHT);
     rounded_rect(WIDTH, WIDTH, THICKNESS, CORNER_DIA);
   }
 
