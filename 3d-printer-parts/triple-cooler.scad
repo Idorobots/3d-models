@@ -33,6 +33,7 @@ FAN_MOUNT_INNER_SPACING = 30;
 FAN_MOUNT_OUTER_SPACING = 40;
 FAN_MOUNT_THICKNESS = 2.5;
 
+COOLER_MOUNT_DIA = 60;
 COOLER_MOUNT_HOLE_DIA = 3;
 COOLER_MOUNT_WIDTH = (COOLER_DIA_TOP - EXCLUSION_DIA_TOP)/2;
 COOLER_MOUNT_LENGTH = 8.5;
@@ -128,6 +129,7 @@ module duct() {
 }
 
 module mount() {
+  translate([COOLER_MOUNT_LENGTH * cos(PORT_ANGLE), 0, 0])
   rotate([0, PORT_ANGLE, 0])
   difference() {
     union() {
@@ -163,7 +165,7 @@ module body() {
     }
     for(i = [0:PORTS-1]) {
       rotate([0, 0, (i+0.5) * 360/PORTS - 90])
-      translate([-(COOLER_DIA_TOP-COOLER_MOUNT_WIDTH)/2, 0, HEIGHT])
+      translate([-COOLER_MOUNT_DIA/2, 0, HEIGHT])
       mount();
     }
   }
