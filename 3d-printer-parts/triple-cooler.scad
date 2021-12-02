@@ -16,6 +16,9 @@ PORT_LENGTH = PORT_DUCT_LENGTH + 2 * WALL_THICKNESS;
 PORT_WIDTH = PORT_DUCT_WIDTH + 2 * WALL_THICKNESS;
 PORT_DEPTH = 12;
 
+ACCESS_SLOT = false;
+ACCESS_SLOT_ANGLE = 45;
+
 DUCT_HEIGHT = HEIGHT - WALL_THICKNESS;
 EXCLUSION_DIA_AT_DUCT_HEIGHT = EXCLUSION_DIA_BOT + (EXCLUSION_DIA_TOP-EXCLUSION_DIA_BOT)*(DUCT_HEIGHT/HEIGHT);
 DUCT_INNER_DIA_BOT = EXCLUSION_DIA_BOT + 2 * WALL_THICKNESS;
@@ -111,23 +114,65 @@ module port() {
   }
 }
 
+module access_slot_duct() {
+  hull() {
+    rotate([0, 0, -ACCESS_SLOT_ANGLE/2])
+    translate([-WALL_THICKNESS/2, 0, 0])
+    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, 2 * HEIGHT]);
+  
+    rotate([0, 0, ACCESS_SLOT_ANGLE/2])
+    translate([-WALL_THICKNESS/2, 0, 0])
+    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, 2 * HEIGHT]);
+  }
+}
+
+module duct_base() {
+  cylinder(d1 = DUCT_OUTER_DIA_BOT, d2 = DUCT_OUTER_DIA_TOP, h = DUCT_HEIGHT);  
+}
+
+module access_slot() {
+  union() {
+    translate([WALL_THICKNESS, 0, 0])
+    rotate([0, 0, -ACCESS_SLOT_ANGLE/2])
+    translate([-WALL_THICKNESS/2, 0, 0])
+    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, HEIGHT]);      
+    translate([-WALL_THICKNESS, 0, 0])
+    rotate([0, 0, ACCESS_SLOT_ANGLE/2])
+    translate([-WALL_THICKNESS/2, 0, 0])
+    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, HEIGHT]);      
+  }
+}
+
 module duct() {
-  difference() {
-    union() {
-      cylinder(d1 = DUCT_OUTER_DIA_BOT, d2 = DUCT_OUTER_DIA_TOP, h = DUCT_HEIGHT);
-      for(i = [0:PORTS-1]) {
-        rotate([0, 0, i * PORT_SPACING])
-        translate([0, COOLER_DIA_BOT/2 - WALL_THICKNESS * 1.5, 0])
-        port_duct();
+  union() {
+    difference() {
+      union() {
+        duct_base();
+        if(!ACCESS_SLOT) {
+          translate([0, COOLER_DIA_BOT/2 - WALL_THICKNESS * 1.5, 0])
+          port_duct();        
+        }
+        for(i = [1:PORTS-1]) {
+          rotate([0, 0, i * PORT_SPACING])
+          translate([0, COOLER_DIA_BOT/2 - WALL_THICKNESS * 1.5, 0])
+          port_duct();
+        }
+      }
+
+      cylinder(d1 = DUCT_INNER_DIA_BOT, d2 = DUCT_INNER_DIA_BOT + 2.5 * (DUCT_INNER_DIA_TOP - DUCT_INNER_DIA_BOT), h = 2.5 * DUCT_HEIGHT);
+
+      for(i = [0:DUCT_BARS-1]) {
+        rotate([0, 0, i * DUCT_BARS_SPACING])
+        translate([-DUCT_BAR_WIDTH/2, 0, 0])
+        cube([DUCT_BAR_WIDTH, DUCT_OUTER_DIA_BOT, WALL_THICKNESS]);
+      }
+      
+      if(ACCESS_SLOT) {
+        access_slot();
       }
     }
-
-    cylinder(d1 = DUCT_INNER_DIA_BOT, d2 = DUCT_INNER_DIA_BOT + 2.5 * (DUCT_INNER_DIA_TOP - DUCT_INNER_DIA_BOT), h = 2.5 * DUCT_HEIGHT);
-
-    for(i = [0:DUCT_BARS-1]) {
-      rotate([0, 0, i * DUCT_BARS_SPACING])
-      translate([-DUCT_BAR_WIDTH/2, 0, 0])
-      cube([DUCT_BAR_WIDTH, DUCT_OUTER_DIA_BOT, WALL_THICKNESS]);
+    if(ACCESS_SLOT) {
+      access_slot_duct();
     }
   }
 }
@@ -162,7 +207,11 @@ module body() {
     cylinder(d1 = COOLER_DIA_BOT, d2 = COOLER_DIA_TOP, h = HEIGHT);
     translate([0, 0, HEIGHT])
     cylinder(d = COOLER_DIA_TOP, h = HEIGHT/2 + WALL_THICKNESS);
-    for(i = [0:PORTS-1]) {
+    if(!ACCESS_SLOT) {
+      translate([0, COOLER_DIA_BOT/2 + WALL_THICKNESS, 0])
+      port();
+    }
+    for(i = [1:PORTS-1]) {
       rotate([0, 0, i * PORT_SPACING])
       translate([0, COOLER_DIA_BOT/2 + WALL_THICKNESS, 0])
       port();
