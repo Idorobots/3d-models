@@ -1,10 +1,10 @@
 RAIL_LIP = 3;
 RAIL_SPACING = 2;
-RAIL_DISTANCE = 15;
+RAIL_DISTANCE = 16;
 BAR_WIDTH = 10;
 BAR_THICKNESS = 2;
 MOUNT_HOLE_DIA = 4;
-SEGMENTS = 5;
+SEGMENTS = 6;
 
 $fn = 50;
 
@@ -26,7 +26,7 @@ module adapter() {
   intersection() {
     union() {
       for(i = [0 : SEGMENTS]) {
-        translate([0, i * RAIL_DISTANCE, 0])
+        translate([0, (i + 0.5) * RAIL_DISTANCE, 0])
         segment();
       }
     }
