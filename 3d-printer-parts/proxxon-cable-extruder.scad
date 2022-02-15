@@ -1,4 +1,5 @@
-DELTA = 0.6; // Expands most critical dimensions by this amount, mainly to facilitate 3d printer shortcommings.
+// Expands most critical dimensions by this amount, mainly to facilitate 3d printer shortcommings.
+DELTA = 0.1; // 0.6;
 WALL_THICKNESS = 1;
 
 BEARING_INNER_DIA = 5 + DELTA;
@@ -7,10 +8,10 @@ BEARING_WIDTH = 5 + DELTA;
 
 DD_INNER_DIA = BEARING_INNER_DIA;
 DD_OUTER_DIA = 9 + DELTA;
-DD_TEETH_DIA = 10 + DELTA;
-DD_LENGTH = 14.5;
+DD_TEETH_DIA = 9.5 + DELTA;
+DD_LENGTH = 14.5; // Actually 5.5, but there's a coptive bolt.
 DD_TEETH_LENGTH = 9;
-DD_MESH = 1.4;
+DD_MESH = 1.0 + 2 * DELTA; // This doesn't matter all that much as the other DD cog is pushed against the first to better grip the filament.
 DD_SHAFT_LENGTH = DD_LENGTH + 2 * BEARING_WIDTH;
 DD_FILAMENT_OFFSET = 3;
 
@@ -18,33 +19,34 @@ COG_INNER_DIA = BEARING_INNER_DIA;
 COG_OUTER_DIA = 9.5 + DELTA;
 COG_TEETH_DIA = 11.5 + DELTA;
 COG_LENGTH = 12.5;
-COG_TEETH_LENGTH = 10.5; //5.5;
+COG_TEETH_LENGTH = 10.5; // Actuall 5.5, but there's a captive bolt.
 COG_SHAFT_LENGTH = DD_LENGTH + COG_LENGTH + 2 * BEARING_WIDTH + 2 * WALL_THICKNESS;
 
 BEARING_MOUNT_DIA_DRIVE = max(BEARING_OUTER_DIA, COG_TEETH_DIA) + 6;
 BEARING_MOUNT_DIA_IDLER = max(BEARING_OUTER_DIA, DD_OUTER_DIA) + 6;
 
-CABLE_MOUNT_OUTER_DIA = 18;
+CABLE_MOUNT_OUTER_DIA = 17;
 CABLE_MOUNT_INNER_DIA = 13 + DELTA;
 CABLE_MOUNT_LENGTH = 10;
 
 BOT_BEARING = false;
 
 WORM_INNER_DIA = BEARING_INNER_DIA;
-WORM_OUTER_DIA = 11 + DELTA;
-WORM_LENGTH = BOT_BEARING ? 20 : 20 + CABLE_MOUNT_LENGTH;
-WORM_MESH = 1.4;
+WORM_OUTER_DIA = 7 + DELTA; // 11 + DELTA;
+WORM_BASE_LENGTH = 12; // 20
+WORM_LENGTH = BOT_BEARING ? WORM_BASE_LENGTH : WORM_BASE_LENGTH + CABLE_MOUNT_LENGTH;
+WORM_MESH = 0.5 + 2 * DELTA;
 WORM_SHAFT_LENGTH = 50;
 
 WORM_BEARING_INNER_DIA = BOT_BEARING ? 10 : 0;
 WORM_BEARING_OUTER_DIA = BOT_BEARING ? (15 + DELTA) : CABLE_MOUNT_INNER_DIA;
 WORM_BEARING_WIDTH = BOT_BEARING ? (4 + DELTA) : CABLE_MOUNT_LENGTH;
 
-FILAMENT_DIA = 2;
+FILAMENT_DIA = 2 + DELTA;
 FILAMENT_GUIDE_LENGTH = 2 * BEARING_WIDTH + max(BEARING_MOUNT_DIA_IDLER, BEARING_MOUNT_DIA_DRIVE);
 FILAMENT_PORT_DIA = 10;
 FILAMENT_PORT_FACE_DIA = 13;
-FILAMENT_PORT_LENGTH = 6;
+FILAMENT_PORT_LENGTH = 5.5;
 
 CAP_DIA = CABLE_MOUNT_INNER_DIA;
 CAP_HEIGHT = CABLE_MOUNT_LENGTH;
@@ -61,7 +63,7 @@ MOUNTING_HOLE_HEAD_LENGTH = 3;
 MOUNTING_HOLE_LENGTH = max(BEARING_MOUNT_DIA_IDLER, BEARING_MOUNT_DIA_DRIVE);
 
 MOUNTING_HOLE_OFFSETS = [
-  [-12, (DD_TEETH_DIA - DD_MESH)/2, 0],
+  [-17.5, (DD_TEETH_DIA - DD_MESH)/2, 0],
   [6, -14, 0],
   [-17.5, -14, 0]
 ];
@@ -162,6 +164,7 @@ module mounting_hole(dia, length, head_dia, head_length) {
 
 module filament_guide() {
   color("green")
+  translate([0, -DD_MESH/2, 0])
   mounting_hole(FILAMENT_DIA, FILAMENT_GUIDE_LENGTH, FILAMENT_PORT_DIA, FILAMENT_PORT_LENGTH);
 }
 
@@ -194,7 +197,7 @@ module positive() {
     translate([-(DD_FILAMENT_OFFSET + COG_TEETH_LENGTH/4), -((COG_TEETH_DIA + WORM_OUTER_DIA)/2 - WORM_MESH) - DD_OUTER_DIA/2, -WORM_LENGTH/2 - WORM_BEARING_WIDTH/2])
     cylinder(d = CABLE_MOUNT_OUTER_DIA, h = WORM_LENGTH + CABLE_MOUNT_LENGTH);
 
-    translate([0, 0, -FILAMENT_GUIDE_LENGTH/2])
+    translate([0, -DD_MESH/2, -FILAMENT_GUIDE_LENGTH/2])
     cylinder(d = FILAMENT_PORT_FACE_DIA, h = FILAMENT_GUIDE_LENGTH);
 
     rotate([0, 90, 0])
@@ -220,15 +223,35 @@ module body() {
   }
 }
 
-module mask() {
+module mask(hinge = false) {
   difference() {
-    union() {
-      translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA_DRIVE/2])
-      cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);
+    intersection() {
+      union() {
+        difference() {
+        translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA_DRIVE/2])
+        cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);
+          
+        if(hinge) {
+        translate([MOUNTING_HOLE_OFFSETS[0][0] - MOUNTING_HOLE_LENGTH/2 * sqrt(2), MOUNTING_HOLE_OFFSETS[0][1], 0])
+        rotate([0, 0, 45])
+        translate([-MOUNTING_HOLE_LENGTH/2, -MOUNTING_HOLE_LENGTH/2, -MOUNTING_HOLE_LENGTH/2])
+        cube(size = [MOUNTING_HOLE_LENGTH, MOUNTING_HOLE_LENGTH, MOUNTING_HOLE_LENGTH]);
+      }
+        }
+        for(t = MOUNTING_HOLE_OFFSETS) {
+          translate(t)
+          cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);        
+        }
+      }
+      translate([-25, 0, -BEARING_MOUNT_DIA_DRIVE/2])
+      cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);    
     }
     for(t = MOUNTING_HOLE_OFFSETS) {
       translate(t)
-      cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
+      difference() {
+        cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
+        cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH/4, center = true);
+      }
     }
   }
 }
@@ -242,7 +265,7 @@ module mask() {
 // Idler
 intersection() {
   body();
-  mask();
+  mask(hinge = true);
 }
 
 // Main Top
