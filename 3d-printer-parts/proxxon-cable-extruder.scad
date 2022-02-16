@@ -26,7 +26,7 @@ BEARING_MOUNT_DIA_DRIVE = max(BEARING_OUTER_DIA, COG_TEETH_DIA) + 6;
 BEARING_MOUNT_DIA_IDLER = max(BEARING_OUTER_DIA, DD_OUTER_DIA) + 6;
 
 CABLE_MOUNT_OUTER_DIA = 17;
-CABLE_MOUNT_INNER_DIA = 13 + DELTA;
+CABLE_MOUNT_INNER_DIA = 13.3 + DELTA;
 CABLE_MOUNT_LENGTH = 10;
 
 BOT_BEARING = false;
@@ -35,18 +35,18 @@ WORM_INNER_DIA = BEARING_INNER_DIA;
 WORM_OUTER_DIA = 7 + DELTA; // 11 + DELTA;
 WORM_BASE_LENGTH = 12; // 20
 WORM_LENGTH = BOT_BEARING ? WORM_BASE_LENGTH : WORM_BASE_LENGTH + CABLE_MOUNT_LENGTH;
-WORM_MESH = 0.5 + 2 * DELTA;
+WORM_MESH = 0.7 + 2 * DELTA;
 WORM_SHAFT_LENGTH = 50;
 
 WORM_BEARING_INNER_DIA = BOT_BEARING ? 10 : 0;
 WORM_BEARING_OUTER_DIA = BOT_BEARING ? (15 + DELTA) : CABLE_MOUNT_INNER_DIA;
 WORM_BEARING_WIDTH = BOT_BEARING ? (4 + DELTA) : CABLE_MOUNT_LENGTH;
 
+FILAMENT_PORT_LENGTH = 5;
 FILAMENT_DIA = 2 + DELTA;
-FILAMENT_GUIDE_LENGTH = 2 * BEARING_WIDTH + max(BEARING_MOUNT_DIA_IDLER, BEARING_MOUNT_DIA_DRIVE);
+FILAMENT_GUIDE_LENGTH = 2 * FILAMENT_PORT_LENGTH + max(BEARING_MOUNT_DIA_IDLER, BEARING_MOUNT_DIA_DRIVE);
 FILAMENT_PORT_DIA = 10;
 FILAMENT_PORT_FACE_DIA = 13;
-FILAMENT_PORT_LENGTH = 5.5;
 
 CAP_DIA = CABLE_MOUNT_INNER_DIA;
 CAP_HEIGHT = CABLE_MOUNT_LENGTH;
@@ -57,18 +57,18 @@ CAP_BEARING_HEIGHT = 3;
 CAP_BEARING_AT_HEIGHT = 5;
 
 MOUNTING_HOLE_DIA = 3 + DELTA;
-MOUNTING_HOLE_HEAD_DIA = 6.5;
-MOUNTING_HOLE_FACE_DIA = MOUNTING_HOLE_HEAD_DIA - 0.1;
+MOUNTING_HOLE_HEAD_DIA = 6 + DELTA;
+MOUNTING_HOLE_FACE_DIA = MOUNTING_HOLE_HEAD_DIA;
 MOUNTING_HOLE_HEAD_LENGTH = 3;
 MOUNTING_HOLE_LENGTH = max(BEARING_MOUNT_DIA_IDLER, BEARING_MOUNT_DIA_DRIVE);
 
 MOUNTING_HOLE_OFFSETS = [
   [-17.5, (DD_TEETH_DIA - DD_MESH)/2, 0],
-  [6, -14, 0],
+  [6.5, -14, 0],
   [-17.5, -14, 0]
 ];
 
-$fn = 50;
+$fn = 100;
 
 module cog(length, outer_dia, inner_dia, teeth_length, teeth_dia) {
   difference() {
@@ -108,7 +108,8 @@ module extruder_drive_train() {
 
     bearing(BEARING_WIDTH, BEARING_OUTER_DIA, BEARING_INNER_DIA);
  
-    translate([0, 0, BEARING_WIDTH]) {
+    dh = 0.0001; // NOTE Needed to get rid of some stray 0-thickness walls.
+    translate([0, 0, BEARING_WIDTH - dh]) {
       color("blue")
       cog(COG_LENGTH, COG_OUTER_DIA, COG_INNER_DIA, COG_TEETH_LENGTH, COG_TEETH_DIA);
 
@@ -155,10 +156,11 @@ module mounting_hole(dia, length, head_dia, head_length) {
     color("gray")
     translate([0, 0, -length/2])
     union() {
-        cylinder(d = head_dia, h = head_length);
-        cylinder(d = dia, h = length);
-        translate([0, 0, length - head_length])
-        cylinder(d = head_dia, h = head_length);
+      dd = 0.0001; // NOTE Needed to get rid of some 0-thickness walls.
+      cylinder(d = head_dia + dd, h = head_length);
+      cylinder(d = dia, h = length);
+      translate([0, 0, length - head_length])
+      cylinder(d = head_dia + dd, h = head_length);
     }
 }
 
@@ -211,7 +213,7 @@ module positive() {
     
     for(t = MOUNTING_HOLE_OFFSETS) {
       translate(t)
-      cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
+      cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH - 2 * MOUNTING_HOLE_HEAD_LENGTH, center = true);
     }
   }
 }
@@ -224,68 +226,67 @@ module body() {
 }
 
 module mask(hinge = false) {
-  difference() {
-    intersection() {
-      union() {
-        difference() {
-        translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA_DRIVE/2])
-        cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);
-          
-        if(hinge) {
+  union() {
+    difference() {
+      translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA_DRIVE/2])
+      cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);
+        
+      if(hinge) {
         translate([MOUNTING_HOLE_OFFSETS[0][0] - MOUNTING_HOLE_LENGTH/2 * sqrt(2), MOUNTING_HOLE_OFFSETS[0][1], 0])
         rotate([0, 0, 45])
         translate([-MOUNTING_HOLE_LENGTH/2, -MOUNTING_HOLE_LENGTH/2, -MOUNTING_HOLE_LENGTH/2])
         cube(size = [MOUNTING_HOLE_LENGTH, MOUNTING_HOLE_LENGTH, MOUNTING_HOLE_LENGTH]);
       }
-        }
-        for(t = MOUNTING_HOLE_OFFSETS) {
-          translate(t)
-          cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);        
-        }
-      }
-      translate([-25, 0, -BEARING_MOUNT_DIA_DRIVE/2])
-      cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);    
+      translate(MOUNTING_HOLE_OFFSETS[0])
+      cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
     }
-    for(t = MOUNTING_HOLE_OFFSETS) {
-      translate(t)
-      difference() {
-        cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH, center = true);
-        cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH/4, center = true);
-      }
-    }
+    translate(MOUNTING_HOLE_OFFSETS[0])
+    cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH/4, center = true);
+  }
+}
+
+module idler_mask() {
+  mask(hinge = true);
+}
+
+module top_mask() {
+  difference() {
+    translate([-25, -25, 0])
+    cube(size = [50, 50, 50]);
+    mask();
+  }
+}
+
+module bot_mask() {
+  difference() {
+    translate([-25, -25, -50])
+    cube(size = [50, 50, 50]);
+    mask();
   }
 }
 
 // Overview
-!union() {
+union() {
   #positive();
   negative();
 }
 
 // Idler
-intersection() {
+!intersection() {
   body();
-  mask(hinge = true);
+  idler_mask();
 }
 
 // Main Top
 intersection() {
-  difference() {
-    body();
-    mask();
-  }
-  translate([-25, -25, 0])
-  cube(size = [50, 50, 50]);
+  body();
+  top_mask();
 }
 
 // Main Bottom
 intersection() {
-  difference() {
-    body();
-    mask();
-  }
-  translate([-25, -25, -50])
-  cube(size = [50, 50, 50]);
+  body();
+  bot_mask();
 }
 
 // Bottom cap
