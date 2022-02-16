@@ -232,8 +232,8 @@ module mask(hinge = false) {
       cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);
         
       if(hinge) {
-        translate([MOUNTING_HOLE_OFFSETS[0][0] - MOUNTING_HOLE_LENGTH/2 * sqrt(2), MOUNTING_HOLE_OFFSETS[0][1], 0])
-        rotate([0, 0, 45])
+        translate([MOUNTING_HOLE_OFFSETS[0][0] - MOUNTING_HOLE_LENGTH/2, MOUNTING_HOLE_OFFSETS[0][1], 0])
+        rotate([0, 0, 90])
         translate([-MOUNTING_HOLE_LENGTH/2, -MOUNTING_HOLE_LENGTH/2, -MOUNTING_HOLE_LENGTH/2])
         cube(size = [MOUNTING_HOLE_LENGTH, MOUNTING_HOLE_LENGTH, MOUNTING_HOLE_LENGTH]);
       }
