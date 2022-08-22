@@ -1,4 +1,4 @@
-NECK_DIA = 22;
+NECK_DIA = 22.5;
 NECK_HEIGHT = 15;
 
 HEAD_DIA = 35;
@@ -6,7 +6,7 @@ HEAD_HEIGHT = 10;
 HEAD_CONE_HEIGHT = 5;
 
 HOLE_DIA = 14;
-SLOT_WIDTH = 2.5;
+SLOT_WIDTH = 2;
 SLOT_LENGTH = 8;
 
 $fn = 100;
@@ -16,9 +16,9 @@ module bidet() {
     union() {
       cylinder(d = HEAD_DIA, h = HEAD_HEIGHT);
       translate([0, 0, HEAD_HEIGHT])
-      cylinder(d1 = HEAD_DIA, d2 = NECK_DIA, h = HEAD_CONE_HEIGHT);
+      cylinder(d1 = HEAD_DIA, d2 = NECK_DIA + 0.5, h = HEAD_CONE_HEIGHT);
       translate([0, 0, HEAD_HEIGHT + HEAD_CONE_HEIGHT])
-      cylinder(d = NECK_DIA, h = NECK_HEIGHT);
+      cylinder(d1 = NECK_DIA + 0.5, d2 = NECK_DIA - 0.5, h = NECK_HEIGHT);
     }
     
     #translate([0, 0, (HEAD_HEIGHT - SLOT_LENGTH)/2])
