@@ -5,8 +5,9 @@ SLOT_LENGTH = 33;
 SLOT_HEIGHT = 40;
 CORNER_DIA = 6;
 
-HOLE_SPACING = 18;
-HOLE_DIA = 4;
+HOLE_SPACING = 12;
+HOLE_DIA = 5;
+HOLE_OFFSET = 5;
 
 $fn = 50;
 
@@ -32,7 +33,7 @@ module adapter() {
       rounded_rect(SLOT_THICKNESS, SLOT_HEIGHT, SLING_THICKNESS, CORNER_DIA);
     }
     
-    #translate([0, -(SLOT_HEIGHT - SLOT_WIDTH)/2 - SLOT_WIDTH/2, 0])
+    #translate([0, -(SLOT_HEIGHT - SLOT_WIDTH)/2 - SLOT_WIDTH/2 + HOLE_OFFSET, 0])
     mount_holes(0, HOLE_SPACING, SLING_THICKNESS, HOLE_DIA);
   }
 }
