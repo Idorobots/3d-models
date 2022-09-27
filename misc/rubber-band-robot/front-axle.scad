@@ -26,6 +26,8 @@ SERVO_MOUNT_DIA = 1.5;
 SERVO_MOUNT_SPACING = 27;
 SERVO_MOUNT_OFFSET = 6.5;
 
+THETHER_DIA = 10;
+
 $fn = 30;
 
 module gearbox_mount() {
@@ -75,19 +77,32 @@ module servo_mount() {
   cube(size = [SERVO_WIDTH, MIDDLE_CHANNEL_WIDTH, FRAME_HEIGHT], center = true);
 }
 
+module thether() {
+  rotate([0, 90, 0])
+  cylinder(d = THETHER_DIA, h = WALL_THICKNESS * 2, center = true);
+}
+
 module front_axle() {
   difference() {
     frame();
+    
     #translate([FRAME_LENGTH - GEARBOX_MOUNT_OFFSET, 0, FRAME_HEIGHT/2])
     gearbox_mount();
+    
     #translate([FRAME_AXLE_WIDTH/2, 0, FRAME_HEIGHT/2])
     axle_mount();
+    
     #translate([FRAME_AXLE_WIDTH, 0, 0])
     middle_channel();
+    
     #translate([FRAME_LENGTH - SLOT_OFFSET - SLOT_LENGTH/2, 0, FRAME_HEIGHT/2])
     slot();
+    
     #translate([FRAME_LENGTH - SERVO_MOUNT_SPACING/2 - SERVO_MOUNT_OFFSET, 0, FRAME_HEIGHT])
     servo_mount();
+    
+    #translate([0, 0, FRAME_HEIGHT])
+    thether();
   }
 }
 
