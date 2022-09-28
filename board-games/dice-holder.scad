@@ -51,7 +51,7 @@ module rounded_rect(width, length, height, side_dia, spherical = false) {
                     translate([0, 0, (height - side_dia)/2])
                     sphere(d = side_dia);
                 } else {
-                    cylinder(d = side_dia, h = height, center = true); 
+                    cylinder(d = side_dia, h = height, center = true);
                 }
             }
         }
@@ -89,19 +89,19 @@ difference() {
         hull() {
             translate([-WIDTH/2 - D20_SPACING/sqrt(2), LENGTH/2 - D20_WIDTH/2 - D20_SPACING/sqrt(2), 0])
             cylinder(d = MAIN_D20_MARKER_DIA, h = THICKNESS);
- 
+
             translate([-WIDTH/2 + D20_SPACING/sqrt(2), LENGTH/2 - D20_WIDTH/2 - D20_SPACING/sqrt(2), 0])
             cylinder(d = MAIN_D20_MARKER_DIA, h = THICKNESS);
         }
 
         // Stamina
-        translate([WIDTH/2, LENGTH/2 - D20_WIDTH/2, 0]) 
+        translate([WIDTH/2, LENGTH/2 - D20_WIDTH/2, 0])
         cylinder(d = MAIN_D20_MARKER_DIA, h = MAIN_DICE_MARKER_THICKNESS);
 
         // Actions
         translate([0, LENGTH/2 - D20_WIDTH/2, MAIN_DICE_MARKER_THICKNESS/2])
         rounded_rect(MAIN_D6_MARKER_WIDTH, MAIN_D6_MARKER_LENGTH, MAIN_DICE_MARKER_THICKNESS, MAIN_D6_MARKER_CORNER_DIA);
-        
+
         // Mini
         translate([-WIDTH/2 - MINI_BASE_OFFSET, LENGTH/2 - 1.9 * D20_WIDTH - MINI_BASE_DIA/2, 0]) {
             cylinder(d = MINI_MARKER_DIA, h = THICKNESS);
@@ -151,12 +151,12 @@ difference() {
             rounded_rect(DICE_POOL_WIDTH, DICE_POOL_LENGTH, THICKNESS, CORNER_DIA);
             symbol("", THICKNESS + 2 * SYMBOL_DEPTH, size = 2 * SYMBOL_SIZE);
         }
-        
+
         // Mini
         translate([-WIDTH/2 - MINI_BASE_OFFSET, LENGTH/2 - 1.9 * D20_WIDTH - MINI_BASE_DIA/2, THICKNESS/2]) {
             cylinder(d = MINI_BASE_DIA, h = THICKNESS, center = true);
             symbol("", THICKNESS + 2 * SYMBOL_DEPTH);
         }
-        
+
     }
 }

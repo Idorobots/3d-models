@@ -48,7 +48,7 @@ module cavity() {
             translate([-(CAVITY_DIA-CAVITY_ROUNDOVER_DIA)/2, 0, 0])
             circle(d = CAVITY_ROUNDOVER_DIA);
         }
-        
+
         translate([0, 0, -CAVITY_DEPTH/2])
         cylinder(d = CAVITY_PORT_DIA, h = CAVITY_DEPTH);
 
@@ -66,7 +66,7 @@ module cavity() {
 
 difference() {
     union() {
-        base();   
+        base();
         mounting_holes(MOUNTING_HOLE_SPACING, MOUNTING_HOLE_SPACING, HEIGHT + MOUNTING_HOLE_STANDOFF_HEIGHT, MOUNTING_HOLE_OUTER_DIA);
     }
 

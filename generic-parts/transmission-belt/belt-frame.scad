@@ -24,7 +24,7 @@ module frame() {
 
     translate([0, CENTER_OFFSET, 0])
     cylinder(d = HOLE_DIA, h = FRAME_THICKNESS);
-    
+
     translate([-HOLE_DIST/2, 0, 0])
     cylinder(d = HOLE_DIA, h = FRAME_THICKNESS);
 

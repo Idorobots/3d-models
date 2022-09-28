@@ -44,7 +44,7 @@ module servo() {
 
     translate([-SERVO_WIDTH/2, -SERVO_TAB_LENGTH/2, SERVO_TAB_HEIGHT])
     cube(size = [SERVO_WIDTH, SERVO_TAB_LENGTH, SERVO_TAB_THICKNESS]);
-    
+
     translate([0, -SERVO_NUB_OFFSET, 0])
     cylinder(d = SERVO_NUB_DIA, h = SERVO_HEIGHT + SERVO_NUB_HEIGHT);
 
@@ -64,7 +64,7 @@ module servo_arm(sides = 1) {
       translate([0, SERVO_ARM_LENGTH - SERVO_ARM_DIA1/2 - SERVO_ARM_DIA2/2, 0])
       cylinder(d = SERVO_ARM_DIA2, h = SERVO_ARM_FLAT_THICKNESS);
     }
-    
+
     cylinder(d = SERVO_ARM_DIA1, h = SERVO_ARM_THICKNESS);
   }
 }
@@ -87,14 +87,14 @@ module servo_placement() {
     servo();
     servo_arm(1);
   }
-  
+
   delta = -SERVO_ARM_LENGTH - 2 * TOWER_MOUNT_LIP;
   #translate([delta, -TOWER_SPACING + TOWER_MOUNT_THICKNESS/2, SERVO_WIDTH/2 + TOWER_MOUNT_THICKNESS + TOWER_SPACING])
   rotate([90, 90, 0]) {
     translate([0, 0, -SERVO_ARM_HEIGHT])
     servo();
     rotate([0, 0, -5.5])
-    servo_arm(1);    
+    servo_arm(1);
   }
 }
 
@@ -110,7 +110,7 @@ module tower_mount() {
       rounded_rect(TOWER_MOUNT_HEIGHT, l, TOWER_MOUNT_THICKNESS, TOWER_MOUNT_CORNER_DIA);
 
     }
-    
+
     servo_placement();
   }
 }

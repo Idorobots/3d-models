@@ -28,15 +28,15 @@ module lid() {
   difference() {
     union() {
       rounded_rect(WIDTH, LENGTH, HEIGHT - LIP_HEIGHT - wt/2, CORNER_DIA_BOT, CORNER_DIA_TOP);
- 
+
       translate([0, 0, HEIGHT - LIP_HEIGHT - wt/2])
       rounded_rect(WIDTH, LENGTH, LIP_HEIGHT, CORNER_DIA_TOP, CORNER_DIA_TOP);
-      
+
       translate([0, 0, HEIGHT - wt/2])
       rounded_rect(WIDTH + 2 * LIP_WIDTH, LENGTH + 2 * LIP_WIDTH, wt/2, CORNER_DIA_TOP, CORNER_DIA_TOP);
     }
     rounded_rect(WIDTH - wt, LENGTH - wt, HEIGHT - wt/2, CORNER_DIA_BOT, CORNER_DIA_TOP);
-    
+
     cylinder(d = KNOB_HOLE_DIA, h = HEIGHT);
   }
 }

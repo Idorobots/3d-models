@@ -46,17 +46,17 @@ module tuner_neg() {
     union() {
         translate([0, HOB_AXLE_OFFSET/2, (TUNER_GEAR_THICKNESS-TUNER_BASE_THICKNESS) + TUNER_BASE_THICKNESS/2])
         cube(size = [TUNER_WIDTH, TUNER_LENGTH, TUNER_BASE_THICKNESS], center = true);
-        
+
         cylinder(d = HOB_AXLE_BEARING_DIA, h = HOB_AXLE_LENGTH);
 
         cylinder(d = HOB_GEAR_DIA, h = TUNER_GEAR_THICKNESS + HOB_GEAR_LENGTH);
-        
+
         translate([0, -TUNER_MOUNTING_HOLES_OFFSET, -HOB_AXLE_LENGTH/2])
         cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH*2);
 
         translate([0, -TUNER_MOUNTING_HOLES_OFFSET + TUNER_MOUNTING_HOLES_SPACING, -HOB_AXLE_LENGTH/2])
         cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH*2);
-        
+
         translate([TUNER_WIDTH/2, WORM_AXLE_OFFSET_Y, TUNER_GEAR_THICKNESS-WORM_AXLE_OFFSET_Z])
         rotate([0, -90, 0])
         cylinder(d = WORM_AXLE_DIA, h = WORM_AXLE_LENGTH);
@@ -100,7 +100,7 @@ module cable_mount() {
         translate([-NEMA_WIDTH/2 - CABLE_MOUNT_LENGTH + NEMA_THICKNESS/2, WORM_AXLE_OFFSET_Y, NEMA_THICKNESS/2])
         cube(size = [NEMA_THICKNESS, CABLE_MOUNT_OUTER_DIA - NEMA_THICKNESS, NEMA_THICKNESS], center = true);
       }
-      
+
       translate([-NEMA_WIDTH/2, WORM_AXLE_OFFSET_Y, -WORM_AXLE_OFFSET_Z])
       rotate([0, -90, 0])
       cylinder(d = CABLE_MOUNT_OUTER_DIA, h = CABLE_MOUNT_LENGTH);
@@ -112,9 +112,9 @@ module cable_mount() {
         buldog_mount_holes();
       }
     }
-    
+
     #nema_body();
-    
+
     #tuner_neg();
 
     #translate([0, WORM_AXLE_OFFSET_Y, -WORM_AXLE_OFFSET_Z])
@@ -132,9 +132,9 @@ module mount_plate() {
     }
     #tuner_neg();
     if(BULDOG) {
-      #buldog_mount_holes();      
+      #buldog_mount_holes();
     } else {
-      #nema_mount_holes();      
+      #nema_mount_holes();
     }
   }
 }

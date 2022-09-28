@@ -17,7 +17,7 @@ module adapter() {
     cylinder(d = ADAPTER_DIA, h = ADAPTER_HEIGHT);
     cylinder(d = FILTER_BASE_DIA, h = FILTER_BASE_HEIGHT);
     cylinder(d = FILTER_DIA, h = ADAPTER_HEIGHT);
-    
+
     for(i = [0:PEGS]) {
       rotate([0, 0, i * 360/PEGS])
       translate([-PEG_SPACING_RADIUS, 0, 0])

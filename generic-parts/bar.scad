@@ -13,17 +13,17 @@ module bar() {
   difference() {
     translate([-BAR_WIDTH/2, -BAR_LENGTH/2, 0])
     cube(size = [BAR_WIDTH, BAR_LENGTH, BAR_THICKNESS]);
-    
+
     translate([0, -MOUNT_HOLE_SPACING/2, 0])
     cylinder(d = MOUNT_HOLE_DIA, h = BAR_THICKNESS);
-    
+
     translate([0, MOUNT_HOLE_SPACING/2, 0])
     cylinder(d = MOUNT_HOLE_DIA, h = BAR_THICKNESS);
-    
+
     if(MIDDLE_HOLE) {
       cylinder(d = MOUNT_HOLE_DIA, h = BAR_THICKNESS);
     }
-  }  
+  }
 }
 
 bar();

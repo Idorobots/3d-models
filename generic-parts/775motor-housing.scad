@@ -17,7 +17,7 @@ $fn = 50;
 module switch() {
   translate([-SWITCH_WIDTH/2, -SWITCH_LENGTH/2, 0])
   cube(size = [SWITCH_WIDTH, SWITCH_LENGTH, SWITCH_HEIGHT]);
-  
+
   translate([0, -SWITCH_HOLE_SPACING/2, 0])
   cylinder(d = SWITCH_HOLE_DIA, h = SWITCH_HEIGHT);
 
@@ -37,19 +37,19 @@ module housing() {
   difference() {
     union() {
       ball_cylinder(HOUSING_OUTER_DIA, HOUSING_LENGTH);
-      
+
       translate([-HOUSING_OUTER_DIA/2, 0, HOUSING_LENGTH - SWITCH_LENGTH/2 - SWITCH_OFFSET])
       rotate([90, 0, 90])
       hull()
       scale([(SWITCH_WIDTH + 2 * THICKNESS)/SWITCH_WIDTH, (SWITCH_LENGTH + 2 * THICKNESS)/SWITCH_LENGTH, HOUSING_OUTER_DIA/2/SWITCH_HEIGHT])
       switch();
-      
+
     }
-    
+
     #ball_cylinder(HOUSING_INNER_DIA, HOUSING_LENGTH - THICKNESS);
-    
+
     #cylinder(d = DC_PORT_DIA, h = HOUSING_LENGTH);
-    
+
     #translate([-HOUSING_OUTER_DIA/2, 0, HOUSING_LENGTH - SWITCH_LENGTH/2 - SWITCH_OFFSET])
     rotate([90, 0, 90])
     switch();

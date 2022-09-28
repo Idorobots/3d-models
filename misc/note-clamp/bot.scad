@@ -35,10 +35,10 @@ module outline() {
     union() {
         translate([-(BAR_CONN_LENGTH-BAR_TOP_WIDTH)/2, 0, 0])
         rounded_rect(BAR_TOP_WIDTH, BAR_TOP_LENGTH, HEIGHT, BAR_CORNER_DIA, -SLANT);
-        
+
         translate([+SLANT/2, 0, 0])
         rounded_rect(BAR_CONN_LENGTH - SLANT - NOTE_BODY_DIA/2, BAR_CONN_WIDTH, HEIGHT, BAR_CORNER_DIA);
-        
+
         translate([(BAR_CONN_LENGTH-NOTE_BODY_DIA)/2, 0, 0])
         cylinder(d = NOTE_BODY_DIA, h = HEIGHT, center = true);
     }

@@ -34,7 +34,7 @@ module raiser() {
       translate([HOLE_SPACING/2, 0, 0])
       cylinder(d = HOLE_DIA, h = HEIGHT);
 
-    }    
+    }
   }
 }
 raiser();

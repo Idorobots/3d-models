@@ -44,8 +44,8 @@ difference() {
     union() {
         translate([0, 0, HEIGHT])
         lip();
-        
-        base();   
+
+        base();
     }
 
     mounting_holes(MOUNTING_HOLE_SPACING, MOUNTING_HOLE_SPACING, HEIGHT, MOUNTING_HOLE_DIA);

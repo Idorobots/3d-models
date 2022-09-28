@@ -26,7 +26,7 @@ module duct(width, length, height, output_width) {
         cylinder(d = height * 2 - width * 2, h = length * 2, center = true);
       }
     }
-    
+
     translate([-length/2, -(SLOT_WIDTH + SLOT_OFFSET)/2, 0])
     cube(size = [length, SLOT_WIDTH + SLOT_OFFSET, height]);
   }
@@ -40,7 +40,7 @@ module holes() {
       translate([i * MOUNT_HOLE_SPACING/2, SLOT_OFFSET, 0])
       cylinder(d = MOUNT_HOLE_DIA, h = THICKNESS * 2, center = true);
     }
-    
+
     duct(SLOT_WIDTH, SLOT_LENGTH, HEIGHT - WALL_THICKNESS, OUTPUT_WIDTH);
   }
 }
@@ -60,7 +60,7 @@ module cooler() {
         cube(size = [MOUNT_HOLE_DIA + wt, SLOT_WIDTH + wt, THICKNESS]);
       }
     }
-    
+
     duct(SLOT_WIDTH + wt, SLOT_LENGTH + wt, HEIGHT, OUTPUT_WIDTH + wt);
   }
 }

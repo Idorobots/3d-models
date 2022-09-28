@@ -54,14 +54,14 @@ module vertical() {
 module horizontal() {
   difference() {
     t = HORIZONTAL_LENGTH/2 + (HORIZONTAL_LENGTH - HORIZONTAL_SLOT_LENGTH - HORIZONTAL_WIDTH)/2;
-    
+
     hull() {
       slot(HORIZONTAL_WIDTH, HORIZONTAL_SLOT_LENGTH, THICKNESS);
       translate([t, 0, 0])
       cylinder(d = HORIZONTAL_WIDTH, h = THICKNESS);
     }
     slot(HORIZONTAL_SLOT_DIA, HORIZONTAL_SLOT_LENGTH - HORIZONTAL_WIDTH/2, THICKNESS);
-    
+
     translate([t, 0, 0]) {
       cylinder(d = HORIZONTAL_HEAD_DIA, h = THICKNESS);
 

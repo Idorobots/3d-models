@@ -17,6 +17,6 @@ union() {
             cube(size = [SLOT_WIDTH, OUTER_DIA, INNER_LENGTH]);
         }
     }
-    
+
     cylinder(d = OUTER_DIA, h = OUTER_LENGTH);
 }

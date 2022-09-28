@@ -14,7 +14,7 @@ module rings(dia, inner_dia, height, dist) {
     cylinder(d = dia, h = height);
     translate([dist/2, 0, 0])
     cylinder(d = dia, h = height);
-      
+
     hull() {
         translate([-dist/2, 0, 0])
         cylinder(d = inner_dia, h = height);

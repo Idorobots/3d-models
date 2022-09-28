@@ -45,7 +45,7 @@ module usb() {
                 cylinder(d = USB_MOUNTING_HOLES_HEAD_DIA, h = THICKNESS/2);
             }
         }
-        
+
         cube(size = [USB_SLOT_WIDTH, USB_SLOT_HEIGHT, THICKNESS*2], center = true);
     }
 }
@@ -67,7 +67,7 @@ union() {
         translate([0, 0, HEIGHT/2])
         rotate([0, 0, 180])
         standoffs();
-        
+
         if (USB) {
             translate([-WIDTH/5, CORNER_DIA/2 - THICKNESS, HEIGHT/2])
             rotate([-90, 0, 0])

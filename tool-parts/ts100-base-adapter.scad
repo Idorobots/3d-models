@@ -14,9 +14,9 @@ module adapter() {
     union() {
       cylinder(d1 = BASE_DIA_BOT, d2 = BASE_DIA_TOP, h = BASE_LENGTH);
     }
-  
+
     #cylinder(d = IRON_DIA, h = IRON_LENGTH);
-    
+
     #translate([0, 0, IRON_LENGTH])
     cylinder(d1 = BASE_DIA_BOT - WALL_THICKNESS * 2, d2 = BASE_DIA_TOP - WALL_THICKNESS * 2, h = BASE_LENGTH);
   }

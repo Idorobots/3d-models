@@ -52,7 +52,7 @@ module gear(teeth, outer_dia, inner_dia, height) {
             teeth(teeth, outer_dia, TOOTH_TOP_WIDTH, TOOTH_BOT_WIDTH, TOOTH_LENGTH, false);
 
             bevel(outer_dia, BEVEL_HEIGHT, BEVEL_ANGLE);
-            
+
             if(height >= 1) {
                 translate([0, 0, h])
                 rotate([180, 0, 0])

@@ -22,7 +22,7 @@ $fn = 500;
 difference() {
     union() {
         cylinder(d = ADAPTER_DIA, h = ADAPTER_THICKNESS);
-        
+
         if(HOOKS_INSTEAD_OF_LIP) {
             for(i = [0:HOOKS-1]) {
                 rotate([0, 0, i * 360/HOOKS])
@@ -33,7 +33,7 @@ difference() {
             cylinder(d = LIP_DIA, h = LIP_HEIGHT);
         }
     }
-    
+
     translate([0, 0, ADAPTER_THICKNESS]) {
         cylinder(d = BASE_DIA, h = BASE_THICKNESS);
         if(HOOKS_INSTEAD_OF_LIP) {

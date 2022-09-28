@@ -24,23 +24,23 @@ module mounting_holes(dia) {
 
 difference() {
     w = NEMA_WIDTH + 2 * WALL_THICKNESS;
-    
+
     union() {
         cube(size = [w, w, THICKNESS], center = true);
 
         mounting_holes(MOUNTING_HOLE_DIA + 2 * WALL_THICKNESS);
-        
+
         translate([0, NEMA_SLOT_LENGTH, 0])
         cube(size = [NEMA_SLOT_WIDTH + 2 * WALL_THICKNESS, NEMA_WIDTH + NEMA_SLOT_LENGTH, THICKNESS], center = true);
     }
 
     cube(size = [NEMA_WIDTH, NEMA_WIDTH, THICKNESS], center = true);
-    
+
     translate([0, NEMA_WIDTH, 0])
     cube(size = [NEMA_SLOT_WIDTH, NEMA_WIDTH * 2, THICKNESS], center = true);
 
     mounting_holes(MOUNTING_HOLE_DIA);
-    
+
     translate([0, NEMA_SLOT_LENGTH + NEMA_WIDTH/2, 0])
     rotate([0, 90, 0])
     cylinder(d = NEMA_SLOT_HOLE_DIA, h = NEMA_SLOT_WIDTH * 2, center = true);

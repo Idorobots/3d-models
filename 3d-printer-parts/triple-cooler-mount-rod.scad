@@ -29,7 +29,7 @@ module bot_mount() {
     translate([0, 0, WALL_THICKNESS])
     scale([1.0, 1.0, 0.75])
     sphere(d = BOT_INNER_DIA);
-    
+
     translate([0, 0, BOT_THICKNESS + WALL_THICKNESS])
     scale([1.0, 1.0, 0.75])
     sphere(d = BOT_INNER_DIA);

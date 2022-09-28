@@ -28,7 +28,7 @@ module screws(outer_dia, screw_dia, height) {
             rotate([0, 0, i * 360/N_SCREWS])
             translate([-(OUTER_DIA + SCREW_DIA)/2, 0, 0])
             screw_mount(outer_dia, screw_dia, height);
-            
+
             cylinder(d = 10, h = HEIGHT);
         }
     }
@@ -54,10 +54,10 @@ difference() {
                 rotate([-90, 0, 0])
                 cylinder(d = CHANNEL_DIA + 2 * THICKNESS, h = OUTER_DIA/4);
             }
-            cube(size = [OUTER_DIA/2, OUTER_DIA/4, HEIGHT]); 
+            cube(size = [OUTER_DIA/2, OUTER_DIA/4, HEIGHT]);
         }
         screws(SCREW_MOUNT_DIA, SCREW_DIA, SCREW_MOUNT_HEIGHT);
-        
+
         if(BOTTOM_SCREWS) {
             translate([0, 0, HEIGHT])
             rotate([180, 0, 0])

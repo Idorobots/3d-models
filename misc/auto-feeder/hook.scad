@@ -12,7 +12,7 @@ module hook() {
     cube(size = [WIDTH + wt, WIDTH, WIDTH + wt], center = true);
     translate([0, 0, -wt/2])
     cube(size = [WIDTH, WIDTH, WIDTH + wt], center = true);
-    
+
     rotate([0, 90, 0])
     #cylinder(d = MOUNT_HOLE_DIA, h = WIDTH);
   }

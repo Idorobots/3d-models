@@ -12,7 +12,7 @@ $fn = 100;
 
 difference() {
     cube(size = [WIDTH, LENGTH, HEIGHT], center = true);
-    
+
     for(i = [-1, 1]) {
         translate([0, i * MOUNTING_HOLE_SPACING/2 + MOUNTING_HOLE_OFFSET, 0])
         cylinder(d = MOUNTING_HOLE_DIA, h = HEIGHT, center = true);

@@ -64,7 +64,7 @@ module heater() {
   union() {
     translate([-HEATER_LENGTH/2, 0, 0])
     cube(size = [HEATER_LENGTH, HEATER_HEIGHT, HEATER_WIDTH]);
-    
+
     translate([-HEATER_PORT_LENGTH/2, 0, (HEATER_WIDTH - HEATER_PORT_WIDTH)/2])
   cube(size = [HEATER_PORT_LENGTH, HEATER_HEIGHT, HEATER_PORT_WIDTH]);
 
@@ -77,7 +77,7 @@ module body() {
     scale([1.0, 1.0, 1.0 + BLOWER_OFFSET/BLOWER_HEIGHT])
     blower();
     translate([0, HEATER_OFFSET, 0])
-    heater(); 
+    heater();
   }
 }
 
@@ -87,7 +87,7 @@ module port() {
     blower_port();
     translate([0, HEATER_OFFSET, 0])
     heater_port();
-  }  
+  }
 }
 
 module assembly() {
@@ -101,7 +101,7 @@ module assembly() {
     heater();
 
     #blower_holes();
-    
+
     #translate([0, HEATER_OFFSET - 2 * HEATER_HEIGHT, 0])
     scale([1.0, 2.0, 1.0])
     heater_holes();

@@ -29,7 +29,7 @@ difference() {
 
     translate([0, 0, EXTERNAL_HEIGHT + INTERNAL_HEIGHT * 2/3])
     oring(INTERNAL_DIA, ORING_THICKNESS);
-    
+
     translate([0, 0, EXTERNAL_HEIGHT/2])
     rotate([90, 0, 0])
     cylinder(d = CLAMP_HOLE_DIA, h = max(EXTERNAL_DIA_TOP, EXTERNAL_DIA_BOT), center = true);

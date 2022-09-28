@@ -111,7 +111,7 @@ difference() {
         plate_pos();
         blades_pos();
     }
-    
+
     hub_neg();
     plate_neg();
     blades_neg();

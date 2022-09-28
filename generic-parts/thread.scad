@@ -14,7 +14,7 @@ module thread_segment(i, diameter, pitch, segments_per_turn) {
  	//       1 \ | 4\ |
 	//          \|___\|
 	//          0     3
-	//  
+	//
 	polyhedron(
 		points = [
 			[cos(as)*(r+sh),sin(as)*(r+sh),z], //0
@@ -42,7 +42,7 @@ module thread(diameter, height, pitch) {
         translate([0, 0, -height/2])
         union() {
             for(i = [0:(2*height/pitch)-1]) {
-                translate([0, 0, i*pitch])	
+                translate([0, 0, i*pitch])
                 thread_turn(diameter, pitch, $fn);
             }
         }

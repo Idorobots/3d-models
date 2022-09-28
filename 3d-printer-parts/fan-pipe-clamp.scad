@@ -31,9 +31,9 @@ difference() {
             cube(size = [PIPE_CLAMP_GAP_WIDTH, 2 * THICKNESS, HEIGHT]);
         }
         translate([-BASE_PLATE_WIDTH/2, 0, 0])
-        cube(size = [BASE_PLATE_WIDTH, BASE_PLATE_THICKNESS, HEIGHT]);    
+        cube(size = [BASE_PLATE_WIDTH, BASE_PLATE_THICKNESS, HEIGHT]);
     }
-    
+
     #for(i = [-1, 1]) {
         translate([i * FAN_MOUNT_SPACING/2, 0, HEIGHT - (BASE_PLATE_WIDTH - FAN_MOUNT_SPACING)/2])
         rotate([-90, 0, 0])

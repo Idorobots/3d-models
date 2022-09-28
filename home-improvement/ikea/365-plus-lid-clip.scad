@@ -13,7 +13,7 @@ module clip() {
     cube(size = [WIDTH, THICKNESS, HEIGHT + 2 * THICKNESS], center = true);
     translate([0, (DEPTH_TOP + LIP_DIA + THICKNESS)/2, (HEIGHT + THICKNESS)/2])
     cube(size = [WIDTH, DEPTH_TOP + LIP_DIA , THICKNESS], center = true);
-    
+
     translate([0, (DEPTH_TOP + LIP_DIA), HEIGHT/2])
     rotate([0, 90, 0])
     cylinder(d = LIP_DIA, h = WIDTH, center = true);

@@ -29,16 +29,16 @@ difference() {
     union() {
         thread(THREAD_DIA, G14_HEIGHT, THREAD_PITCH, THREAD_HEIGHT);
         cylinder(d = INNER_DIA, h = G14_HEIGHT);
-        
+
         translate([0, 0, G14_HEIGHT])
         cylinder(d = OUTER_DIA, h = GASKET_HEIGHT);
-        
+
         translate([0, 0, G14_HEIGHT + GASKET_HEIGHT])
         cylinder(d = OUTER_DIA, h = HEX_HEIGHT, $fn = 6);
-        
+
         translate([0, 0, base_height + BARB_DIA/2])
         angled_barbed_hose_adapter_pos(HOLE_DIA, BARB_DIA, BARB_LENGTH, BARB_HEIGHT, THREAD_BARB_DIA, THREAD_BARB_DIA, 0, 0, ADAPTER_ANGLE, BARBS);
-        
+
         if(ADAPTER_ANGLE == 90) {
             translate([0, 0, base_height])
             cylinder(d = OUTER_DIA, h = BARB_DIA + max(THREAD_BARB_DIA - BARB_DIA, RIGHT_ANGLE_TOP_WALL_THICKNESS), $fn = 6);

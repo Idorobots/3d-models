@@ -49,7 +49,7 @@ module led_arm_mount() {
         cylinder(d = LED_ARM_MOUNT_DIA, h = PLATE_DIA/2);
       }
     }
-    
+
     translate([0, 0, -PLATE_DIA/2])
     rotate([0, 90, 0])
     cylinder(d = PLATE_DIA, h = WIDTH, center = true);
@@ -116,16 +116,16 @@ difference() {
   }
   translate([0, 0, HEIGHT])
   motor_mount_holes();
-  
+
   translate([0, LED_DRIVER_MOUNT_OFFSET, HEIGHT])
   led_driver_mount();
-  
+
   translate([PLATE_DIA/2, 0, HEIGHT - LED_ARM_MOUNT_DIA/2])
   led_arm_mount_holes();
-  
+
   translate([-PLATE_DIA/2, 0, HEIGHT/2])
   power_port();
-  
+
   translate([POWER_BLOCK_MOUNT_OFFSET, 0, HEIGHT])
   power_block_mount();
 }

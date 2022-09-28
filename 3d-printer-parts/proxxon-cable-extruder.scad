@@ -119,7 +119,7 @@ module extruder_drive_train() {
     cylinder(d = DD_INNER_DIA, h = COG_SHAFT_LENGTH);
 
     bearing(BEARING_WIDTH, BEARING_OUTER_DIA, BEARING_INNER_DIA);
- 
+
     dh = 0.0001; // NOTE Needed to get rid of some stray 0-thickness walls.
     translate([0, 0, BEARING_WIDTH - dh]) {
       color("blue")
@@ -233,7 +233,7 @@ module positive() {
       translate([0, DD_TEETH_DIA - DD_MESH, 0])
       cylinder(d = BEARING_MOUNT_DIA_IDLER, h = COG_SHAFT_LENGTH);
     }
-    
+
     for(t = MOUNTING_HOLE_OFFSETS) {
       translate(t)
       cylinder(d = MOUNTING_HOLE_FACE_DIA, h = MOUNTING_HOLE_LENGTH - 2 * MOUNTING_HOLE_HEAD_LENGTH, center = true);
@@ -253,7 +253,7 @@ module mask(hinge = false) {
     difference() {
       translate([-25, (DD_TEETH_DIA - DD_MESH)/2, -BEARING_MOUNT_DIA_DRIVE/2])
       cube(size = [50, 50, BEARING_MOUNT_DIA_DRIVE]);
-        
+
       if(hinge) {
         translate([MOUNTING_HOLE_OFFSETS[0][0] - MOUNTING_HOLE_LENGTH/2, MOUNTING_HOLE_OFFSETS[0][1], 0])
         rotate([0, 0, 90])

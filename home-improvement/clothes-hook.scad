@@ -38,11 +38,11 @@ module hook(inner_dia, outer_dia, thickness, angle) {
 union() {
     translate([-LOOP_WIDTH/2, 0, 0])
     loop(LOOP_DIA, LOOP_WIDTH, THICKNESS);
-    
+
     bar_len = LENGTH-LOOP_WIDTH-HOOK_WIDTH/2;
     translate([bar_len, -(HOOK_DIA+THICKNESS)/2, 0])
     hook(HOOK_DIA, HOOK_WIDTH, THICKNESS, HOOK_ANGLE);
-    
+
     translate([bar_len/2 - 1, 0, 0])
     cube(size = [bar_len + 2,THICKNESS, THICKNESS], center = true);
 }

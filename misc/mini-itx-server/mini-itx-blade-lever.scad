@@ -46,7 +46,7 @@ module lever() {
     }
     translate([0, MOUNT_PLACEMENT - LENGTH/2, ])
     mount_hole();
-    
+
     translate([0, 0, THICKNESS])
     rounded_rect(RAIL_THICKNESS, LENGTH, 10, CORNER_DIA);
   }

@@ -32,7 +32,7 @@ module lego_lip(inner_dia, outer_dia) {
         }
         translate([0, 0, -bottom_thickness])
         cylinder(d = inner_dia, h = lip_thickness + bottom_thickness);
-    } 
+    }
 }
 
 module stronger_bottom(inner_dia, outer_dia) {
@@ -41,7 +41,7 @@ module stronger_bottom(inner_dia, outer_dia) {
     difference() {
         cylinder(d = outer_dia, h = lip_thickness);
         cylinder(d = inner_dia, h = lip_thickness);
-    }    
+    }
 }
 
 union() {

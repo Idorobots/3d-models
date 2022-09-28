@@ -18,10 +18,10 @@ module lip_n_rod() {
         rotate([0, 0, 90])
         translate([-off, off, 0])
         cube(size = [LIP_WIDTH, WIDTH + 2 * off + LIP_WIDTH, HEIGHT], center = true);
- 
+
         hull() {
             cylinder(d = ROD_DIA, h = 2 * HEIGHT, center = true);
-            
+
             w = LIP_WIDTH + 2 * THICKNESS;
             translate([off, -off, 0])
             cube(size = [w, w, 2 * HEIGHT], center = true);

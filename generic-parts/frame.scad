@@ -28,7 +28,7 @@ module frame() {
   difference() {
     translate([-FRAME_WIDTH/2, -FRAME_LENGTH/2, 0])
     cube(size = [FRAME_WIDTH, FRAME_LENGTH, FRAME_THICKNESS]);
-    
+
     for(i = [-1, 1]) {
       translate([i * MOUNT_HOLE_SPACING_X/2, -MOUNT_HOLE_SPACING_Y/2, 0])
       cylinder(d = MOUNT_HOLE_DIA, h = FRAME_THICKNESS);
@@ -38,7 +38,7 @@ module frame() {
 
       translate([i * MOUNT_HOLE_SPACING_X/2, 0, 0])
       cylinder(d = MOUNT_HOLE_DIA, h = FRAME_THICKNESS);
-      
+
       translate([0, i * HOLE_SPACING/2, 0])
       hole();
     }

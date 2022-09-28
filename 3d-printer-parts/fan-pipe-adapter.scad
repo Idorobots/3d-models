@@ -80,11 +80,11 @@ module fan_outlet_pos() {
 module fan_outlet_neg() {
     hull() {
         translate([FAN_OUTLET_OFFSET - (FAN_SIZE-FAN_OUTLET_SIZE)/2, FAN_OUTLET_WALL_THICKNESS/2, BACKPLATE_THICKNESS])
-        rounded_rect(FAN_OUTLET_SIZE - FAN_OUTLET_WALL_THICKNESS * 2, FAN_SIZE - FAN_OUTLET_WALL_THICKNESS, FAN_THICKNESS, BACKPLATE_CORNER_DIA);    
-        
+        rounded_rect(FAN_OUTLET_SIZE - FAN_OUTLET_WALL_THICKNESS * 2, FAN_SIZE - FAN_OUTLET_WALL_THICKNESS, FAN_THICKNESS, BACKPLATE_CORNER_DIA);
+
         intersection() {
             rounded_rect(FAN_OUTLET_SIZE - FAN_OUTLET_WALL_THICKNESS * 2, FAN_SIZE * 2, FAN_THICKNESS, BACKPLATE_CORNER_DIA);
-            
+
             outlet_neg();
         }
     }
@@ -111,7 +111,7 @@ difference() {
             outlet_pos();
         }
     }
-    
+
     outlet_neg();
     fan_outlet_neg();
     fan_neg();

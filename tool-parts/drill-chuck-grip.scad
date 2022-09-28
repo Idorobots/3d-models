@@ -48,7 +48,7 @@ module mounting_holes() {
     union() {
         translate([0, -OUTER_DIAMETER/3, HEIGHT/2])
         mounting_hole();
-        
+
         translate([0, OUTER_DIAMETER/3, HEIGHT/2])
         mounting_hole();
     }

@@ -31,16 +31,16 @@ module outline() {
     union() {
         translate([-(BAR_CONN_LENGTH-BAR_TOP_WIDTH)/2, 0, 0])
         rounded_rect(BAR_TOP_WIDTH, BAR_TOP_LENGTH, HEIGHT, BAR_CORNER_DIA, SLANT);
-        
+
         translate([SLANT+1, (BAR_TOP_LENGTH-BAR_CONN_WIDTH)/2, 0])
         rounded_rect(BAR_CONN_LENGTH, BAR_CONN_WIDTH, HEIGHT, BAR_CORNER_DIA);
 
         translate([-SLANT+1, -(BAR_TOP_LENGTH-BAR_CONN_WIDTH)/2, 0])
         rounded_rect(BAR_CONN_LENGTH, BAR_CONN_WIDTH, HEIGHT, BAR_CORNER_DIA);
-        
+
         translate([BAR_CONN_LENGTH/2+SLANT, (BAR_TOP_LENGTH+NOTE_BODY_DIA)/2 - BAR_CONN_WIDTH, 0])
         note_body(NOTE_BODY_DIA, HEIGHT);
-        
+
         translate([BAR_CONN_LENGTH/2-SLANT, -(BAR_TOP_LENGTH-NOTE_BODY_DIA)/2, 0])
         note_body(NOTE_BODY_DIA, HEIGHT);
     }

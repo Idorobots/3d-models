@@ -38,7 +38,7 @@ module bars() {
 union() {
     translate([-CROSSBAR_LENGTH/2, 0, 0])
     mounts();
-    
+
     crossbars();
 
     bars();

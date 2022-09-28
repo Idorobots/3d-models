@@ -38,7 +38,7 @@ module passthrough() {
     union() {
       rotate([0, PASSTHROUGH_ANGLE - 90, 0])
       if(ROUND) {
-        rounded_rect(MOUNT_WIDTH, MOUNT_LENGTH, MOUNT_HEIGHT, MOUNT_CORNER_DIA);        
+        rounded_rect(MOUNT_WIDTH, MOUNT_LENGTH, MOUNT_HEIGHT, MOUNT_CORNER_DIA);
       } else {
         cube(size = [MOUNT_WIDTH, MOUNT_LENGTH, MOUNT_HEIGHT], center = true);
       }
@@ -54,7 +54,7 @@ module passthrough() {
 
     #translate([0, -MOUNT_HOLE_SPACING/2, 0])
     cylinder(d = MOUNT_HOLE_DIA, h = MOUNT_HEIGHT * 2, center = true);
- 
+
     #translate([0, -MOUNT_HOLE_SPACING/2, MOUNT_THICKNESS])
     cylinder(d = MOUNT_HOLE_HEAD_DIA, h = MOUNT_HEIGHT);
 

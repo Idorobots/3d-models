@@ -24,13 +24,13 @@ module plate() {
         translate([0, 0, NOB_LENGTH/2])
         cube(size = [NOB_SIZE, NOB_SIZE, NOB_LENGTH], center = true);
       }
-      
+
       if(TOP_PLATE) {
         translate([0, (PLATE_WIDTH - PLATE_THICKNESS)/2, -TOP_PLATE_HEIGHT/2])
         cube(size = [PLATE_LENGTH, PLATE_THICKNESS, TOP_PLATE_HEIGHT], center = true);
       }
     }
-    
+
     #translate([0, -(PLATE_WIDTH - CHAIN_EXCLUSION_WIDTH)/2, 0])
     cube(size = [CHAIN_EXCLUSION_LENGTH, CHAIN_EXCLUSION_WIDTH, PLATE_THICKNESS], center = true);
   }

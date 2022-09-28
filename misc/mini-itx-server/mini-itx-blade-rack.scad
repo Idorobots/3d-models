@@ -35,7 +35,7 @@ $fn = 50;
 module rails() {
   off = RAIL_SPACING/2 + ((HEIGHT / RAIL_SPACING) - N_RAILS) * RAIL_SPACING/2;
   delta = RAIL_SLOT_WIDTH/2 + RAIL_BOT_WIDTH/2;
-  
+
   for(i = [0:HEIGHT/RAIL_SPACING-1]) {
     translate([RAIL_BOT_WIDTH/2, i * RAIL_SPACING + off + delta, 0])
     rail();
@@ -54,7 +54,7 @@ module rail() {
     cylinder(d1 = RAIL_BOT_WIDTH, d2 = RAIL_TOP_WIDTH, h = RAIL_DEPTH);
     translate([WIDTH - RAIL_BOT_WIDTH, 0, 0])
     cylinder(d = RAIL_BOT_WIDTH, h = THICKNESS);
-  }  
+  }
 }
 
 module base() {
@@ -123,7 +123,7 @@ difference() {
     }
     rails();
   }
- 
+
   if(MOUNT_HOLES) {
     mount_holes();
   }

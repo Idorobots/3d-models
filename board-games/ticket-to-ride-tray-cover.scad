@@ -36,6 +36,6 @@ difference() {
         rounded_rect(WIDTH, LENGTH, THICKNESS, CORNER_DIA);
         cylinder(d = HOLE_DIA + ORING_DIA + 2 * THICKNESS, h = ORING_MOUNT_HEIGHT);
     }
-    
+
     oring_mount_neg();
 }

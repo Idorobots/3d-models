@@ -75,7 +75,7 @@ module hole_neg() {
         d = DIA - 2 * WALL_THICKNESS;
         translate([0, 0, HOLE_HEIGHT + LIP_HEIGHT])
         cylinder(d = d, h = HEIGHT);
-        
+
         translate([0, 0, BASE_HEIGHT + LIP_HEIGHT])
         difference() {
             h = HOLE_HEIGHT - BASE_HEIGHT;
@@ -94,7 +94,7 @@ module hole_neg() {
 
 difference() {
     cylinder(d = DIA, h = HEIGHT);
-    
+
     body_neg();
     lip_neg();
     hole_neg();

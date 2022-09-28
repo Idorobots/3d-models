@@ -26,11 +26,11 @@ module dove() {
     intersection() {
       rotate([0, 45, 0])
       cube(size = [PUMP_DOVE_SIDE, PUMP_DOVE_LENGTH, PUMP_DOVE_SIDE], center = true);
-      
+
       translate([0, 0, PUMP_DOVE_HEIGHT/2])
       cube(size = [PUMP_DOVE_WIDTH, PUMP_DOVE_LENGTH, PUMP_DOVE_HEIGHT], center = true);
     }
-    
+
     translate([0, 0, PUMP_DIA/2])
     rotate([90, 0, 0])
     cylinder(d = PUMP_DIA, h = PUMP_LENGTH, center = true);
@@ -44,7 +44,7 @@ module pump_mount() {
     cube(size = [PUMP_MOUNT_WIDTH, PUMP_MOUNT_LENGTH, PUMP_MOUNT_HEIGHT], center = true);
     dove();
   }
-} 
+}
 
 module upright_pump_mount() {
   wall_thickness = 3;
@@ -53,7 +53,7 @@ module upright_pump_mount() {
     difference() {
       translate([0, 0, wall_thickness/2])
       cube(size = [PUMP_MOUNT_WIDTH, PUMP_MOUNT_LENGTH, wall_thickness], center = true);
-      pump_mount();      
+      pump_mount();
     }
     translate([0, 0, PUMP_MOUNT_LENGTH/2])
     rotate([90, 0, 0])

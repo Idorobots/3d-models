@@ -27,7 +27,7 @@ module bar(length, width, dia) {
       translate([i * (length - dia)/2, 0, 0])
       cylinder(d = dia, h = width);
     }
-  }  
+  }
 }
 
 module rounded_rect(length, width, height, dia) {
@@ -79,7 +79,7 @@ module foot() {
       rotate([0, 0, 90])
       rounded_rect(FOOT_LENGTH, FOOT_WIDTH, FOOT_THICKNESS, SEGMENT_DIA);
     }
-    
+
     translate([-(l - SEGMENT_DIA)/2, 0, -SEGMENT_WIDTH/2])
     cylinder(d = SEGMENT_HOLE_DIA, h = SEGMENT_WIDTH/2);
   }
@@ -106,10 +106,10 @@ module mount() {
       rotate([90, 0, 0])
       rounded_rect(MOUNT_LENGTH, MOUNT_WIDTH, MOUNT_THICKNESS, SEGMENT_DIA);
     }
-    
+
     translate([-(l - SEGMENT_DIA)/2, 0, 0])
     cylinder(d = SEGMENT_HOLE_DIA, h = SEGMENT_WIDTH/2);
-    
+
     translate([(MOUNT_LENGTH + l)/2 - MOUNT_THICKNESS + MOUNT_HOLE_OFFSET_Y, -(SEGMENT_DIA/2 - MOUNT_THICKNESS), -MOUNT_HOLE_OFFSET_X])
     rotate([90, 0, 0])
     cylinder(d = MOUNT_HOLE_DIA, h = MOUNT_THICKNESS);

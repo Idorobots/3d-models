@@ -81,7 +81,7 @@ module tabs() {
 
   translate([-TABS_WIDTH/2 + (BASE_WIDTH-TABS_WIDTH)/2, 0, 0])
       cube(size = [TABS_WIDTH, TABS_LENGTH, TABS_HEIGHT]);
-    
+
 }
 
 module top_holes() {
@@ -106,7 +106,7 @@ module bottom_holes() {
             translate([i * BOTTOM_MOUNT_HOLES_SPACING_X_BACK/2, BOTTOM_MOUNT_HOLES_SPACING_Y/2, 0])
             cylinder(d = BOTTOM_MOUNT_HOLES_DIA, h = BOTTOM_MOUNT_HOLES_HEIGHT);
         }
-    }    
+    }
 }
 
 module slot() {
@@ -122,19 +122,19 @@ difference() {
     translate([0, CONNECTOR_OFFSET, BASE_HEIGHT + RISER_HEIGHT])
     connector();
   }
-  
+
   #translate([0, CHANNEL_OFFSET, 0])
   channel();
-  
+
   #translate([0, TABS_OFFSET, 0])
   tabs();
-  
+
   #translate([0, TOP_MOUNT_HOLES_OFFSET, 0])
   top_holes();
 
   #translate([0, BOTTOM_MOUNT_HOLES_OFFSET, 0])
   bottom_holes();
-  
+
   #translate([0, CONNECTOR_OFFSET, 0])
   slot();
 

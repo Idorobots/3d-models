@@ -13,13 +13,13 @@ intersection() {
 
         union() {
             translate([0, 0, GASKET_HEIGHT])
-                cylinder(h = HEIGHT, 
-                         r1 = GASKET_OUTER_DIAMETER/2, 
+                cylinder(h = HEIGHT,
+                         r1 = GASKET_OUTER_DIAMETER/2,
                          r2 = GASKET_OUTER_DIAMETER/2
             );
 
-            cylinder(h = HEIGHT*2, 
-                     r1 = GASKET_INNER_DIAMETER/2, 
+            cylinder(h = HEIGHT*2,
+                     r1 = GASKET_INNER_DIAMETER/2,
                      r2 = GASKET_INNER_DIAMETER/2,
                      center = true
             );

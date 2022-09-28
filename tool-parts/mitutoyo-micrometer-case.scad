@@ -29,7 +29,7 @@ module micrometer() {
         cylinder(d = HEAD_THICKNESS, h = HEAD_DIA);
       }
     }
-    
+
     hull() {
       translate([-HEAD_DIA/2, (HEAD_DIA - ARM_DIA)/2, HEAD_THICKNESS/2])
       rotate([0, 90, 0])
@@ -54,7 +54,7 @@ module rounded_rect(width, length, height, corner_dia) {
 }
 
 module tool_cavity() {
-  #rounded_rect(TOOL_CAVITY_WIDTH, TOOL_CAVITY_LENGTH, HEAD_THICKNESS + OFFSET, CORNER_DIA); 
+  #rounded_rect(TOOL_CAVITY_WIDTH, TOOL_CAVITY_LENGTH, HEAD_THICKNESS + OFFSET, CORNER_DIA);
 }
 
 module insert() {
@@ -81,11 +81,11 @@ module case() {
 
     scale([scale_x, scale_y, scale_z])
     hull()
-    insert();    
+    insert();
 
     delta_x = (ARM_LENGTH + wt + delta) / (ARM_LENGTH + wt);    delta_y = (HEAD_DIA + wt + delta) / (HEAD_DIA + wt);
     delta_z = (ARM_DIA + 0.5 * wt + delta) / (ARM_DIA + 0.5 * wt);
-  
+
     #translate([scale_x/2 * WALL_THICKNESS/2, 0, scale_z/2 * WALL_THICKNESS/2])
     scale([delta_x, delta_y, delta_z])
     hull() {
@@ -93,7 +93,7 @@ module case() {
       translate([10, 0, 0])
       insert();
     }
-    
+
     #translate([ARM_LENGTH - HEAD_DIA/2 + WALL_THICKNESS, 0, (ARM_DIA-HEAD_THICKNESS)/2 + WALL_THICKNESS])
     rotate([90, 0, 0])
     cylinder(d = ARM_DIA + WALL_THICKNESS, h = 2 * HEAD_DIA, center = true);

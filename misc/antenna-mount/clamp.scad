@@ -30,7 +30,7 @@ module mounting_holes() {
             for(j = [-1, 1]) {
                 translate([i * MOUNT_HOLE_SPACING/2, j * MOUNT_HOLE_SPACING/2])
                     cylinder(d = MOUNT_HOLE_DIA, h = HEIGHT);
-            }    
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ module frame() {
    union() {
     translate([0, -FRAME_MIDDLE_WIDTH/2, 0])
     cube(size = [FRAME_LENGTH, FRAME_MIDDLE_WIDTH, FRAME_HEIGHT]);
-    
+
     translate([0, -FRAME_WIDTH/2, 0])
     cube(size = [FRAME_AXLE_WIDTH, FRAME_WIDTH, FRAME_HEIGHT]);
   }
@@ -52,7 +52,7 @@ module axle_mount() {
   l = FRAME_WIDTH - 2 * BEARING_THICKNESS;
   rotate([90, 0, 0]) {
     cylinder(d = BEARING_DIA, h = FRAME_WIDTH, center = true);
-    cylinder(d = AXLE_CHANNEL_WIDTH, h = l, center = true); 
+    cylinder(d = AXLE_CHANNEL_WIDTH, h = l, center = true);
   }
   translate([0, 0, WALL_THICKNESS])
   cube(size = [AXLE_CHANNEL_WIDTH, l, FRAME_HEIGHT], center = true);
@@ -73,7 +73,7 @@ module servo_mount() {
     translate([i * SERVO_MOUNT_SPACING/2, 0, 0])
     cylinder(d = SERVO_MOUNT_DIA, h = FRAME_HEIGHT, center = true);
   }
-  
+
   cube(size = [SERVO_WIDTH, MIDDLE_CHANNEL_WIDTH, FRAME_HEIGHT], center = true);
 }
 
@@ -85,22 +85,22 @@ module thether() {
 module front_axle() {
   difference() {
     frame();
-    
+
     #translate([FRAME_LENGTH - GEARBOX_MOUNT_OFFSET, 0, FRAME_HEIGHT/2])
     gearbox_mount();
-    
+
     #translate([FRAME_AXLE_WIDTH/2, 0, FRAME_HEIGHT/2])
     axle_mount();
-    
+
     #translate([FRAME_AXLE_WIDTH, 0, 0])
     middle_channel();
-    
+
     #translate([FRAME_LENGTH - SLOT_OFFSET - SLOT_LENGTH/2, 0, FRAME_HEIGHT/2])
     slot();
-    
+
     #translate([FRAME_LENGTH - SERVO_MOUNT_SPACING/2 - SERVO_MOUNT_OFFSET, 0, FRAME_HEIGHT])
     servo_mount();
-    
+
     #translate([0, 0, FRAME_HEIGHT])
     thether();
   }

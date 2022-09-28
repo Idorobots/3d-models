@@ -17,7 +17,7 @@ difference() {
     cylinder(d = BEARING_DIA, h = HEIGHT);
     cylinder(d = LIP_DIA, h = LIP_THICKNESS);
   }
-  
+
   cylinder(d = MOUNT_HOLE_DIA, h = HEIGHT);
   cylinder(d = NUB_DIA, h = NUB_THICKNESS);
 }

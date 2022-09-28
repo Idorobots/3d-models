@@ -32,7 +32,7 @@ module adapter() {
       translate([0, -(SLOT_HEIGHT - SLOT_WIDTH)/2, 0])
       rounded_rect(SLOT_THICKNESS, SLOT_HEIGHT, SLING_THICKNESS, CORNER_DIA);
     }
-    
+
     #translate([0, -(SLOT_HEIGHT - SLOT_WIDTH)/2 - SLOT_WIDTH/2 + HOLE_OFFSET, 0])
     mount_holes(0, HOLE_SPACING, SLING_THICKNESS, HOLE_DIA);
   }

@@ -40,21 +40,21 @@ difference() {
         part(FAT_WIDTH, FAT_THICKNESS_FROM, FAT_THICKNESS_TO, FAT_LENGTH);
         translate([FAT_THICKNESS_TO - THIN_THICKNESS_FROM, FAT_WIDTH, 0])
         part(THIN_WIDTH, THIN_THICKNESS_FROM, THIN_THICKNESS_TO, THIN_LENGTH);
-        
+
         translate([FAT_THICKNESS_FROM - LIP_TOP_THICKNESS/2, 0, FAT_LENGTH])
         rotate([-90, 0, -LIP_ANGLE])
         part(LIP_LENGTH, LIP_TOP_THICKNESS, LIP_BOT_THICKNESS, LIP_WIDTH);
-        
+
         translate([0, 0, -ANCHOR_LENGTH])
         union() {
             part(FAT_WIDTH, ANCHOR_THICKNESS, ANCHOR_THICKNESS, ANCHOR_LENGTH);
-            
+
             translate([0, FAT_WIDTH/2, ANCHOR_LENGTH/2])
             rotate([0, 90, 0])
             cylinder(d = ANCHOR_DIA, h = ANCHOR_LENGTH);
-        } 
+        }
     }
-    
+
     translate([-LIP_WIDTH, 0, 0])
     rotate([0, CHAMFER_ANGLE, -LIP_ANGLE])
     cube(size = [FAT_WIDTH, LIP_WIDTH * 3, FAT_LENGTH * 5], center = true);

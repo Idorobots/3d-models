@@ -15,7 +15,7 @@ intersection() {
             translate([0, 0, THICKNESS])
             cylinder(d2 = TOP_DIAMETER - 2 * THICKNESS, d1 = BOT_DIAMETER - 2 * THICKNESS, h = HEIGHT);
         }
-        
+
         for(i = [0:N_STANDOFFS]) {
             rotate([0, 0, i * 360/N_STANDOFFS])
             translate([(BOT_DIAMETER - 2 * THICKNESS)/4, 0, THICKNESS])

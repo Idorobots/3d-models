@@ -20,11 +20,11 @@ module bidet() {
       translate([0, 0, HEAD_HEIGHT + HEAD_CONE_HEIGHT])
       cylinder(d1 = NECK_DIA + 0.5, d2 = NECK_DIA - 0.5, h = NECK_HEIGHT);
     }
-    
+
     #translate([0, 0, (HEAD_HEIGHT - SLOT_LENGTH)/2])
     cylinder(d = HOLE_DIA, h = NECK_HEIGHT + HEAD_HEIGHT + HEAD_CONE_HEIGHT);
-    
-  
+
+
     #translate([0, 0, SLOT_LENGTH/2 + (HEAD_HEIGHT - SLOT_LENGTH)/2])
     rotate([90, 0, 0])
     hull() {

@@ -58,17 +58,17 @@ module tuner_neg() {
     union() {
         translate([0, HOB_AXLE_OFFSET/2, (TUNER_GEAR_THICKNESS-TUNER_BASE_THICKNESS) + TUNER_BASE_THICKNESS/2])
         cube(size = [TUNER_WIDTH, TUNER_LENGTH, TUNER_BASE_THICKNESS], center = true);
-        
+
         cylinder(d = HOB_AXLE_BEARING_DIA, h = HOB_AXLE_LENGTH);
 
         cylinder(d = HOB_GEAR_DIA, h = TUNER_GEAR_THICKNESS + HOB_GEAR_LENGTH);
-        
+
         translate([0, -TUNER_MOUNTING_HOLES_OFFSET, -HOB_AXLE_LENGTH/2])
         cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH*2);
 
         translate([0, -TUNER_MOUNTING_HOLES_OFFSET + TUNER_MOUNTING_HOLES_SPACING, -HOB_AXLE_LENGTH/2])
         cylinder(d = TUNER_MOUNTING_HOLES_DIA, h = HOB_AXLE_LENGTH*2);
-        
+
         translate([TUNER_WIDTH/2, WORM_AXLE_OFFSET_Y, TUNER_GEAR_THICKNESS-WORM_AXLE_OFFSET_Z])
         rotate([0, -90, 0])
         cylinder(d = WORM_AXLE_DIA, h = WORM_AXLE_LENGTH);
@@ -82,13 +82,13 @@ module idler_neg() {
             cylinder(d = IDLER_BEARING_DIA, h = IDLER_BEARING_THICKNESS, center = true);
             translate([0, IDLER_BEARING_DIA/2, 0])
             cylinder(d = IDLER_BEARING_DIA, h = IDLER_BEARING_THICKNESS, center = true);
-                            
+
         }
         hull() {
             translate([0, -IDLER_BEARING_DIA/2, 0])
             cylinder(d = IDLER_MOUNT_DIA, h = IDLER_MOUNT_THICKNESS, center = true);
             translate([0, IDLER_BEARING_DIA/2, 0])
-            cylinder(d = IDLER_MOUNT_DIA, h = IDLER_MOUNT_THICKNESS, center = true);                
+            cylinder(d = IDLER_MOUNT_DIA, h = IDLER_MOUNT_THICKNESS, center = true);
         }
     }
 }
@@ -122,7 +122,7 @@ module body_pos() {
                 translate([0, -HOB_OFFSET_Y, 0])
                 rotate([0, 90, 0])
                 cylinder(d = HOB_GEAR_DIA + WALL_THICKNESS * 2, h = BODY_WIDTH, center = true);
-                
+
                 translate([0, -(BODY_LENGTH - BODY_MOUNTING_HOLES_DIA)/2, 0])
                 rotate([0, 90, 0])
                 cylinder(d = BODY_MOUNTING_HOLES_DIA, h = BODY_WIDTH, center = true);
@@ -137,12 +137,12 @@ module tube_pos() {
     union() {
         translate([0, 0, -TUNER_WIDTH/2 - TUBE_MOUNT_LENGTH])
         cylinder(d = TUBE_MOUNT_DIA + 2 * WALL_THICKNESS, h = TUBE_LENGTH + TUBE_MOUNT_LENGTH * 2);
-    }    
+    }
 }
 
 module flex_pos() {
     l = FLEX_LENGTH - TUNER_WIDTH;
-    
+
     translate([0, 0, -l])
     union() {
         translate([0, 0, l])
@@ -182,7 +182,7 @@ intersection() {
             flex_neg();
         }
     }
-    
+
     if(PART == 1) {
         translate([25, 0, 0])
         cube(size = [50, 50, 50], center = true);

@@ -74,13 +74,13 @@ module board_support() {
 
       translate([MOUNT_HOLE_SPACING[0][0], MOUNT_HOLE_SPACING[0][1], 0])
       cylinder(d = SUPPORT_CORNER_DIA, h = SUPPORT_THICKNESS);
-      
+
       translate([MOUNT_HOLE_SPACING[1][0], MOUNT_HOLE_SPACING[1][1], 0])
       cylinder(d = SUPPORT_CORNER_DIA, h = SUPPORT_THICKNESS);
-      
+
       translate([MOUNT_HOLE_SPACING[2][0], MOUNT_HOLE_SPACING[2][1], 0])
       cylinder(d = SUPPORT_CORNER_DIA, h = SUPPORT_THICKNESS);
-      
+
       translate([MOUNT_HOLE_SPACING[3][0], MOUNT_HOLE_SPACING[3][1], 0])
       cylinder(d = SUPPORT_CORNER_DIA, h = SUPPORT_THICKNESS);
     }
@@ -106,13 +106,13 @@ module front_rail() {
         hull() {
           translate([MOUNT_HOLE_SPACING[1][0], MOUNT_HOLE_SPACING[1][1], 0])
           cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-            
+
           translate([MOUNT_HOLE_SPACING[2][0], MOUNT_HOLE_SPACING[2][1], 0])
           cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
           translate([MOUNT_HOLE_SPACING[1][0], RAIL_CORNER_DIA/2, 0])
           cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-            
+
           translate([MOUNT_HOLE_SPACING[2][0], RAIL_CORNER_DIA/2, 0])
           cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
         }
@@ -125,17 +125,17 @@ module front_rail() {
 
         }
       }
-      
+
       hull() {
         translate([MOUNT_HOLE_SPACING[1][0], RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-          
+
         translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH - RAIL_CORNER_DIA, RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
         translate([MOUNT_HOLE_SPACING[1][0], -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-          
+
         translate([MOUNT_HOLE_SPACING[1][0] + FRONT_RAIL_TAB_WIDTH - RAIL_CORNER_DIA, -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
       }
@@ -143,25 +143,25 @@ module front_rail() {
       hull() {
         translate([MOUNT_HOLE_SPACING[2][0], RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-          
+
         translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH + RAIL_CORNER_DIA, RAIL_CORNER_DIA, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
         translate([MOUNT_HOLE_SPACING[2][0], -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-          
+
         translate([MOUNT_HOLE_SPACING[2][0] - FRONT_RAIL_TAB_WIDTH + RAIL_CORNER_DIA, -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
         cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
       }
     }
 
     mounting_holes();
-    
+
     if(INDEX) {
       translate([(BOARD_WIDTH - INDEX_OFFSET_X)/2, - FRONT_RAIL_EXTENSION, 0])
       index();
     }
-    
+
     if(LEVER) {
       translate([MOUNT_HOLE_SPACING[1][0], -FRONT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, 0])
       lever();
@@ -177,24 +177,24 @@ module back_rail() {
     hull() {
       translate([MOUNT_HOLE_SPACING[0][0], MOUNT_HOLE_SPACING[0][1], 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-        
+
       translate([MOUNT_HOLE_SPACING[3][0], MOUNT_HOLE_SPACING[3][1], 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
       translate([MOUNT_HOLE_SPACING[0][0], BOARD_LENGTH + BACK_RAIL_EXTENSION - RAIL_CORNER_DIA/2, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-        
+
       translate([MOUNT_HOLE_SPACING[3][0], BOARD_LENGTH + BACK_RAIL_EXTENSION - RAIL_CORNER_DIA/2, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
     }
 
     mounting_holes();
-    
+
     if(INDEX) {
       translate([(BOARD_WIDTH - INDEX_OFFSET_X)/2, BOARD_LENGTH + BACK_RAIL_EXTENSION, 0])
       index();
     }
-    
+
     if(LEVER) {
       translate([MOUNT_HOLE_SPACING[0][0], BOARD_LENGTH + BACK_RAIL_EXTENSION - RAIL_CORNER_DIA/2, 0])
       lever();
@@ -210,25 +210,25 @@ module left_rail() {
     hull() {
       translate([MOUNT_HOLE_SPACING[0][0], MOUNT_HOLE_SPACING[0][1], 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-        
+
       translate([MOUNT_HOLE_SPACING[1][0], MOUNT_HOLE_SPACING[1][1], 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
       translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-        
+
       translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2 + LEVER_OFFSET_Y, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
     }
 
     mounting_holes();
-    
+
     if(INDEX) {
       translate([-LEFT_RAIL_EXTENSION, (BOARD_LENGTH + INDEX_OFFSET_Y)/2, 0])
       rotate(90, [0, 0, 1])
       index();
     }
-    
+
     if(LEVER) {
       translate([-LEFT_RAIL_EXTENSION + RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       lever();
@@ -244,25 +244,25 @@ module right_rail() {
     hull() {
       translate([MOUNT_HOLE_SPACING[2][0], MOUNT_HOLE_SPACING[2][1], 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-        
+
       translate([MOUNT_HOLE_SPACING[3][0], MOUNT_HOLE_SPACING[3][1], 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
 
       translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
-        
+
       translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, RAIL_CORNER_DIA/2 + LEVER_OFFSET_Y, 0])
       cylinder(d = RAIL_CORNER_DIA, h = RAIL_THICKNESS);
     }
 
     mounting_holes();
-    
+
     if(INDEX) {
       translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION, (BOARD_LENGTH + INDEX_OFFSET_Y)/2, 0])
       rotate(90, [0, 0, 1])
       index();
     }
-    
+
     if(LEVER) {
       translate([BOARD_WIDTH + RIGHT_RAIL_EXTENSION - RAIL_CORNER_DIA/2, BOARD_LENGTH - RAIL_CORNER_DIA/2, 0])
       lever();
@@ -282,13 +282,13 @@ module right_rail() {
 
   translate([0, 0, -2 * RAIL_THICKNESS])
   left_rail();
-  
+
   translate([0, 0, -2 * RAIL_THICKNESS])
   right_rail();
 
   color("green")
   board_support();
-  
+
   color("blue")
   translate([0, 0, SUPPORT_THICKNESS + 2])
   board();

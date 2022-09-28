@@ -18,16 +18,16 @@ union() {
     difference() {
         cylinder(d = PIPE_INSERT_INNER_DIA, h = PIPE_INSERT_LENGTH);
         cylinder(d = MOUNT_SCREW_HEAD_DIA, h = PIPE_INSERT_LENGTH - (MOUNT_SCREW_LENGTH - (MOUNT_HEIGHT - MOUNT_INNER_HEIGHT)));
-        cylinder(d = MOUNT_HOLE_DIA, h = PIPE_INSERT_LENGTH);        
+        cylinder(d = MOUNT_HOLE_DIA, h = PIPE_INSERT_LENGTH);
     }
-    
+
     translate([0, 0, PIPE_INSERT_LENGTH])
     difference() {
         cylinder(d = MOUNT_DIA, h = MOUNT_HEIGHT);
 
         translate([-MOUNT_INNER_WIDTH/2, -MOUNT_INNER_LENGTH/2, MOUNT_HEIGHT - MOUNT_INNER_HEIGHT])
         cube(size = [MOUNT_INNER_WIDTH, MOUNT_INNER_LENGTH, MOUNT_INNER_HEIGHT]);
-        
+
         cylinder(d = MOUNT_HOLE_DIA, h = MOUNT_HEIGHT);
     }
 }

@@ -18,7 +18,7 @@ module bar() {
   difference() {
     translate([-MOUNT_HOLE_SPACING/2, -MOUNT_HOLE_OFFSET - MOUNT_THICKNESS, 0])
     cube(size = [BAR_LENGTH, MOUNT_THICKNESS, BAR_WIDTH]);
-    
+
     translate([BAR_HOLE_OFFSET - MOUNT_HOLE_SPACING/2, -MOUNT_HOLE_OFFSET, BAR_WIDTH/2 - BAR_HOLE_SPACING/2])
     rotate([90, 0, 0])
     cylinder(d = BAR_HOLE_DIA, h = MOUNT_THICKNESS);
@@ -35,7 +35,7 @@ module mount() {
       hull() {
         translate([-MOUNT_HOLE_SPACING/2, 0, 0])
         cylinder(d = MOUNT_DIA, h = MOUNT_THICKNESS);
-        
+
         translate([MOUNT_HOLE_SPACING/2, 0, 0])
         cylinder(d = MOUNT_DIA, h = MOUNT_THICKNESS);
       }
@@ -44,7 +44,7 @@ module mount() {
     }
     translate([-MOUNT_HOLE_SPACING/2, 0, 0])
     cylinder(d = MOUNT_HOLE_DIA, h = MOUNT_THICKNESS);
-    
+
     translate([MOUNT_HOLE_SPACING/2, 0, 0])
     cylinder(d = MOUNT_HOLE_DIA, h = MOUNT_THICKNESS);
 

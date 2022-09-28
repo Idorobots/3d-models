@@ -8,8 +8,8 @@ $fn = 50;
 difference() {
     intersection() {
         cylinder(
-            r1 = DIAMETER/2, 
-            r2 = DIAMETER/2, 
+            r1 = DIAMETER/2,
+            r2 = DIAMETER/2,
             h = HEIGHT
         );
 
@@ -26,11 +26,11 @@ difference() {
             h = INSET_HEIGHT*2,
             center = true
         );
-        
+
         scale([1, 1, INSET_HEIGHT/(INSET_DIAMETER/2)])
             sphere(
                 r = INSET_DIAMETER/2
             );
-        
+
     }
 }

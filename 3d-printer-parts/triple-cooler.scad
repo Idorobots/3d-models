@@ -70,15 +70,15 @@ module fan_mount() {
       hull () {
         translate([(FAN_MOUNT_OUTER_SPACING-PORT_LENGTH)/2, -WALL_THICKNESS, -FAN_MOUNT_THICKNESS])
         cylinder(d = FAN_MOUNT_DIA, h = FAN_MOUNT_THICKNESS + WALL_THICKNESS);
-        
+
         translate([0, -WALL_THICKNESS, 0])
         cylinder(d = FAN_MOUNT_DIA, h = FAN_MOUNT_THICKNESS);
-        
+
         translate([0, -PORT_DEPTH, 0])
-        cylinder(d = FAN_MOUNT_DIA, h = FAN_MOUNT_THICKNESS);        
+        cylinder(d = FAN_MOUNT_DIA, h = FAN_MOUNT_THICKNESS);
       }
     }
-    
+
     translate([0, PORT_DEPTH/2, 0])
     cylinder(d = FAN_HOLE_DIA, h = FAN_MOUNT_THICKNESS);
   }
@@ -89,7 +89,7 @@ module port_duct() {
     rotate([PORT_ANGLE, 0, 0])
     translate([-PORT_DUCT_LENGTH/2, -PORT_DEPTH, 0])
     cube([PORT_DUCT_LENGTH, PORT_DEPTH * 2, PORT_DUCT_WIDTH]);
-    
+
     translate([0, 0, WALL_THICKNESS])
     cylinder(d = COOLER_DIA_TOP * 2, h = 3 * HEIGHT);
   }
@@ -109,7 +109,7 @@ module port() {
       mirror([1, 0, 0])
       fan_mount();
     }
-    
+
     cylinder(d = COOLER_DIA_TOP * 2, h = 3 * HEIGHT);
   }
 }
@@ -119,7 +119,7 @@ module access_slot_duct() {
     rotate([0, 0, -ACCESS_SLOT_ANGLE/2])
     translate([-WALL_THICKNESS/2, 0, 0])
     cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, 2 * HEIGHT]);
-  
+
     rotate([0, 0, ACCESS_SLOT_ANGLE/2])
     translate([-WALL_THICKNESS/2, 0, 0])
     cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, 2 * HEIGHT]);
@@ -127,7 +127,7 @@ module access_slot_duct() {
 }
 
 module duct_base() {
-  cylinder(d1 = DUCT_OUTER_DIA_BOT, d2 = DUCT_OUTER_DIA_TOP, h = DUCT_HEIGHT);  
+  cylinder(d1 = DUCT_OUTER_DIA_BOT, d2 = DUCT_OUTER_DIA_TOP, h = DUCT_HEIGHT);
 }
 
 module access_slot() {
@@ -135,11 +135,11 @@ module access_slot() {
     translate([WALL_THICKNESS, 0, 0])
     rotate([0, 0, -ACCESS_SLOT_ANGLE/2])
     translate([-WALL_THICKNESS/2, 0, 0])
-    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, HEIGHT]);      
+    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, HEIGHT]);
     translate([-WALL_THICKNESS, 0, 0])
     rotate([0, 0, ACCESS_SLOT_ANGLE/2])
     translate([-WALL_THICKNESS/2, 0, 0])
-    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, HEIGHT]);      
+    cube(size = [WALL_THICKNESS, COOLER_DIA_BOT, HEIGHT]);
   }
 }
 
@@ -150,7 +150,7 @@ module duct() {
         duct_base();
         if(!ACCESS_SLOT) {
           translate([0, COOLER_DIA_BOT/2 - WALL_THICKNESS * 1.5, 0])
-          port_duct();        
+          port_duct();
         }
         for(i = [1:PORTS-1]) {
           rotate([0, 0, i * PORT_SPACING])
@@ -166,7 +166,7 @@ module duct() {
         translate([-DUCT_BAR_WIDTH/2, 0, 0])
         cube([DUCT_BAR_WIDTH, DUCT_OUTER_DIA_BOT, WALL_THICKNESS]);
       }
-      
+
       if(ACCESS_SLOT) {
         access_slot();
       }

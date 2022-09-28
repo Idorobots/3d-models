@@ -21,7 +21,7 @@ module gear() {
   difference() {
       union() {
       cylinder(d = GEAR_DIA - TOOTH_LENGTH/2, h = GEAR_THICKNESS, $fn = TEETH);
-      
+
       for(i = [0:TEETH-1]) {
         rotate([0, 0, (i + 0.5) * 360/TEETH])
         translate([GEAR_DIA/2, 0, 0])
@@ -29,7 +29,7 @@ module gear() {
         cylinder(d = TOOTH_LENGTH * 2, h = GEAR_THICKNESS);
       }
     }
-    
+
     if(HEX_HOLE) {
       union() {
         cylinder(d = HEX_DIA, h = GEAR_THICKNESS);

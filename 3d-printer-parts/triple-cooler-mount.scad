@@ -17,7 +17,7 @@ module platform() {
 
 module mount() {
   difference() {
-    union() { 
+    union() {
       translate([0, 0, MOUNT_BASE_THICKNESS - WALL_THICKNESS])
       cylinder(d = MOUNT_ROD_DIA, h = MOUNT_ROD_LENGTH);
 
@@ -28,7 +28,7 @@ module mount() {
 
     translate([0, 0, MOUNT_BASE_THICKNESS])
     cylinder(d = MOUNT_ROD_HOLE_DIA, h = MOUNT_ROD_LENGTH - WALL_THICKNESS);
-    
+
     #translate([MOUNT_DIA/2, 0, WALL_THICKNESS])
     rotate([0, 0, 30])
     platform();

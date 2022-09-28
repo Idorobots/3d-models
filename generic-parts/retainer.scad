@@ -14,16 +14,16 @@ module retainer() {
     hull() {
       l = LENGTH - CORNER_DIA;
       h = HEIGHT - CORNER_DIA;
-      
+
       translate([-l/2, 0, 0])
       cylinder(d = CORNER_DIA, h = WIDTH);
 
       translate([l/2, 0, 0])
       cylinder(d = CORNER_DIA, h = WIDTH);
-      
+
       translate([-l/2, h, 0])
       cylinder(d = CORNER_DIA, h = WIDTH);
-      
+
       translate([l/2, h, 0])
       cylinder(d = CORNER_DIA, h = WIDTH);
     }
@@ -33,25 +33,25 @@ module retainer() {
       dia = INNER_CORNER_DIA;
       l = LENGTH - INNER_CORNER_DIA - 2 * THICKNESS;
       h = HEIGHT - INNER_CORNER_DIA - 2 * THICKNESS;
-      
+
       translate([-l/2, 0, 0])
       cylinder(d = dia, h = WIDTH);
 
       translate([l/2, 0, 0])
       cylinder(d = dia, h = WIDTH);
-      
+
       translate([-l/2, h, 0])
       cylinder(d = dia, h = WIDTH);
-      
+
       translate([l/2, h, 0])
       cylinder(d = dia, h = WIDTH);
     }
-    
+
     w = OPENING_WIDTH + THICKNESS;
     #translate([-w/2, HEIGHT-THICKNESS-CORNER_DIA/2, 0])
     cube(size = [w, THICKNESS, WIDTH]);
   }
-  
+
   translate([-OPENING_WIDTH/2 - THICKNESS/2, HEIGHT-CORNER_DIA/2 - THICKNESS/2, 0])
   cylinder(d = THICKNESS, h = WIDTH);
 

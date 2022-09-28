@@ -33,7 +33,7 @@ module square_cylinder(diameter, height) {
             cube(size = [diameter, diameter/2, height]);
         }
         translate([-diameter/2, -diameter/2, 0])
-        cube(size = [diameter, diameter/2, height]);    
+        cube(size = [diameter, diameter/2, height]);
     }
 }
 
@@ -69,21 +69,21 @@ module top() {
             translate([-(WIDTH-d)/2, d, 0])
             rotate([0, 0, -90])
             square_bar(d, HEIGHT-2*d, t);
-           
+
             translate([(WIDTH-d)/2, d, 0])
             rotate([0, 0, 90])
             square_bar(d, HEIGHT-2*d, t);
- 
+
             translate([0, -HEIGHT/4, 0])
             rounded_rect(d, WIDTH, HEIGHT/2, t);
         }
 
         translate([0, (HEIGHT-SLOT_HEIGHT)/2, 0])
         rounded_rect(id, SLOT_WIDTH, SLOT_HEIGHT, t);
-        
+
         translate([0, WALL_THICKNESS, WALL_THICKNESS])
         rounded_rect(d, WIDTH-2*WALL_THICKNESS, HEIGHT, t);
-        
+
         translate([0, WALL_THICKNESS/2, t-WALL_THICKNESS])
         rounded_rect(d, WIDTH-WALL_THICKNESS, HEIGHT, WALL_THICKNESS);
     }

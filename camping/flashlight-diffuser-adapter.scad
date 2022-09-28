@@ -15,12 +15,12 @@ module diffuser() {
       cylinder(d = 2 * DIFF_DIA, h = DIFF_HEIGHT);
       cylinder(d = DIFF_DIA, h = DIFF_HEIGHT);
     }
-    
+
     translate([0, 0, DIFF_LIP_DIA/2 + 0.5])
     rotate_extrude(angle = 360)
     translate([DIFF_DIA/2, 0, 0])
     circle(d = DIFF_LIP_DIA);
-    
+
     cylinder(d = FL_DIA, h = DIFF_HEIGHT);
   }
 }

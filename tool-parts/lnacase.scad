@@ -41,7 +41,7 @@ module rounded_cube(width, length, height, corner_dia) {
 module lna() {
     union() {
         cube(size = [LNA_WIDTH, LNA_LENGTH, LNA_THICKNESS], center = true);
-        
+
         translate([LNA_CONN_OFFSET_X, LNA_CONN_OFFSET_Y, LNA_CONN_OFFSET_Z])
         rotate([90, 0, 0])
         cylinder(d = LNA_CONN_DIA, h = LNA_LENGTH + 20, center = true);
@@ -68,7 +68,7 @@ module dc_jack() {
 }
 
 module case() {
-    translate([WIDTH/2 - LNA_WIDTH/2 - THICKNESS, 0, 0])    
+    translate([WIDTH/2 - LNA_WIDTH/2 - THICKNESS, 0, 0])
     rounded_cube(WIDTH, LENGTH, HEIGHT, CORNER_DIA);
 }
 
@@ -78,7 +78,7 @@ intersection() {
         lna();
         dc_jack();
     }
-    
+
     translate([0, 0, TOP ? 0 : -HEIGHT])
     cylinder(d = 2 * WIDTH, h = HEIGHT);
 }

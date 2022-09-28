@@ -25,17 +25,17 @@ module angled_barbed_hose_adapter_pos(top_inner_dia, top_outer_dia, top_length, 
     d = max([top_outer_dia, bot_outer_dia]);
     union() {
         sphere(d = d);
-        
+
         rotate([180, 0, 0])
         barbs(barbs, bot_inner_dia, bot_outer_dia, bot_length, bot_height);
-        
+
         rotate([angle, 0, 0])
         barbs(barbs, top_inner_dia, top_outer_dia, top_length, top_height);
     }
 }
 
 module angled_barbed_hose_adapter_neg(top_inner_dia, top_outer_dia, top_length, top_height, bot_inner_dia, bot_outer_dia, bot_length, bot_height, angle, barbs) {
-    
+
     union() {
         sphere(d = bot_inner_dia);
 

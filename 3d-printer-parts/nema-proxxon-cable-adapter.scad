@@ -40,7 +40,7 @@ module motor_plate() {
                 cylinder(d = MOUNTING_HOLE_DIA, h = THICKNESS);
             }
         }
-        
+
         cylinder(d = MOTOR_SHAFT_DIA, h = THICKNESS);
     }
 }
@@ -50,7 +50,7 @@ module hook() {
         difference() {
             cylinder(d1 = SHROUD_OUTER_DIA, d2 = HOOK_OUTER_DIA, h = HOOK_SPACING);
             cylinder(d1 = SHROUD_INNER_DIA, d2 = HOOK_INNER_DIA, h = HOOK_SPACING);
-            
+
             translate([0, 0, HOOK_SPACING/2])
             rotate([-90, 0, 0])
             rounded_rect(SLOT_WIDTH, SLOT_LENGTH, SHROUD_OUTER_DIA, SLOT_WIDTH);

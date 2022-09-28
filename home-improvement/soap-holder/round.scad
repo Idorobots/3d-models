@@ -32,7 +32,7 @@ module feet(position, height, diameter, n_feet) {
         intersection() {
             sphere(d = diameter);
             cylinder(d = diameter, h = diameter/2);
-        }        
+        }
     }
 }
 

@@ -29,7 +29,7 @@ difference() {
         translate([0, -LENGTH/2 -HANDLE_LENGTH/2 +CORNER_DIA/2, 0])
         rounded_rect(HANDLE_WIDTH, HANDLE_LENGTH, THICKNESS, CORNER_DIA);
     }
-    
+
     translate([0, NUMBER_OFFSET, THICKNESS/2])
     linear_extrude(THICKNESS/2)
     text(NUMBER, font=NUMBER_FONT, halign="center", valign="center", size = NUMBER_SIZE);

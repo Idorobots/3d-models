@@ -45,7 +45,7 @@ difference() {
     rounded_rect(HEIGHT_MIDDLE, WIDTH, THICKNESS, CORNER_DIA);
     }
     w = (WIDTH-WIDTH_MIDDLE)/2;
-    
+
     translate([-HEIGHT/2, (WIDTH - w)/2, 0])
     rounded_rect(HEIGHT, w, THICKNESS, CORNER_DIA);
 
@@ -62,7 +62,7 @@ difference() {
   }
   translate([0, 0, -THICKNESS])
   mounting_holes(MOUNT_HOLE_SPACING_BOT);
-  
+
   translate([THICKNESS, 0, 2 * MOUNT_HOLE_OFFSET])
   rotate(-90, [0, 1, 0])
   mounting_holes(MOUNT_HOLE_SPACING_TOP);

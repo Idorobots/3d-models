@@ -90,7 +90,7 @@ module support() {
 module supports() {
   for(i = [0:ceil(N_COLS/SUPPORT_SPACING) - 1]) {
       translate([SUPPORT_SPACING * (i + 1/SUPPORT_SPACING) * (BOTTLE_DIA + BOTTLE_SPACING) + (BOTTLE_SPACING - THICKNESS)/2, 0, 0])
-      support();  
+      support();
   }
 }
 

@@ -11,7 +11,7 @@ module base(width, length, height) {
     hull() {
         translate([length/2-width/2, 0, 0])
         cylinder(h = height, d = width);
-        
+
         translate([-length/2+width/2, 0, 0])
         cylinder(h = height, d = width);
     }
@@ -25,11 +25,11 @@ module slots(width, length, height, slot_width, n_slots) {
             hull() {
                 translate([i * step, width/2-slot_width/2, 0])
                 cylinder(h = height, d = slot_width);
-                
+
                 translate([i * step, -width/2+slot_width/2, 0])
                 cylinder(h = height, d = slot_width);
             }
-        }   
+        }
     }
 }
 

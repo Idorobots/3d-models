@@ -14,13 +14,13 @@ union() {
         cylinder(d = GRIP_WIDTH, h = GRIP_THICKNESS);
 
         translate([-GRIP_WIDTH, -GRIP_WIDTH/2, -GRIP_THICKNESS/2])
-        cube(size = [GRIP_WIDTH, GRIP_WIDTH, GRIP_THICKNESS]);   
+        cube(size = [GRIP_WIDTH, GRIP_WIDTH, GRIP_THICKNESS]);
     }
     hull() {
         translate([INSERT_LENGTH-INSERT_WIDTH/2, 0, -INSERT_THICKNESS/2])
         cylinder(d = INSERT_WIDTH, h = INSERT_THICKNESS);
 
         translate([-INSERT_WIDTH/2, -INSERT_WIDTH/2, -INSERT_THICKNESS/2])
-        cube(size = [INSERT_WIDTH, INSERT_WIDTH, INSERT_THICKNESS]);   
+        cube(size = [INSERT_WIDTH, INSERT_WIDTH, INSERT_THICKNESS]);
     }
 }

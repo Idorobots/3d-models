@@ -18,11 +18,11 @@ module tube(outer_dia, inner_dia, outer_height, inner_height) {
     difference() {
         cylinder(d = outer_dia, h = outer_height);
         cylinder(d = inner_dia, h = inner_height);
-    }    
+    }
 }
 
 module standoff() {
-    tube(STANDOFF_DIA, SCREW_DIA, STANDOFF_HEIGHT, SCREW_LENGTH);    
+    tube(STANDOFF_DIA, SCREW_DIA, STANDOFF_HEIGHT, SCREW_LENGTH);
 }
 
 module peg(outer_dia, inner_dia, outer_height, inner_height) {
@@ -50,7 +50,7 @@ module mount() {
                 cylinder(d = MOUNT_DIA, h = MOUNT_LENGTH+PEG_LENGTH);
             }
         }
-    }    
+    }
 }
 
 module mount_joint() {
@@ -64,7 +64,7 @@ union() {
     difference() {
         translate([0, -MOUNT_DIA/2+STANDOFF_DIA/2, -STANDOFF_HEIGHT])
             standoff();
-        hull() 
+        hull()
             mount_joint();
     }
 }

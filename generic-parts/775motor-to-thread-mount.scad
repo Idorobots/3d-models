@@ -38,19 +38,19 @@ module adapter() {
     }
 
     cylinder(d = MOUNT_HOLE_DIA, h = MOUNT_HEIGHT);
-    
+
     translate([0, -MOTOR_HOLES_SPACING/2, 0])
     cylinder(d = MOTOR_HOLES_HEAD_DIA, h = MOUNT_HEIGHT);
-    
+
     translate([0, MOTOR_HOLES_SPACING/2, 0])
     cylinder(d = MOTOR_HOLES_HEAD_DIA, h = MOUNT_HEIGHT);
-  
-    translate([0, 0, MOUNT_HEIGHT]) {      
+
+    translate([0, 0, MOUNT_HEIGHT]) {
       cylinder(d = MOTOR_SHAFT_DIA, h = MOTOR_PLATE_THICKNESS);
-      
+
       translate([0, -MOTOR_HOLES_SPACING/2, 0])
       cylinder(d = MOTOR_HOLES_DIA, h = MOTOR_PLATE_THICKNESS);
-      
+
       translate([0, MOTOR_HOLES_SPACING/2, 0])
       cylinder(d = MOTOR_HOLES_DIA, h = MOTOR_PLATE_THICKNESS);
     }
