@@ -51,6 +51,6 @@ module top() {
   }
 }
 
-//bottom();
+bottom();
 translate([0, 0, 5])
 top();
