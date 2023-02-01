@@ -76,7 +76,7 @@ module solar_connector() {
   cube(size = [CONNECTOR_HEIGHT, CONNECTOR_WIDTH, INNER_HEIGHT]);
 }
 
-module panel() {
+module front_panel() {
   difference() {
     union() {
       rounded_rect(OUTER_HEIGHT, OUTER_WIDTH, PANEL_THICKNESS, CORNER_DIA);
@@ -98,4 +98,21 @@ module panel() {
   }
 }
 
-panel();
+module back_panel() {
+  difference() {
+    union() {
+      rounded_rect(OUTER_HEIGHT, OUTER_WIDTH, PANEL_THICKNESS, CORNER_DIA);
+      rounded_rect(INNER_HEIGHT, INNER_WIDTH, INSIDE_THICKNESS, CORNER_DIA);
+    }
+
+    wt = 2 * WALL_THICKNESS;
+    #translate([0, 0, PANEL_THICKNESS])
+    rounded_rect(INNER_HEIGHT - wt, INNER_WIDTH - wt, INSIDE_THICKNESS, CORNER_DIA - wt);
+
+    #mount_holes();
+  }
+}
+
+front_panel();
+
+//back_panel();
