@@ -38,6 +38,16 @@ CONNECTOR_WIDTH = 9;
 CONNECTOR_HEIGHT = 5;
 CONNECTOR_OFFSET = 25;
 
+VOLT_METER = true;
+
+VOLT_METER_WIDTH = 10;
+VOLT_METER_LENGTH = 23;
+VOLT_METER_DEPTH = 10;
+VOLT_METER_OFFSET = 20;
+
+VOLT_METER_BUTTON_DIA = 3.5;
+VOLT_METER_BUTTON_OFFSET = -20;
+
 $fn = 50;
 
 module rounded_rect(width, length, height, corner_dia) {
@@ -98,6 +108,16 @@ module front_panel() {
   }
 }
 
+module volt_meter() {
+  translate([-VOLT_METER_WIDTH/2, VOLT_METER_OFFSET-VOLT_METER_LENGTH/2, 0])
+  cube(size = [VOLT_METER_WIDTH, VOLT_METER_LENGTH, VOLT_METER_DEPTH]);
+}
+
+module button() {
+  translate([0, VOLT_METER_BUTTON_OFFSET, 0])
+  cylinder(d = VOLT_METER_BUTTON_DIA, h = VOLT_METER_DEPTH);
+}
+
 module back_panel() {
   difference() {
     union() {
@@ -110,9 +130,15 @@ module back_panel() {
     rounded_rect(INNER_HEIGHT - wt, INNER_WIDTH - wt, INSIDE_THICKNESS, CORNER_DIA - wt);
 
     #mount_holes();
+
+    if(VOLT_METER) {
+      volt_meter();
+      button();
+    }
   }
 }
 
 front_panel();
 
-//back_panel();
+translate([30, 0, 0])
+back_panel();
