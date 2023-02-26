@@ -9,10 +9,12 @@ WIDTH = 40;
 HEIGHT = 15;
 
 BNC_HOLE_DIA = 10;
-BNC_HOLES = 4;
+BNC_HOLES = 2;
 BNC_HOLE_SPACING = 20;
 BNC_HOLE_OFFSET = 20 + BNC_HOLE_SPACING/2;
 
+
+$fn = 30;
 
 module outline() {
     cylinder(d = DIA_BOT, h = HEIGHT);
@@ -45,8 +47,10 @@ module side_panel() {
     #translate([-WIDTH + DIA_BOT, 0, 0])
     unit();
 
-    #translate([DIA_BOT/2, 0, -PANEL_THICKNESS])
-    unit(WIDTH - 2 * DIA_BOT - 2 * WALL_THICKNESS, LENGTH - DIA_BOT - 2 * WALL_THICKNESS);
+    length = (BNC_HOLES - 1) * BNC_HOLE_SPACING + BNC_HOLE_OFFSET/2;
+    placement = LENGTH - DIA_BOT - 2 * WALL_THICKNESS;
+    #translate([DIA_BOT/2, -(placement - length)/2, -PANEL_THICKNESS])
+    unit(WIDTH - 2 * DIA_BOT - 2 * WALL_THICKNESS, length);
 
     #translate([DIA_BOT/2, -(LENGTH - BNC_HOLE_OFFSET)/2, HEIGHT + PANEL_THICKNESS])
     bnc_holes();
