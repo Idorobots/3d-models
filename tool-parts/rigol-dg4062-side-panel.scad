@@ -1,10 +1,10 @@
 WALL_THICKNESS = 1.5;
 PANEL_THICKNESS = 5;
 
-DIA_TOP = 10;
+DIA_TOP = 8;
 DIA_BOT = 14;
 
-LENGTH = 153;
+LENGTH = 154;
 WIDTH = 45;
 HEIGHT = 15;
 
@@ -52,30 +52,6 @@ module body() {
       #translate([offset_w, bend, 0])
       outline();
     }
-
-    // This whole fillet is a giant mess.
-    translate([offset_w, bend, 0])
-    difference() {
-      r = DIA_TOP/2 + DIA_BOT/2 + WALL_THICKNESS * 2 - 0.15;
-      a = 12.6; // Should be asin(bend/something) :shrug:
-
-      translate([-offset_w - DIA_TOP/2, 0, 0])
-      cylinder(d = DIA_BOT/2, h = 2 * HEIGHT);
-      #hull() {
-        translate([r * cos(a), r * sin(a), 0])
-        cylinder(d = DIA_TOP, h = HEIGHT);
-
-        translate([r * cos(a), r * sin(a), 0])
-        cylinder(d = DIA_TOP, h = HEIGHT);
-      }
-      #hull() {
-        translate([r * cos(a), r * sin(a), HEIGHT])
-        cylinder(d1 = DIA_TOP, d2 = DIA_BOT, h = HEIGHT);
-
-        translate([r * cos(a), r * sin(a), HEIGHT])
-        cylinder(d1 = DIA_TOP, d2 = DIA_BOT, h = HEIGHT);
-      }
-    }/**/
   }
 }
 
