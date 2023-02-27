@@ -10,8 +10,8 @@ HEIGHT = 15;
 
 BNC_HOLE_DIA = 13;
 BNC_HOLES = 2;
-BNC_HOLE_SPACING = 35;
-BNC_HOLE_OFFSET = 26 + BNC_HOLE_SPACING/2;
+BNC_HOLE_SPACING = 22;
+BNC_HOLE_OFFSET = 18;
 
 TOP_BAR = false;
 
@@ -44,7 +44,7 @@ module body() {
       unit(w = width);
     }
 
-    length = (BNC_HOLES - 1) * BNC_HOLE_SPACING + BNC_HOLE_OFFSET/2 + 2 * WALL_THICKNESS;
+    length = (BNC_HOLES - 1) * BNC_HOLE_SPACING + BNC_HOLE_OFFSET + 2 * WALL_THICKNESS;
 
     offset_l = -(LENGTH - DIA_BOT - length)/2;
     bend = offset_l + length/2 + BNC_HOLE_SPACING;
@@ -73,12 +73,12 @@ module side_panel() {
     #translate([-WIDTH + DIA_BOT, 0, 0])
     unit();
 
-    length = (BNC_HOLES - 1) * BNC_HOLE_SPACING + BNC_HOLE_OFFSET/2;
+    length = (BNC_HOLES - 1) * BNC_HOLE_SPACING + BNC_HOLE_OFFSET;
     placement = LENGTH - DIA_BOT - 2 * WALL_THICKNESS;
     #translate([DIA_BOT/2, -(placement - length)/2, -PANEL_THICKNESS])
     unit(WIDTH - 2 * DIA_BOT - 2 * WALL_THICKNESS, length);
 
-    #translate([DIA_BOT/2, -(LENGTH - BNC_HOLE_OFFSET)/2, HEIGHT + PANEL_THICKNESS])
+    #translate([DIA_BOT/2, -LENGTH/2 + BNC_HOLE_OFFSET, HEIGHT + PANEL_THICKNESS])
     bnc_holes();
   }
 }
