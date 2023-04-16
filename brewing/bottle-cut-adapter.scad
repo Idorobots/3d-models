@@ -1,0 +1,16 @@
+OUTER_HEIGHT = 32;
+OUTER_TOP_DIA = 29;
+OUTER_BOT_DIA = 26;
+
+INNER_HEIGHT = 23;
+INNER_TOP_DIA = 14;
+INNER_BOT_DIA = 12;
+
+$fn = 500;
+
+difference() {
+    cylinder(d1 = OUTER_BOT_DIA, d2 = OUTER_TOP_DIA, h = OUTER_HEIGHT);
+    translate([0, 0, OUTER_HEIGHT-INNER_HEIGHT])
+    cylinder(d1 = INNER_BOT_DIA, d2 = INNER_TOP_DIA, h = INNER_HEIGHT);
+    cylinder(d = INNER_BOT_DIA, h = OUTER_HEIGHT);
+}
