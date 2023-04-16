@@ -3,10 +3,10 @@ TOKEN_DIA = 24; // 21.5; // 23;
 TEXT = "5";
 TEXT_SIZE = 8;
 
-BAR_WIDTH = 8;
+BAR_WIDTH = 10;
 BAR_LENGTH = 30;
 
-HOLE_DIA = 4;
+HOLE_DIA = 4.5;
 
 $fn = 200;
 
