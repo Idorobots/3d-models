@@ -1,21 +1,23 @@
-OUTER_DIA = 20;
-OUTER_CURVE = 60;
-OUTER_HEIGHT = 12;
+OUTER_DIA = 22;
+OUTER_CURVE = 40;
+OUTER_HEIGHT = 13;
 
-INNER_HEIGHT = 8.5;
+INNER_HEIGHT = 8;
 INNER_DIA = 13;
 INNER_WIDTH = 12;
 
 LIP_WIDTH = 11;
 LIP_HEIGHT = 3;
 
-NUB_DIA = 6;
-NUB_HEIGHT = 2;
+MOUNT_HOLE_DIA = 3;
+MOUNT_HOLE_HEAD_DIA = 6;
+MOUNT_HOLE_HEAD_HEIGHT = 2;
 
 ARMS = 3;
 ARM_LENGTH = 50;
 ARM_WIDTH = 10;
-ARM_THICKNESS = 1;
+ARM_THICKNESS_TIP = 1;
+ARM_THICKNESS_BASE = 2;
 
 $fn = 100;
 
@@ -39,26 +41,42 @@ module nub() {
         cylinder(d = INNER_DIA, h = INNER_HEIGHT);
     }
 
-    cylinder(d = NUB_DIA, h = INNER_HEIGHT + NUB_HEIGHT);
+    cylinder(d = MOUNT_HOLE_HEAD_DIA, h = INNER_HEIGHT + MOUNT_HOLE_HEAD_HEIGHT, $fn = 6);
+    cylinder(d = MOUNT_HOLE_DIA, h = OUTER_HEIGHT);
+}
+
+module mount() {
+    difference() {
+        body();
+        translate([0, 0, OUTER_HEIGHT])
+        rotate([180, 0, 0])
+        arms_base();
+        nub();
+    }
 }
 
 module arm() {
     hull() {
-        cylinder(d = ARM_WIDTH, h = ARM_THICKNESS);
+        cylinder(d = ARM_WIDTH, h = ARM_THICKNESS_BASE);
         translate([ARM_LENGTH - ARM_WIDTH, 0, 0])
-        cylinder(d = ARM_WIDTH, h = ARM_THICKNESS);
+        cylinder(d = ARM_WIDTH, h = ARM_THICKNESS_TIP);
     }
 }
 
-difference() {
-    union() {
-        body();
-
-        for(i = [0:ARMS-1]) {
-            rotate([0, 0, i * 360/ARMS])
-            translate([0, 0, OUTER_HEIGHT - ARM_THICKNESS])
-            arm();
-        }
+module arms_base() {
+    for(i = [0:ARMS-1]) {
+        rotate([0, 0, i * 360/ARMS])
+        arm();
     }
-    nub();
 }
+
+module arms() {
+    difference() {
+        arms_base();
+        cylinder(d = MOUNT_HOLE_HEAD_DIA, h = MOUNT_HOLE_HEAD_HEIGHT);
+        cylinder(d = MOUNT_HOLE_DIA, h = OUTER_HEIGHT);
+    }
+}
+
+!mount();
+arms();
