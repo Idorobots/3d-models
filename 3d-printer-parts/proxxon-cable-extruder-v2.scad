@@ -1,18 +1,16 @@
 SHAFT_DIA = 5;
-SHAFT_LENGTH = 24.2;
-SHAFT_BEARING_DIA = 11.2;
-SHAFT_BEARING_HEIGHT = 5;
+SHAFT_LENGTH = 24;
 
 COG_TEETH_DIA = 11; // Actually 8.
-COG_TEETH_LENGTH = 9;
+COG_TEETH_LENGTH = 6;
 COG_LENGTH = 14.2;
-COG_DIA = 10; // Actually 8.
+COG_DIA = 9; // Actually 8.
 
-IDLER_COG_OFFSET = 3;
-IDLER_MESH_DISTANCE = 8.5;
+IDLER_COG_OFFSET = 3.5;
+IDLER_MESH_DISTANCE = 8.25;
 
-EXTRUDER_COG_OFFSET = 5;
-EXTRUDER_FILAMENT_OFFSET = 16.5;
+EXTRUDER_COG_OFFSET = IDLER_COG_OFFSET;
+EXTRUDER_FILAMENT_OFFSET = 11;
 
 WORM_DIA = 12; // Actually 7.
 WORM_LENGTH = 12;
@@ -20,29 +18,29 @@ WORM_OFFSET = 4;
 WORM_ANGLE = 10;
 WORM_MESH_DISTANCE = 7.25;
 WORM_MESH_OFFSET = 3;
-WORM_BEARING_DIA = 10.5;
+WORM_BEARING_DIA = 10.2;
 WORM_BEARING_HEIGHT = 4;
 WORM_BEARING_FLANGE_DIA = 12;
 WORM_BEARING_FLANGE_HEIGHT = 1;
 
-FILAMENT_DIA = 2.2;
-FILAMENT_LENGTH = 25;
-FILAMENT_PORT_DIA = 7;
-FILAMENT_PORT_LENGTH = 5;
+FILAMENT_DIA = 2.3;
+FILAMENT_LENGTH = 27;
+FILAMENT_PORT_DIA = 10;
+FILAMENT_PORT_LENGTH = 6;
 
 CABLE_MOUNT_DIA = 13.5;
 CABLE_MOUNT_LENGTH = 10;
 
-BODY_EXTRA_THICKNESS = 1;
+BODY_EXTRA_THICKNESS = 3;
 BODY_DRIVE_DIA = 15;
-BODY_DRIVE_LENGTH = SHAFT_LENGTH;
+BODY_DRIVE_LENGTH = 25;
 BODY_WORM_DIA = 17;
 BODY_WORM_LENGTH = WORM_LENGTH + WORM_BEARING_HEIGHT + WORM_BEARING_FLANGE_HEIGHT + CABLE_MOUNT_LENGTH - 0.1;
-BODY_FILAMENT_DIA = 11;
+BODY_FILAMENT_DIA = 13;
 BODY_FILAMENT_LENGTH = FILAMENT_LENGTH;
 BODY_BOLT_DIA = 6;
 BODY_NOTCH_DIA = 2.5;
-BODY_NOTCH_OFFSET = 5;
+BODY_NOTCH_OFFSET = 6;
 
 BOLT_HEAD_DIA = BODY_BOLT_DIA + 0.1;
 BOLT_HEAD_LENGTH = 3;
@@ -50,7 +48,7 @@ BOLT_DIA = 3.2;
 BOLT_LENGTH = BODY_DRIVE_DIA;
 BOLT_PLACEMENT = [
   [IDLER_MESH_DISTANCE/2, 18, 0], // NOTE Needs to be the "hinge" bolt.
-  [-12, -6.2, 0],
+  [-12, -BODY_NOTCH_OFFSET, 0],
   [-IDLER_MESH_DISTANCE/2, 18, 0]
 ];
 
@@ -72,17 +70,10 @@ module idler() {
     cog();
 }
 
-module shaft_bearing() {
-    cylinder(d = SHAFT_BEARING_DIA, h = SHAFT_BEARING_HEIGHT);
-}
-
 module extruder_drive() {
     shaft();
-    shaft_bearing();
     translate([0, 0, EXTRUDER_COG_OFFSET])
     cog();
-    translate([0, 0, COG_LENGTH + EXTRUDER_COG_OFFSET])
-    shaft_bearing();
 }
 
 module worm_bearing() {
@@ -105,7 +96,7 @@ module worm_drive() {
 }
 
 module translate_drive() {
-    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_FILAMENT_OFFSET]) {
+    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
         rotate([90, 0, 0]) {
             children();
         }
@@ -113,7 +104,7 @@ module translate_drive() {
 }
 
 module translate_idler() {
-    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_FILAMENT_OFFSET]) {
+    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
         rotate([90, 0, 0])
         translate([IDLER_MESH_DISTANCE, 0, 0]) {
             children();
@@ -122,7 +113,7 @@ module translate_idler() {
 }
 
 module translate_worm() {
-    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_FILAMENT_OFFSET]) {
+    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
         translate([-WORM_MESH_DISTANCE, -EXTRUDER_COG_OFFSET - WORM_MESH_OFFSET, 0])
         rotate([-WORM_ANGLE, 0, 0])
         translate([0, 0, -WORM_OFFSET -WORM_LENGTH/2]) {
@@ -178,21 +169,15 @@ module cable_path() {
     cylinder(d = CABLE_MOUNT_DIA, h = CABLE_MOUNT_LENGTH);
 }
 
-module shaft_holes() {
-    translate_drive()
-    cylinder(d = SHAFT_DIA, h = SHAFT_LENGTH + BODY_EXTRA_THICKNESS);
-}
-
 module body() {
     hull() {
-        wt2 = 2 * BODY_EXTRA_THICKNESS;
         translate_drive()
         translate([0, 0, -BODY_EXTRA_THICKNESS])
-        cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + wt2);
+        cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + BODY_EXTRA_THICKNESS);
 
         translate_idler()
         translate([0, 0, -BODY_EXTRA_THICKNESS])
-        cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + wt2);
+        cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + BODY_EXTRA_THICKNESS);
     }
 
     translate_worm()
@@ -212,8 +197,6 @@ module notch() {
 module negative() {
     color("red")
     drive_assembly();
-    color("yellow")
-    shaft_holes();
     color("green")
     filament_path();
     color("blue")
@@ -239,7 +222,7 @@ module flap_mask() {
         intersection() {
             translate_idler()
             translate([0, 0, -BODY_EXTRA_THICKNESS])
-            cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + 2 * BODY_EXTRA_THICKNESS);
+            cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + BODY_EXTRA_THICKNESS);
 
             translate([IDLER_MESH_DISTANCE/2, -50, -50])
             cube(size = [100, 100, 100]);
