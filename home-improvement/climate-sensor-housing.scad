@@ -1,5 +1,5 @@
 SENSOR_WIDTH = 22;
-SENSOR_LENGTH = 62;
+SENSOR_LENGTH = 42; //62;
 SENSOR_HEIGHT = 13;
 CABLE_DIA = 4;
 CABLE_HEIGHT = 2;
@@ -10,13 +10,14 @@ LENGTH = SENSOR_LENGTH + 2 * WALL_THICKNESS;
 HEIGHT = SENSOR_HEIGHT + 2 * WALL_THICKNESS;
 CORNER_DIA = 5;
 
-MOUNT_HOLE_DIA = 2;
+MOUNT_HOLES = false;
+MOUNT_HOLE_DIA = 2.5;
+MOUNT_HOLE_HEAD_DIA = 2.5;
 MOUNT_HOLE_SPACING = 10;
 
 VENT_HOLE_DIA = 3;
-VENT_HOLES = 5;
 VENT_HOLE_SPACING = 7;
-
+VENT_HOLES = round(SENSOR_LENGTH/2/VENT_HOLE_SPACING);
 $fn = 50;
 
 module sensor() {
@@ -49,8 +50,10 @@ module base() {
 module mount_holes() {
     for(i = [-1, 1]) {
         for(j = [-1, 1]) {
-            translate([i * MOUNT_HOLE_SPACING/2, j * (LENGTH + MOUNT_HOLE_SPACING)/2, 0])
-            cylinder(d = MOUNT_HOLE_DIA, h = HEIGHT - WALL_THICKNESS);
+            translate([i * MOUNT_HOLE_SPACING/2, j * LENGTH/2, 0]) {
+                cylinder(d = MOUNT_HOLE_DIA, h = HEIGHT - WALL_THICKNESS);
+                cylinder(d = MOUNT_HOLE_HEAD_DIA, h = WALL_THICKNESS/2);
+            }
         }
     }
 }
@@ -67,7 +70,10 @@ module case() {
         base();
         #translate([0, 0, WALL_THICKNESS])
         sensor();
-        #mount_holes();
+
+        if(MOUNT_HOLES) {
+            #mount_holes();
+        }
 
         #translate([0, 0, WALL_THICKNESS])
         vent_holes();
@@ -75,16 +81,18 @@ module case() {
 }
 
 module bot_mask() {
+    delta = 1.5;
     union() {
-        translate([0, -LENGTH/2, 0])
+        translate([0, -SENSOR_LENGTH/2 + delta, 0])
         cylinder(d = SENSOR_WIDTH, h = WALL_THICKNESS);
-        translate([-SENSOR_WIDTH/2, -LENGTH/2, 0])
-        cube(size = [SENSOR_WIDTH, LENGTH, WALL_THICKNESS]);
-        translate([0, LENGTH/2, 0])
+        translate([-SENSOR_WIDTH/2, -SENSOR_LENGTH/2, 0])
+        cube(size = [SENSOR_WIDTH, SENSOR_LENGTH, WALL_THICKNESS]);
+        translate([0, SENSOR_LENGTH/2 - delta, 0])
         cylinder(d = SENSOR_WIDTH, h = WALL_THICKNESS);
 
-        translate([-CABLE_DIA/2, -(LENGTH - SENSOR_LENGTH)/2, 0])
-        cube(size = [CABLE_DIA, LENGTH, CABLE_HEIGHT + CABLE_DIA/2]);
+        l = LENGTH + WIDTH;
+        translate([-CABLE_DIA/2, -l/2 + MOUNT_HOLE_SPACING, 0])
+        cube(size = [CABLE_DIA, l, CABLE_HEIGHT + CABLE_DIA/2]);
     }
 }
 
