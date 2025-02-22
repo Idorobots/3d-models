@@ -297,28 +297,34 @@ module bottom_mask() {
     }
 }
 
+module extruder_top() {
+  intersection() {
+      assembly();
+      top_mask();
+  }
+}
+
+module extruder_bottom() {
+  intersection() {
+      assembly();
+      bottom_mask();
+  }
+}
+
+module extruder_flap() {
+  intersection() {
+      assembly();
+      flap_mask();
+      translate([0, -50, -50])
+      cube(size = [BODY_DRIVE_DIA-8, 100, 100]);
+  }
+}
+
 // overview
 !union() {
     #body();
     negative();
 }
-
-// top
-intersection() {
-    assembly();
-    top_mask();
-}
-
-// bottom
-intersection() {
-    assembly();
-    bottom_mask();
-}
-
-// flap
-intersection() {
-    assembly();
-    flap_mask();
-    translate([0, -50, -50])
-    cube(size = [BODY_DRIVE_DIA-8, 100, 100]);
-}
+extruder_top();
+extruder_bottom();
+extruder_flap();

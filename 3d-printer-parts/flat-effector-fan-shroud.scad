@@ -1,3 +1,5 @@
+use <proxxon-cable-extruder-v3.scad>;
+
 include <flat-effector.scad>;
 
 PASSTHROUGH_COOLING = false;
@@ -5,11 +7,12 @@ PASSTHROUGH_COOLING = false;
 FAN_WIDTH = 40;
 FAN_LENGTH = FAN_WIDTH;
 FAN_THICKNESS = 10;
-FAN_MOUNT_HOLE_DIA = 3;
+FAN_MOUNT_HOLE_DIA = 2.5;
 FAN_MOUNT_HOLE_SPACING = 35;
-FAN_OFFSET = PASSTHROUGH_COOLING ? 24 : 15;
+FAN_OFFSET = PASSTHROUGH_COOLING ? 24 : 16;
 
 EXTRUDER_MOUNT = true;
+EXTRUDER_HEIGHT = 29; // Body height + port height.
 EXTRUDER_MOUNT_HEIGHT = FAN_LENGTH - HEATSINK_HEIGHT - (HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS - THICKNESS);
 EXTRUDER_MOUNT_INTERNAL_HEIGHT = 6;
 EXTRUDER_MOUNT_DIA = 10;
@@ -17,8 +20,11 @@ EXTRUDER_MOUNT_INTERNAL_DIA = 6;
 EXTRUDER_GUIDE_DIA = 2;
 
 FAN_SHROUD_HEIGHT = EXTRUDER_MOUNT_HEIGHT + HEATSINK_HEIGHT + (HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS - THICKNESS);
-FAN_SHROUD_CHANNEL_DIA = FAN_WIDTH - 3;
+FAN_SHROUD_CHANNEL_DIA = FAN_WIDTH - 2;
 FAN_SHROUD_DIA = PASSTHROUGH_COOLING ? BLOWERS_SPACING : EXTRUDER_MOUNT_DIA;
+FAN_SHROUD_CHANNEL_OFFSET = HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS + HEATSINK_HEIGHT + 0.5;
+
+FLAP_EXCLUSION_OFFSET = 1.75;
 
 $fn = 50;
 
@@ -48,13 +54,10 @@ module hotend_fan() {
   }
 }
 
-module extruder_mount() {
-  difference() {
-    cylinder(d = EXTRUDER_MOUNT_DIA, h = EXTRUDER_MOUNT_HEIGHT);
-    cylinder(d = EXTRUDER_GUIDE_DIA, h = EXTRUDER_MOUNT_HEIGHT);
-    translate([0, 0, EXTRUDER_MOUNT_HEIGHT - EXTRUDER_MOUNT_INTERNAL_HEIGHT])
-    cylinder(d = EXTRUDER_MOUNT_INTERNAL_DIA, h = EXTRUDER_MOUNT_INTERNAL_HEIGHT);
-  }
+module translate_extruder() {
+  translate([0, 0, EXTRUDER_HEIGHT/2])
+  rotate([0, 0, 90])
+  children();
 }
 
 module fan_shroud() {
@@ -69,24 +72,54 @@ module fan_shroud() {
             translate([-BLOWER_WIDTH/2 + BLOWERS_OFFSET, -FAN_SHROUD_DIA/2, 0])
             cube([BLOWER_WIDTH, FAN_SHROUD_DIA, FAN_SHROUD_HEIGHT]);
           } else {
-            cylinder(d1 = MOUNT_HOLE_SPACING + MOUNT_HOLE_DIA * 2, d2 = FAN_SHROUD_DIA, h = FAN_SHROUD_HEIGHT);
+            d = MOUNT_HOLE_SPACING + MOUNT_HOLE_DIA * 2;
+            cylinder(d = d, h = FAN_SHROUD_HEIGHT/2);
+            translate([0, 0, FAN_SHROUD_HEIGHT/2])
+            cylinder(d1 = d, d2 = FAN_SHROUD_DIA, h = FAN_SHROUD_HEIGHT/2);
           }
         }
 
+        if(EXTRUDER_MOUNT) {
+          translate([0, 0, HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS + HEATSINK_HEIGHT])
+          translate_extruder()
+          body();
+        }
+
+        // Main channel.
         #translate([0, 0, FAN_LENGTH/2 + THICKNESS])
         rotate([0, -90, 0])
-        cylinder(d = FAN_SHROUD_CHANNEL_DIA, h = FAN_SHROUD_HEIGHT * 2, center = true);
+        intersection() {
+          cylinder(d = FAN_SHROUD_CHANNEL_DIA, h = FAN_SHROUD_HEIGHT * 2, center = true);
+          if(EXTRUDER_MOUNT) {
+            translate([-(FAN_SHROUD_CHANNEL_DIA - FAN_SHROUD_CHANNEL_OFFSET)/2, 0, 0])
+            cube([FAN_SHROUD_CHANNEL_OFFSET, FAN_SHROUD_CHANNEL_DIA, FAN_SHROUD_HEIGHT], center = true);
+          }
+        }
+
+        #if(EXTRUDER_MOUNT) {
+          translate([0, 0, HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS + HEATSINK_HEIGHT])
+          translate_extruder()
+          extruder_top();
+
+          // Flap clearance
+          #translate([-FAN_SHROUD_HEIGHT/2 + FAN_OFFSET/2 + FLAP_EXCLUSION_OFFSET, FAN_WIDTH/2, FAN_LENGTH + THICKNESS])
+          rotate([0, -90, 0])
+          cylinder(d = FAN_SHROUD_CHANNEL_DIA, h = FAN_SHROUD_HEIGHT, center = true);
+        } else {
+          translate([0, 0, THICKNESS + FAN_SHROUD_HEIGHT - EXTRUDER_MOUNT_INTERNAL_HEIGHT])
+          cylinder(d = EXTRUDER_MOUNT_DIA, h = EXTRUDER_MOUNT_INTERNAL_HEIGHT);
+        }
       }
 
       if(EXTRUDER_MOUNT) {
         translate([0, 0, HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS + HEATSINK_HEIGHT])
-        extruder_mount();
+        translate_extruder()
+        extruder_bottom();
       } else {
         translate([0, 0, THICKNESS + FAN_SHROUD_HEIGHT - EXTRUDER_MOUNT_INTERNAL_HEIGHT])
         cylinder(d = EXTRUDER_MOUNT_DIA, h = EXTRUDER_MOUNT_INTERNAL_HEIGHT);
       }
     }
-
     #translate([0, 0, FAN_SHROUD_HEIGHT - EXTRUDER_MOUNT_INTERNAL_HEIGHT + THICKNESS])
     cylinder(d = EXTRUDER_MOUNT_INTERNAL_DIA, h = EXTRUDER_MOUNT_INTERNAL_HEIGHT);
 
