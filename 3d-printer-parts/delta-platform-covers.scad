@@ -1,0 +1,71 @@
+BED_RADIUS = 265/2;
+DELTA_RADIUS = 206.5;
+
+TOWER_RADIUS = 40;
+TOWER_RADIUS_OFFSET = 13;
+TOWER_WIDTH = 20.5;
+
+TOWER_PASSTHROUGH = false;
+TOWER_PASSTHROUGH_DIA = 8;
+TOWER_PASSTHROUGH_OFFSET = 3;
+TOWER_PASSTHROUGH_SPACING = 40;
+
+TENSIONER_WIDTH = 8;
+TENSIONER_TOWER_OFFSET = 34;
+
+MOUNT_HOLE_DIA = 4.5;
+MOUNT_HOLE_TOWER_OFFSET = 25;
+MOUNT_HOLE_SPACING = 65;
+MOUNT_HOLE_TOWER_OFFSET_2 = 68;
+MOUNT_HOLE_SPACING_2 = 115;
+
+THICKNESS = 2;
+
+$fn = 100;
+
+module cover() {
+  intersection() {
+    difference() {
+      hull() {
+        for(i = [0:2]) {
+          rotate([0, 0, i * 120])
+          translate([DELTA_RADIUS - (TOWER_RADIUS - TOWER_RADIUS_OFFSET), 0, 0])
+          cylinder(r = TOWER_RADIUS, h = THICKNESS);
+        }
+      }
+
+      #cylinder(r = BED_RADIUS, h = THICKNESS);
+
+      #translate([DELTA_RADIUS - TENSIONER_TOWER_OFFSET, 0, 0])
+      cylinder(d = TENSIONER_WIDTH, h = THICKNESS);
+
+      #translate([DELTA_RADIUS -TOWER_WIDTH/2, -TOWER_WIDTH/2, 0])
+      cube([2 * TOWER_WIDTH, TOWER_WIDTH, THICKNESS]);
+
+      #translate([DELTA_RADIUS - MOUNT_HOLE_TOWER_OFFSET, -MOUNT_HOLE_SPACING/2, 0])
+      cylinder(d = MOUNT_HOLE_DIA, h = THICKNESS);
+
+      #translate([DELTA_RADIUS - MOUNT_HOLE_TOWER_OFFSET, MOUNT_HOLE_SPACING/2, 0])
+      cylinder(d = MOUNT_HOLE_DIA, h = THICKNESS);
+
+      #translate([DELTA_RADIUS - MOUNT_HOLE_TOWER_OFFSET_2, -MOUNT_HOLE_SPACING_2/2, 0])
+      cylinder(d = MOUNT_HOLE_DIA, h = THICKNESS);
+
+      #translate([DELTA_RADIUS - MOUNT_HOLE_TOWER_OFFSET_2, MOUNT_HOLE_SPACING_2/2, 0])
+      cylinder(d = MOUNT_HOLE_DIA, h = THICKNESS);
+
+      if (TOWER_PASSTHROUGH) {
+        #translate([DELTA_RADIUS - TOWER_PASSTHROUGH_OFFSET, -TOWER_PASSTHROUGH_SPACING/2, 0])
+        cylinder(d = TOWER_PASSTHROUGH_DIA, h = THICKNESS);
+
+        #translate([DELTA_RADIUS - TOWER_PASSTHROUGH_OFFSET, TOWER_PASSTHROUGH_SPACING/2, 0])
+        cylinder(d = TOWER_PASSTHROUGH_DIA, h = THICKNESS);
+      }
+  }
+
+    translate([BED_RADIUS/2, -BED_RADIUS, 0])
+    cube([2 * BED_RADIUS, 2 * BED_RADIUS, THICKNESS]);
+  }
+}
+
+cover();
