@@ -1,4 +1,4 @@
-HEIGHT = 5;
+HEIGHT = 6;
 WALL_THICKNESS = 1;
 
 COOLER_DIA_BOT = 42;
@@ -7,9 +7,8 @@ COOLER_DIA_TOP = 50;
 EXCLUSION_DIA_BOT = 30;
 EXCLUSION_DIA_TOP = 40;
 
-PORTS = 3;
-PORT_ANGLE = 25;
-PORT_SPACING = 360/PORTS;
+PORT_ANGLE = 30;
+PORT_SPACING_ANGLES = [107, 252];
 PORT_DUCT_LENGTH = 25;
 PORT_DUCT_WIDTH = 6;
 PORT_LENGTH = PORT_DUCT_LENGTH + 2 * WALL_THICKNESS;
@@ -26,16 +25,14 @@ DUCT_INNER_DIA_TOP = EXCLUSION_DIA_AT_DUCT_HEIGHT + 2 * WALL_THICKNESS;
 COOLER_DIA_AT_DUCT_HEIGHT = COOLER_DIA_BOT + (COOLER_DIA_TOP-COOLER_DIA_BOT)*(DUCT_HEIGHT/HEIGHT);
 DUCT_OUTER_DIA_BOT = COOLER_DIA_BOT - 2 * WALL_THICKNESS;
 DUCT_OUTER_DIA_TOP = COOLER_DIA_AT_DUCT_HEIGHT - 2 * WALL_THICKNESS;
-DUCT_BARS = PORTS * 2;
-DUCT_BARS_SPACING = PORT_SPACING/2;
-DUCT_BAR_WIDTH = 2;
+DUCT_BAR_WIDTH = 1.5;
 
 FAN_HOLE_DIA = 1.5;
 FAN_HOLE_SPACING = 35;
 FAN_MOUNT_DIA = 4.5;
 FAN_MOUNT_INNER_SPACING = 30;
 FAN_MOUNT_OUTER_SPACING = 40;
-FAN_MOUNT_THICKNESS = 2.5;
+FAN_MOUNT_THICKNESS = 3;
 
 COOLER_MOUNTS = 3;
 COOLER_MOUNT_ANGLE = 25;
@@ -148,12 +145,8 @@ module duct() {
     difference() {
       union() {
         duct_base();
-        if(!ACCESS_SLOT) {
-          translate([0, COOLER_DIA_BOT/2 - WALL_THICKNESS * 1.5, 0])
-          port_duct();
-        }
-        for(i = [1:PORTS-1]) {
-          rotate([0, 0, i * PORT_SPACING])
+        for(a = PORT_SPACING_ANGLES) {
+          rotate([0, 0, a])
           translate([0, COOLER_DIA_BOT/2 - WALL_THICKNESS * 1.5, 0])
           port_duct();
         }
@@ -161,8 +154,8 @@ module duct() {
 
       cylinder(d1 = DUCT_INNER_DIA_BOT, d2 = DUCT_INNER_DIA_BOT + 2.5 * (DUCT_INNER_DIA_TOP - DUCT_INNER_DIA_BOT), h = 2.5 * DUCT_HEIGHT);
 
-      for(i = [0:DUCT_BARS-1]) {
-        rotate([0, 0, i * DUCT_BARS_SPACING])
+      for(a = PORT_SPACING_ANGLES) {
+        rotate([0, 0, a])
         translate([-DUCT_BAR_WIDTH/2, 0, 0])
         cube([DUCT_BAR_WIDTH, DUCT_OUTER_DIA_BOT, WALL_THICKNESS]);
       }
@@ -207,12 +200,8 @@ module body() {
     cylinder(d1 = COOLER_DIA_BOT, d2 = COOLER_DIA_TOP, h = HEIGHT);
     translate([0, 0, HEIGHT])
     cylinder(d = COOLER_DIA_TOP, h = HEIGHT/2 + WALL_THICKNESS);
-    if(!ACCESS_SLOT) {
-      translate([0, COOLER_DIA_BOT/2 + WALL_THICKNESS, 0])
-      port();
-    }
-    for(i = [1:PORTS-1]) {
-      rotate([0, 0, i * PORT_SPACING])
+    for(a = PORT_SPACING_ANGLES) {
+      rotate([0, 0, a])
       translate([0, COOLER_DIA_BOT/2 + WALL_THICKNESS, 0])
       port();
     }
