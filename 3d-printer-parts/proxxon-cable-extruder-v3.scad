@@ -1,16 +1,19 @@
 SHAFT_DIA = 3;
 SHAFT_LENGTH = 20;
 
-COG_TEETH_DIA = 18; // Actually 16.
-COG_TEETH_LENGTH = 4;
-COG_LENGTH = 11.5;
-COG_DIA = 15; // Actually 14.
+EXTRUDER_COG_TEETH_DIA = 18; // Actually 16.
+EXTRUDER_COG_TEETH_LENGTH = 4;
+EXTRUDER_COG_LENGTH = 11.5;
+EXTRUDER_COG_DIA = 15; // Actually 14.
+EXTRUDER_COG_OFFSET = (SHAFT_LENGTH - EXTRUDER_COG_LENGTH)/2;
+EXTRUDER_FILAMENT_OFFSET = 7.25;
 
-IDLER_COG_OFFSET = (SHAFT_LENGTH - COG_LENGTH)/2;
-IDLER_MESH_DISTANCE = 15.5;
-
-EXTRUDER_COG_OFFSET = IDLER_COG_OFFSET;
-EXTRUDER_FILAMENT_OFFSET = 7.5;
+IDLER_COG_DIA = 10;
+IDLER_COG_TEETH_DIA = SHAFT_DIA;
+IDLER_COG_TEETH_LENGTH = EXTRUDER_COG_TEETH_LENGTH;
+IDLER_COG_LENGTH = EXTRUDER_COG_LENGTH;
+IDLER_COG_OFFSET = EXTRUDER_COG_OFFSET;
+IDLER_MESH_DISTANCE = -0.25;
 
 WORM_DIA = 12; // Actually 7.
 WORM_LENGTH = 13;
@@ -32,9 +35,11 @@ CABLE_MOUNT_DIA = 13.5;
 CABLE_MOUNT_LENGTH = 10;
 
 BODY_EXTRA_THICKNESS = 2;
-BODY_DRIVE_DIA = 22;
+BODY_DRIVE_DIA = max(EXTRUDER_COG_TEETH_DIA, EXTRUDER_COG_DIA) + 2;
+BODY_IDLER_DIA = max(IDLER_COG_TEETH_DIA, IDLER_COG_DIA) + 2;
 BODY_DRIVE_LENGTH = 20;
-BODY_WORM_DIA = 17;
+BODY_IDLER_LENGTH = BODY_DRIVE_LENGTH;
+BODY_WORM_DIA = 16;
 BODY_WORM_LENGTH = WORM_LENGTH + WORM_BEARING_HEIGHT + WORM_BEARING_FLANGE_HEIGHT + CABLE_MOUNT_LENGTH - 0.1;
 BODY_FILAMENT_DIA = 10;
 BODY_FILAMENT_LENGTH = FILAMENT_LENGTH;
@@ -46,19 +51,19 @@ BOLT_HEAD_LENGTH = 3;
 BOLT_DIA = 3.2;
 BOLT_LENGTH = BODY_DRIVE_DIA;
 BOLT_PLACEMENT = [
-  [-IDLER_MESH_DISTANCE/2 - 4, -8.5, 0],
-  [-IDLER_MESH_DISTANCE/2 - 4, 11, 0]
+  [-EXTRUDER_COG_DIA/2 - 8, -6.5, 0],
+  [-EXTRUDER_COG_DIA/2 - 2, 14, 0]
 ];
 
 HINGE_HEAD_DIA = BOLT_HEAD_DIA;
 HINGE_HEAD_LENGTH = BOLT_HEAD_LENGTH;
 HINGE_DIA = BOLT_DIA;
 HINGE_LENGTH = BODY_DRIVE_LENGTH + BODY_EXTRA_THICKNESS;
-HINGE_PLACEMENT = [0, 0, -BODY_DRIVE_DIA/2-1];
+HINGE_PLACEMENT = [0, 0, -BODY_IDLER_DIA/2-1];
 
 HINGE_BOLT_PLACEMENT = [
-  [IDLER_MESH_DISTANCE/2, -8.5, BODY_DRIVE_DIA/2+1],
-  [IDLER_MESH_DISTANCE/2, 11, BODY_DRIVE_DIA/2+1]
+  [IDLER_COG_DIA/2 + IDLER_MESH_DISTANCE, -8.5, BODY_IDLER_DIA/2],
+  [IDLER_COG_DIA/2 + IDLER_MESH_DISTANCE, 11, BODY_IDLER_DIA/2]
 ];
 HINGE_BOLT_LENGTH = 15;
 
@@ -68,21 +73,22 @@ module shaft() {
     cylinder(d = SHAFT_DIA, h = SHAFT_LENGTH);
 }
 
-module cog() {
-    cylinder(d = COG_DIA, h = COG_LENGTH);
-    cylinder(d = COG_TEETH_DIA, h = COG_TEETH_LENGTH);
+module cog(dia, length, teeth_dia, teeth_length) {
+    translate([0, 0, teeth_length])
+    cylinder(d = dia, h = length - teeth_length);
+    cylinder(d = teeth_dia, h = teeth_length);
 }
 
 module idler() {
     shaft();
     translate([0, 0, IDLER_COG_OFFSET])
-    cog();
+    cog(IDLER_COG_DIA, IDLER_COG_LENGTH, IDLER_COG_TEETH_DIA, IDLER_COG_TEETH_LENGTH);
 }
 
 module extruder_drive() {
     shaft();
     translate([0, 0, EXTRUDER_COG_OFFSET])
-    cog();
+    cog(EXTRUDER_COG_DIA, EXTRUDER_COG_LENGTH, EXTRUDER_COG_TEETH_DIA, EXTRUDER_COG_TEETH_LENGTH);
 }
 
 module worm_bearing() {
@@ -105,7 +111,7 @@ module worm_drive() {
 }
 
 module translate_drive() {
-    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
+    translate([-EXTRUDER_COG_DIA/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
         rotate([90, 0, 0]) {
             children();
         }
@@ -113,7 +119,7 @@ module translate_drive() {
 }
 
 module translate_idler() {
-    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
+    translate([IDLER_COG_DIA/2 + IDLER_MESH_DISTANCE, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
         rotate([90, 0, 0])
         translate([IDLER_MESH_DISTANCE, 0, 0]) {
             children();
@@ -122,7 +128,7 @@ module translate_idler() {
 }
 
 module translate_worm() {
-    translate([-IDLER_MESH_DISTANCE/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
+    translate([-EXTRUDER_COG_DIA/2, EXTRUDER_COG_OFFSET + EXTRUDER_FILAMENT_OFFSET]) {
         translate([-WORM_MESH_DISTANCE, -EXTRUDER_COG_OFFSET - WORM_MESH_OFFSET, 0])
         rotate([-WORM_ANGLE, 0, 0])
         translate([0, 0, -WORM_OFFSET -WORM_LENGTH/2]) {
@@ -211,7 +217,7 @@ module body() {
 
         translate_idler()
         translate([0, 0, -BODY_EXTRA_THICKNESS/2])
-        cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + BODY_EXTRA_THICKNESS);
+        cylinder(d = BODY_IDLER_DIA, h = BODY_IDLER_LENGTH + BODY_EXTRA_THICKNESS);
     }
 
     translate_worm()
@@ -262,9 +268,9 @@ module flap_mask() {
         intersection() {
             translate_idler()
             translate([0, 0, -BODY_EXTRA_THICKNESS/2])
-            cylinder(d = BODY_DRIVE_DIA, h = BODY_DRIVE_LENGTH + BODY_EXTRA_THICKNESS);
+            cylinder(d = BODY_IDLER_DIA, h = BODY_IDLER_LENGTH + BODY_EXTRA_THICKNESS);
 
-            translate([IDLER_MESH_DISTANCE/2, -50, -50])
+            translate([IDLER_COG_DIA/2, -50, -50])
             cube(size = [100, 100, 100]);
         }
 
@@ -285,6 +291,10 @@ module top_mask() {
         cube(size = [100, 100, 100]);
 
         flap_mask();
+
+        translate([-27, 0, 0])
+        rotate([90, 0, 0])
+        cylinder(d = WORM_LENGTH, h = BODY_DRIVE_LENGTH * 2, center = true);
     }
 }
 
@@ -294,6 +304,10 @@ module bottom_mask() {
         cube(size = [100, 100, 100]);
 
         flap_mask();
+
+        translate([-27, 0, 0])
+        rotate([90, 0, 0])
+        cylinder(d = WORM_LENGTH, h = BODY_DRIVE_LENGTH * 2, center = true);
     }
 }
 
@@ -316,7 +330,7 @@ module extruder_flap() {
       assembly();
       flap_mask();
       translate([0, -50, -50])
-      cube(size = [BODY_DRIVE_DIA-8, 100, 100]);
+      cube(size = [BODY_DRIVE_DIA-12, 100, 100]);
   }
 }
 
