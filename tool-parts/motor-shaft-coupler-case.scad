@@ -7,9 +7,11 @@ CASE_DIA = 70;
 CASE_HEIGHT = SHAFT_CHAIN_LENGTH + 14;
 CASE_CORNER_DIA = 10;
 
-MOUNT_HOLE_DIA = 4.5;
+MOUNT_HOLE_DIA = 3;
+MOUNT_HOLE_INSERT_DIA = 4.5;
 MOUNT_HOLE_HEAD_DIA = 7;
 MOUNT_HOLE_DEPTH = 12;
+MOUNT_HOLE_INSERT_DEPTH = 6;
 
 ORING_WIDTH = 2.5;
 
@@ -58,6 +60,10 @@ module case() {
             rotate([-90, 0, 0])
             translate([0, 0, MOUNT_HOLE_DEPTH/2])
             cylinder(d = MOUNT_HOLE_HEAD_DIA, h = CASE_DIA/2);
+
+            rotate([-90, 0, 0])
+            translate([0, 0, - MOUNT_HOLE_INSERT_DEPTH])
+            cylinder(d = MOUNT_HOLE_INSERT_DIA, h = MOUNT_HOLE_INSERT_DEPTH);
           }
         }
       }
