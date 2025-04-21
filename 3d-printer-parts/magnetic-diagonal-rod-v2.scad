@@ -1,0 +1,52 @@
+ROD_DIA = 6.35;
+ROD_SIDE_LENGTH = 25;
+ROD_SIDE_OFFSET = 10;
+
+BALL_DIA = 10.2;
+BALL_SIDE_LENGTH = 15;
+
+MAGNET_DIA = 10;
+MAGNET_THICKNESS = 4;
+MAGNET_OFFSET = 12;
+
+SPRING_HOLE = false;
+SPRING_HOLE_DIA = 2;
+SPRING_HOLE_THICKNESS = 2.5;
+SPRING_HOLE_OFFSET = 5.5;
+
+WALL_THICKNESS = 1.2;
+
+
+$fn = 50;
+
+difference() {
+  union() {
+    cylinder(d = ROD_DIA + 2 * WALL_THICKNESS, h = ROD_SIDE_LENGTH);
+
+    if(SPRING_HOLE) {
+      translate([SPRING_HOLE_OFFSET, 0, 0])
+      cylinder(d = SPRING_HOLE_DIA + 2 * WALL_THICKNESS, h = SPRING_HOLE_THICKNESS);
+    }
+
+    hull() {
+      translate([0, 0, ROD_SIDE_OFFSET])
+      cylinder(d = ROD_DIA + 2 * WALL_THICKNESS, h = ROD_SIDE_LENGTH - ROD_SIDE_OFFSET);
+
+      translate([0, 0, ROD_SIDE_LENGTH + BALL_SIDE_LENGTH - MAGNET_OFFSET])
+      cylinder(d1 = MAGNET_DIA + 2 * WALL_THICKNESS, d2 = MAGNET_DIA, h = MAGNET_THICKNESS);
+    }
+  }
+
+  #cylinder(d = ROD_DIA, h = ROD_SIDE_LENGTH + BALL_SIDE_LENGTH - MAGNET_OFFSET);
+
+  #translate([0, 0, ROD_SIDE_LENGTH + BALL_SIDE_LENGTH - BALL_DIA/2])
+  sphere(d = BALL_DIA);
+
+  if(SPRING_HOLE) {
+    #translate([SPRING_HOLE_OFFSET, 0, 0])
+    cylinder(d = SPRING_HOLE_DIA, h = SPRING_HOLE_THICKNESS);
+  }
+
+  #translate([0, 0, ROD_SIDE_LENGTH + BALL_SIDE_LENGTH - MAGNET_OFFSET])
+  cylinder(d = MAGNET_DIA, h = MAGNET_THICKNESS);
+}
