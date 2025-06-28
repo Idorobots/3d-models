@@ -1,11 +1,11 @@
 HEIGHT = 9;
-INNER_DIA = 21.5;
-OUTER_DIA = 23.5;
-HOLE_DIA = 16;
-FLANGE_DIA = 30;
-FLANGE_THICKNESS = 2;
+INNER_DIA = 57.5; // 21.5;
+OUTER_DIA = 60.5; // 23.5;
+HOLE_DIA = 9; // 16;
+FLANGE_DIA = 70; // 30;
+FLANGE_THICKNESS = 1.5; // 2;
 
-$fn = 50;
+$fn = 100;
 
 difference() {
     union() {
