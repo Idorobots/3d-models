@@ -25,8 +25,9 @@ EXTRUDER_MOUNT_STANDOFF_HEIGHT = 3 + EXTRUDER_MOUNT_OFFSET; // Same as bolt head
 EXTRUDER_MOUNT_STANDOFF_DIA = 6; // Same as bolt head dia.
 
 FAN_SHROUD_HEIGHT = EXTRUDER_MOUNT_HEIGHT + HEATSINK_HEIGHT + (HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS - THICKNESS);
+FAN_SHROUD_WIDTH = 27;
 FAN_SHROUD_CHANNEL_DIA = FAN_WIDTH - 2;
-FAN_SHROUD_CHANNEL_DIA_END = FAN_WIDTH - 6;
+FAN_SHROUD_CHANNEL_DIA_END = FAN_WIDTH - 5;
 FAN_SHROUD_DIA = PASSTHROUGH_COOLING ? BLOWERS_SPACING : EXTRUDER_MOUNT_DIA;
 FAN_SHROUD_CHANNEL_OFFSET = HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS + HEATSINK_HEIGHT + 0.5;
 
@@ -35,6 +36,7 @@ FLAP_EXCLUSION_OFFSET = 1.5;
 
 MOUNT_HOLE_DIA = 4.5; // For metal inserts.
 MOUNT_HOLE_HEIGHT = 10;
+LOAD_CELL_MOUNT_HOLE_DIA = 4.5; // For metal inserts.
 
 $fn = 50;
 
@@ -84,10 +86,10 @@ module fan_shroud() {
             cube([BLOWER_WIDTH, FAN_SHROUD_DIA, FAN_SHROUD_HEIGHT]);
           } else {
             if(EXTRUDER_MOUNT) {
-              translate([-EXTRUDER_WIDTH/2, -(FAN_WIDTH-FAN_SHROUD_DIA)/2, 0])
+              translate([-FAN_SHROUD_WIDTH/2, -(FAN_WIDTH-FAN_SHROUD_DIA)/2, 0])
               cylinder(d = FAN_SHROUD_DIA, h = FAN_SHROUD_HEIGHT);
 
-              translate([-EXTRUDER_WIDTH/2, (FAN_WIDTH-FAN_SHROUD_DIA)/2, 0])
+              translate([-FAN_SHROUD_WIDTH/2, (FAN_WIDTH-FAN_SHROUD_DIA)/2, 0])
               cylinder(d = FAN_SHROUD_DIA, h = FAN_SHROUD_HEIGHT);
             } else {
               d = MOUNT_HOLE_SPACING + MOUNT_HOLE_DIA * 2;
@@ -110,7 +112,7 @@ module fan_shroud() {
         translate([0, 0, FAN_LENGTH/2 + THICKNESS])
         rotate([0, -90, 0])
         intersection() {
-          h = FAN_OFFSET + MOUNT_HOLE_SPACING/2 + MOUNT_HOLE_DIA - EXTRUDER_FRONT_SUPPORT_THICKNESS;
+          h = FAN_OFFSET + FAN_SHROUD_WIDTH + MOUNT_HOLE_DIA - EXTRUDER_FRONT_SUPPORT_THICKNESS;
           translate([0, 0, -FAN_OFFSET])
           cylinder(d1 = FAN_SHROUD_CHANNEL_DIA, d2 = FAN_SHROUD_CHANNEL_DIA_END, h = h);
 
@@ -169,8 +171,13 @@ module fan_shroud() {
     cylinder(d = HEATSINK_DIA, h = THICKNESS + HEATSINK_FLANGE_THICKNESS);
 
     #heatsink();
-    #rotate([0, 0, 60])
-    mount_holes();
+    #if(LOAD_CELL) {
+      load_cell_mount();
+    } else {
+      rotate([0, 0, 60])
+      mount_holes();
+    }
+
     #hotend_fan();
     #translate([0, 0, HEATSINK_FLANGE_THICKNESS + HEATSINK_HOLE_THICKNESS])
     rotate([180, 0, 0])
