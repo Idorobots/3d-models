@@ -1,0 +1,22 @@
+BEARING_INNER_DIA = 12.75;
+BEARING_THICKNESS = 10;
+THICKNESS = 2;
+
+HOLE_DIA = 3.5;
+HOLE_HEAD_DIA = 8.5;
+HOLE_HEAD_THICKNESS = 2;
+
+$fn = 100;
+
+intersection(){
+  difference() {
+    translate([0, 0, -2 * THICKNESS])
+    cylinder(d1 = BEARING_INNER_DIA, d2 = BEARING_INNER_DIA - 1, h = 2 * THICKNESS + BEARING_THICKNESS);
+
+    cylinder(d = HOLE_DIA, h = BEARING_THICKNESS);
+
+    translate([0, 0, BEARING_THICKNESS - HOLE_HEAD_THICKNESS])
+    cylinder(d = HOLE_HEAD_DIA, h = HOLE_HEAD_THICKNESS);
+  }
+cylinder(d = BEARING_INNER_DIA, h = BEARING_THICKNESS);
+}
