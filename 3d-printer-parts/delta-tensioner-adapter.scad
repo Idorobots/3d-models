@@ -1,0 +1,41 @@
+WIDTH = 20;
+LENGTH = 42;
+HEIGHT = 8;
+
+GROOVE_WIDTH = 6;
+GROOVE_HEIGHT = 0.5;
+
+MOUNT_HOLE_DIA = 4.5;
+MOUNT_HOLE_HEAD_DIA = 8;
+MOUNT_HOLE_HEAD_HEIGHT = 5;
+MOUNT_HOLE_SPACING = 20;
+
+TENSIONER_HOLE_DIA = 3.5;
+TENSIONER_HOLE_HEAD_DIA = 8;
+TENSIONER_HOLE_HEAD_HEIGHT = 5;
+TENSIONER_HOLE_SPACING = 14;
+TENSIONER_HOLE_OFFSET = 3;
+
+$fn = 30;
+
+difference() {
+  union() {
+    translate([-GROOVE_WIDTH/2, -LENGTH/2, 0])
+    cube(size = [GROOVE_WIDTH, LENGTH, GROOVE_HEIGHT + HEIGHT]);
+    translate([-WIDTH/2, -LENGTH/2, 0])
+    cube(size = [WIDTH, LENGTH, HEIGHT]);
+  }
+
+  #for(i = [-1, 1]) {
+    translate([0, i * MOUNT_HOLE_SPACING/2, 0]) {
+      cylinder(d = MOUNT_HOLE_HEAD_DIA, h = MOUNT_HOLE_HEAD_HEIGHT);
+      cylinder(d = MOUNT_HOLE_DIA, h = HEIGHT + GROOVE_HEIGHT);
+    }
+
+    translate([i * TENSIONER_HOLE_SPACING/2, -LENGTH/2 + TENSIONER_HOLE_OFFSET, 0]) {
+      cylinder(d = TENSIONER_HOLE_DIA, h = HEIGHT);
+      translate([0, 0, GROOVE_HEIGHT + HEIGHT - TENSIONER_HOLE_HEAD_HEIGHT])
+      cylinder(d = TENSIONER_HOLE_HEAD_DIA, h = TENSIONER_HOLE_HEAD_HEIGHT);
+    }
+  }
+}
