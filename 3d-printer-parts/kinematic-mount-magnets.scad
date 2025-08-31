@@ -1,0 +1,32 @@
+MOUNT_HOLE_DIA = 3;
+MOUNT_HOLE_SPACING = 14;
+MOUNT_HOLE_OFFSET = 3;
+
+MAGNET_DIA = 12;
+MAGNET_THICKNESS = 3;
+MAGNET_SPACING = 13;
+MAGNETS = 3;
+MAGNETS_OFFSET = 7;
+
+THICKNESS = 4;
+WIDTH = 20;
+LENGTH = MAGNETS_OFFSET + MAGNETS * MAGNET_SPACING;
+
+
+$fn = 50;
+
+difference() {
+  translate([-WIDTH/2, 0, 0])
+  cube(size = [WIDTH, LENGTH, THICKNESS]);
+
+  #translate([-MOUNT_HOLE_SPACING/2, MOUNT_HOLE_OFFSET, 0])
+  cylinder(d = MOUNT_HOLE_DIA, h = THICKNESS);
+
+  #translate([MOUNT_HOLE_SPACING/2, MOUNT_HOLE_OFFSET, 0])
+  cylinder(d = MOUNT_HOLE_DIA, h = THICKNESS);
+
+  for(i = [0:MAGNETS-1]) {
+    #translate([0, MAGNETS_OFFSET + MAGNET_DIA/2 + i * MAGNET_SPACING, 0])
+    cylinder(d = MAGNET_DIA, h = MAGNET_THICKNESS);
+  }
+}
