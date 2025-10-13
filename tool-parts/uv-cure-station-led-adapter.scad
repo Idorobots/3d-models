@@ -1,0 +1,65 @@
+HEATSINK_WIDTH = 70;
+HEATSINK_LENGTH = 130;
+HEATSINK_THICKNESS = 10;
+HEATSINK_OFFSET_Z = -1;
+
+HEATSINK_CUTOUT_WIDTH = 18;
+HEATSINK_CUTOUT_LENGTH = 15;
+
+LED_WIDTH = 35;
+LED_LENGTH = 126;
+LED_THICKNESS = 10;
+LED_OFFSET_X = -5;
+
+WIRE_CHANNEL_WIDTH = 8;
+WIRE_CHANNEL_OFFSET_X = -5;
+WIRE_CHANNEL_OFFSET_Y = -4;
+
+WIDTH = 90;
+LENGTH = 150;
+CORNER_DIA = 10;
+THICKNESS = 3;
+
+MOUNT_HOLE_DIA = 3;
+MOUNT_HOLE_SPACING_X = 80;
+MOUNT_HOLE_SPACING_Y = 140;
+
+$fn = 50;
+
+module leds() {
+  union() {
+    translate([-LED_WIDTH/2 + LED_OFFSET_X, -LED_LENGTH/2, 0])
+    cube(size = [LED_WIDTH, LED_LENGTH, LED_THICKNESS + HEATSINK_THICKNESS]);
+    translate([-HEATSINK_WIDTH/2, -HEATSINK_LENGTH/2, 0])
+    cube(size = [HEATSINK_WIDTH, HEATSINK_LENGTH, HEATSINK_THICKNESS]);
+
+    translate([HEATSINK_WIDTH/2 -HEATSINK_CUTOUT_WIDTH, -HEATSINK_LENGTH/2 - HEATSINK_CUTOUT_LENGTH, 0])
+    cube(size = [HEATSINK_CUTOUT_WIDTH, HEATSINK_CUTOUT_LENGTH, HEATSINK_THICKNESS]);
+
+    translate([-HEATSINK_WIDTH/2 + WIRE_CHANNEL_OFFSET_X, -WIRE_CHANNEL_WIDTH/2 + WIRE_CHANNEL_OFFSET_Y, 0])
+    cube(size = [HEATSINK_WIDTH/2, WIRE_CHANNEL_WIDTH, LED_THICKNESS + HEATSINK_THICKNESS]);
+  }
+}
+
+module mount_holes(width, length, height, dia) {
+  for(i = [-1, 1]) {
+    for(j = [-1, 1]) {
+      translate([i * width/2, j * length/2, 0])
+      cylinder(d = dia, h = height);
+    }
+  }
+}
+
+module adapter() {
+  difference() {
+    hull()
+    mount_holes(WIDTH - CORNER_DIA, LENGTH - CORNER_DIA, THICKNESS, CORNER_DIA);
+
+    #mount_holes(MOUNT_HOLE_SPACING_X, MOUNT_HOLE_SPACING_Y, THICKNESS, MOUNT_HOLE_DIA);
+
+    #translate([0, 0, -HEATSINK_THICKNESS - HEATSINK_OFFSET_Z])
+    leds();
+  }
+}
+
+adapter();
