@@ -1,15 +1,15 @@
-WIDTH = 53; // 70; // 42;
-LENGTH = 77; // 90; // 62;
+WIDTH = 70; // 28; // 40; // 114; // 100; // 27; //50; // 90; // 53; // 70; // 42;
+LENGTH = 90; // 148; // 60; // 139; // 160; // 100; // 70; // 150; // 77; // 90; // 62;
 CORNER_DIA = 2; // 5; // 5;
 THICKNESS = 2;
 
-MOUNT_HOLE_SPACING_X = 45; // 65; //36;
-MOUNT_HOLE_SPACING_Y = 70; // 83; //56;
-MOUNT_HOLE_DIA = 3.5;
+MOUNT_HOLE_SPACING_X = 64; // 24; // 36; // 107; // 88; // 23; // 46; // 84; // 45; // 65; //36;
+MOUNT_HOLE_SPACING_Y = 84; // 144; // 56; // 133; // 155; // 95; //66; // 144; // 70; // 83; //56;
+MOUNT_HOLE_DIA = 3; // 2; // 3.5; // 2; // 2.5; // 3.5;
 MOUNT_HOLE_STANDOFF_DIA = min(WIDTH - MOUNT_HOLE_SPACING_X, LENGTH - MOUNT_HOLE_SPACING_Y);
-MOUNT_HOLE_STANDOFF_HEIGHT = 20; // 3; // 3;
+MOUNT_HOLE_STANDOFF_HEIGHT = 5; // 20; // 3; // 3;
 
-ACCESS_SLOT_WIDTH = 21; // 0; // 0;
+ACCESS_SLOT_WIDTH = 0; // 21; // 0; // 0;
 ACCESS_SLOT_HEIGHT = 4;
 
 
@@ -42,8 +42,10 @@ module base() {
     }
     mounting_holes(MOUNT_HOLE_SPACING_X, MOUNT_HOLE_SPACING_Y, MOUNT_HOLE_STANDOFF_HEIGHT + THICKNESS, MOUNT_HOLE_DIA);
 
-    translate([0, 0, MOUNT_HOLE_STANDOFF_HEIGHT + THICKNESS - ACCESS_SLOT_HEIGHT])
-    rounded_cube(ACCESS_SLOT_WIDTH, LENGTH + 2 * THICKNESS, ACCESS_SLOT_HEIGHT, 1);
+    if (ACCESS_SLOT_WIDTH > 0) {
+      translate([0, 0, MOUNT_HOLE_STANDOFF_HEIGHT + THICKNESS - ACCESS_SLOT_HEIGHT])
+      rounded_cube(ACCESS_SLOT_WIDTH, LENGTH + 2 * THICKNESS, ACCESS_SLOT_HEIGHT, 1);
+    }
   }
 }
 
