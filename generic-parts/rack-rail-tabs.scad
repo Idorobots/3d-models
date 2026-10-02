@@ -15,6 +15,11 @@ LEVER_HOLE_SPACING = [RACK_WIDTH - CORNER_DIA, RACK_DEPTH - CORNER_DIA];
 NOTCH_DIA = 2;
 NOTCH_OFFSET = 8;
 
+STANDOFF_HEIGHT = 6;
+STANDOFF_DIA = 8;
+
+CROSSBAR_DIA = STANDOFF_HEIGHT - THICKNESS;
+
 ITX = true;
 ITX_OFFSET_X = 6;
 ITX_OFFSET_Y = 1;
@@ -38,14 +43,23 @@ VESA_HOLE_SPACING_1 = [100, 100];
 VESA_HOLE_SPACING_2 = [75, 75];
 VESA_BARS_WIDTH = 10;
 
-STANDOFF_HEIGHT = 6;
-STANDOFF_DIA = ITX_HOLE_DIA + 4;
+FAN = false;
+FAN_SIZE = 120;
+FAN_HOLE_SPACING = FAN_SIZE - 16;
+FAN_MOUNT_HOLE_DIA = 5;
+FAN_OFFSET_X = 0;
+FAN_OFFSET_Y = 0;
 
-CROSSBAR_DIA = STANDOFF_HEIGHT - THICKNESS;
+GENERIC = false;
+//GENERIC_MOUNT_HOLES = []; // Array of [OFFSET_X, OFFSET_Y, HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT]
+GENERIC_BAR_WIDTH = 10;
+GENERIC_OFFSET_X = 0;
+GENERIC_OFFSET_Y = 0;
 
 // ITX
 /*
 VESA = false;
+STANDOFF_DIA = ITX_HOLE_DIA + 4;
 /**/
 
 // Minix Z300
@@ -53,6 +67,7 @@ VESA = false;
 ITX = false;
 VESA_OFFSET_X = 0;
 VESA_OFFSET_Y = 24;
+STANDOFF_DIA = ITX_HOLE_DIA + 4;
 /**/
 
 // Winnet G250
@@ -66,6 +81,44 @@ ITX_OFFSET_X = 0;
 ITX_OFFSET_Y = 0;
 /**/
 
+// 120 mm Fan
+/*
+VESA = false;
+ITX = false;
+FAN = true;
+FAN_SIZE = 120;
+BRACES_BOTH_SIDES = true;
+/**/
+
+// Double RPi mount
+/*
+VESA = false;
+ITX = false;
+FAN = false;
+GENERIC = true;
+GENERIC_BAR_WIDTH = 6;
+RPI_HOLE_DIA = 3;
+RPI_DISTANCE = 100;
+
+STANDOFF_DIA = 6;
+BRACES_BOTH_SIDES = true;
+ITX_OFFSET_X = 0;
+ITX_OFFSET_Y = 0;
+
+GENERIC_MOUNT_HOLES = [
+  // [OFFSET_X, OFFSET_Y, HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT]
+  [-29, -24.5 - RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT],
+  [29, -24.5 - RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT],
+  [-29, 24.5 - RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT],
+  [29, 24.5 - RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT],
+  [-29, -24.5 + RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT],
+  [29, -24.5 + RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT],
+  [-29, 24.5 + RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT],
+  [29, 24.5 + RPI_DISTANCE/2, RPI_HOLE_DIA, STANDOFF_DIA, STANDOFF_HEIGHT]
+];
+
+
+/**/
 $fn = 100;
 
 module mount_holes(width, length, height, dia) {
@@ -82,24 +135,26 @@ module rounded_rect(width, length, height, dia) {
   mount_holes(width-dia, length-dia, height, dia);
 }
 
+module cross_bar(length, dia) {
+  hull() {
+    translate([0, length/2, 0])
+    sphere(d = dia);
+
+    translate([0, -length/2, 0])
+    sphere(d = dia);
+  }
+}
+
 module cross_bars(width, length, dia) {
   for(i = [-1, 1]) {
-    hull() {
-      translate([i * width/2, length/2, 0])
-      sphere(d = dia);
+    hull()
+    translate([i * width/2, 0, 0])
+    cross_bar(length, dia);
 
-      translate([i * width/2, -length/2, 0])
-      sphere(d = dia);
-
-    }
-    hull() {
-      translate([width/2, i * length/2, 0])
-      sphere(d = dia);
-
-      translate([-width/2, i * length/2, 0])
-      sphere(d = dia);
-
-    }
+    hull()
+    translate([0, i * length/2, 0])
+    rotate([0, 0, 90])
+    cross_bar(width, dia);
   }
 }
 
@@ -191,30 +246,111 @@ module vesa_mount_holes() {
   #mount_holes(VESA_HOLE_SPACING_1[0], VESA_HOLE_SPACING_1[1], STANDOFF_HEIGHT, VESA_HOLE_DIA);
   #mount_holes(VESA_HOLE_SPACING_2[0], VESA_HOLE_SPACING_2[1], STANDOFF_HEIGHT, VESA_HOLE_DIA);
 }
+module fan_mount() {
+  difference() {
+    translate([ITX_OFFSET_X, ITX_OFFSET_Y, 0])
+    rounded_rect(ITX_HOLE_WIDTH, ITX_HOLE_LENGTH, THICKNESS, CORNER_DIA);
+    cylinder(d = FAN_SIZE, h = THICKNESS);
+  }
+}
 
-difference() {
-  union() {
-    rack_tabs();
+module fan_mount_holes() {
+  #mount_holes(FAN_HOLE_SPACING, FAN_HOLE_SPACING, STANDOFF_HEIGHT, FAN_MOUNT_HOLE_DIA);
+}
+
+module generic_mount() {
+  for (i = [0 : len(GENERIC_MOUNT_HOLES)-1]) {
+    translate([GENERIC_MOUNT_HOLES[i][0], GENERIC_MOUNT_HOLES[i][1], 0])
+    cylinder(d = GENERIC_MOUNT_HOLES[i][3], h = GENERIC_MOUNT_HOLES[i][4]);
+
+    translate([GENERIC_MOUNT_HOLES[i][0], 0, 0]) {
+      rounded_rect(GENERIC_BAR_WIDTH, ITX_HOLE_LENGTH, THICKNESS, GENERIC_BAR_WIDTH);
+      translate([0, 0, THICKNESS])
+      cross_bar(ITX_HOLE_LENGTH, CROSSBAR_DIA);
+    }
+    translate([0, GENERIC_MOUNT_HOLES[i][1], 0])
+    rotate([0, 0, 90]) {
+      rounded_rect(GENERIC_BAR_WIDTH, ITX_HOLE_WIDTH, THICKNESS, GENERIC_BAR_WIDTH);
+      translate([0, 0, THICKNESS])
+      cross_bar(ITX_HOLE_WIDTH - CORNER_DIA, CROSSBAR_DIA);
+    }
+  }
+
+  translate([ITX_HOLE_WIDTH/2 - CORNER_DIA/2, 0, 0]) {
+    rounded_rect(GENERIC_BAR_WIDTH, ITX_HOLE_LENGTH, THICKNESS, GENERIC_BAR_WIDTH);
+    translate([CORNER_DIA/2, 0, 0])
+    rounded_rect(GENERIC_BAR_WIDTH, ITX_HOLE_LENGTH, THICKNESS, GENERIC_BAR_WIDTH);
+    translate([0, 0, THICKNESS])
+    cross_bar(ITX_HOLE_WIDTH, CROSSBAR_DIA);
+  }
+
+  translate([-ITX_HOLE_WIDTH/2 + CORNER_DIA/2, 0, 0]) {
+    rounded_rect(GENERIC_BAR_WIDTH, ITX_HOLE_LENGTH, THICKNESS, GENERIC_BAR_WIDTH);
+    translate([-CORNER_DIA/2, 0, 0])
+    rounded_rect(GENERIC_BAR_WIDTH, ITX_HOLE_LENGTH, THICKNESS, GENERIC_BAR_WIDTH);
+    translate([0, 0, THICKNESS])
+    cross_bar(ITX_HOLE_WIDTH, CROSSBAR_DIA);
+  }
+}
+
+module generic_mount_holes() {
+  #for (i = [0 : len(GENERIC_MOUNT_HOLES)-1]) {
+    translate([GENERIC_MOUNT_HOLES[i][0], GENERIC_MOUNT_HOLES[i][1], 0]) {
+      cylinder(d = GENERIC_MOUNT_HOLES[i][2], h = GENERIC_MOUNT_HOLES[i][4]);
+    }
+  }
+}
+
+
+intersection() {
+  difference() {
+    union() {
+      rack_tabs();
+
+      if (ITX) {
+        translate([ITX_OFFSET_X, ITX_OFFSET_Y, 0])
+        itx_mount();
+      }
+
+      if (VESA) {
+        translate([VESA_OFFSET_X, VESA_OFFSET_Y, 0])
+        vesa_mount();
+      }
+
+      if (FAN) {
+        translate([FAN_OFFSET_X, FAN_OFFSET_Y, 0])
+        fan_mount();
+      }
+
+      if (GENERIC) {
+        translate([GENERIC_OFFSET_X, GENERIC_OFFSET_Y, 0])
+        generic_mount();
+      }
+    }
+    rack_mount_holes();
 
     if (ITX) {
       translate([ITX_OFFSET_X, ITX_OFFSET_Y, 0])
-      itx_mount();
+      itx_mount_holes();
     }
 
     if (VESA) {
       translate([VESA_OFFSET_X, VESA_OFFSET_Y, 0])
-      vesa_mount();
+      vesa_mount_holes();
+    }
+
+    if (FAN) {
+      translate([FAN_OFFSET_X, FAN_OFFSET_Y, 0])
+      fan_mount_holes();
+    }
+
+    if (GENERIC) {
+      translate([GENERIC_OFFSET_X, GENERIC_OFFSET_Y, 0])
+      generic_mount_holes();
     }
   }
-  rack_mount_holes();
 
-  if (ITX) {
-    translate([ITX_OFFSET_X, ITX_OFFSET_Y, 0])
-    itx_mount_holes();
-  }
-
-  if (VESA) {
-    translate([VESA_OFFSET_X, VESA_OFFSET_Y, 0])
-    vesa_mount_holes();
-  }
+  hull()
+  scale([1.0, 1.0, 10])
+  rack_tabs();
 }
